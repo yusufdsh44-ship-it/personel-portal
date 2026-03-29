@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Kurumsal Psikoloji Birimi",
     description: "Arnavutköy Belediyesi — Uzm. Kl. Psk. Yusuf Pamuk",
     type: "website",
-    images: [],
+    images: [{ url: "/logos/arnavutkoy.png", width: 1218, height: 1080, alt: "Arnavutköy Belediyesi" }],
   },
 }
 
