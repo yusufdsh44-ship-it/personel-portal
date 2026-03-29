@@ -7,8 +7,14 @@ const manrope = Manrope({ subsets: ["latin", "latin-ext"], variable: "--font-man
 const inter = Inter({ subsets: ["latin", "latin-ext"], variable: "--font-inter", display: "swap" })
 
 export const metadata: Metadata = {
-  title: "Sakin Sığınak — Kurumsal Psikoloji Birimi",
-  description: "Arnavutköy Belediyesi Kurumsal Psikoloji Birimi personel hizmetleri. Randevu alın, testleri doldurun.",
+  title: "Kurumsal Psikoloji Birimi — Arnavutköy Belediyesi",
+  description: "Arnavutköy Belediyesi Kurumsal Psikoloji Birimi. Randevu alın, testleri doldurun, psikologunuzla iletişime geçin.",
+  openGraph: {
+    title: "Kurumsal Psikoloji Birimi",
+    description: "Arnavutköy Belediyesi — Uzm. Kl. Psk. Yusuf Pamuk",
+    type: "website",
+    images: [],
+  },
 }
 
 export const viewport: Viewport = {
