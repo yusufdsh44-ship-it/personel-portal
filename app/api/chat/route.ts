@@ -3,7 +3,7 @@ import { GoogleGenerativeAI, type Content, type Tool, SchemaType } from "@google
 import { supabase } from "@/app/lib/supabase"
 import { isRateLimited, getClientIp } from "@/app/lib/rate-limit"
 
-const MODEL = "gemini-2.5-flash" // ~250 RPD, function calling destekli, stable
+const MODEL = "gemini-2.0-flash" // ~1500 RPD free tier, function calling destekli
 
 function getSystemPrompt() {
   const now = new Date()

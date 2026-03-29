@@ -25,7 +25,7 @@ export function FloatingCta() {
         >
           <PulseGlow className="rounded-full">
             <Link
-              href="/"
+              href="/randevu"
               className="w-14 h-14 rounded-full bg-primary text-on-primary shadow-lg shadow-primary/30 flex items-center justify-center hover:opacity-90 active:scale-95 transition-all"
             >
               <span className="material-symbols-outlined text-2xl">calendar_add_on</span>

@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import { Manrope, Inter } from "next/font/google"
 import { BottomNav } from "./components/bottom-nav"
-import { Onboarding } from "./components/onboarding"
 import "./globals.css"
 
 const manrope = Manrope({ subsets: ["latin", "latin-ext"], variable: "--font-manrope", display: "swap" })
@@ -37,7 +36,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </footer>
 
         <BottomNav />
-        <Onboarding />
       </body>
     </html>
   )

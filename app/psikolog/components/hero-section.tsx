@@ -31,7 +31,7 @@ export function HeroSection() {
         {/* Giriş */}
         <FadeInView delay={0.1}>
           <p className="text-on-surface text-[17px] sm:text-lg leading-[1.9] mb-10">
-            <span className="float-left text-5xl font-extrabold text-primary/50 leading-[0.85] mr-2 mt-1 font-headline select-none">M</span>erhaba, ben Yusuf. Kurum psikoloğu olarak sizleri ve kurumu tanıma sürecinde yaptığımız müdürlük ziyaretleri çok değerli olmuştu, çalışan memnuniyeti anketine katılarak da bu sürece büyük katkı sağladınız. Şimdi <strong className="text-on-surface">bir adım öteye geçip sizinle birebir görüşmek</strong>, sizi yakından tanımak ve birlikte neler yapabileceğimizi konuşmak isterim.
+            <span className="float-left text-5xl font-extrabold text-primary/50 leading-[0.85] mr-2 mt-1 font-headline select-none">M</span>erhaba, ben Yusuf. Müdürlük ziyaretlerinde sizlerle tanışmak ve çalışan memnuniyeti anketiyle kurumu yakından tanımak benim için çok değerliydi. Şimdi <strong className="text-on-surface">bir adım öteye geçip sizinle birebir görüşmek</strong>, sizi yakından tanımak ve birlikte neler yapabileceğimizi konuşmak isterim.
           </p>
         </FadeInView>
 
@@ -43,7 +43,7 @@ export function HeroSection() {
             <Card step={1} icon="target" accent="from-primary/10 to-transparent" iconBg="bg-primary" title="Sürecin İlk Adımı">
               <Bullet>Belediyemizdeki <strong>2.300 personelin her biriyle bire bir tanışma görüşmesi</strong> gerçekleştiriyorum.</Bullet>
               <Bullet>Görüşme sırası müdürlüğünüze geldiğinde, önce <strong>KSE-53 ve BFI-2 testlerini</strong> doldurmanız gerekmektedir. <Pill href="/testler" icon="assignment">Testler</Pill> sayfasından online doldurabilir ya da PDF çıktısını alıp elden getirebilirsiniz.</Bullet>
-              <Bullet>Ardından <Pill href="/" icon="event_available">Randevu</Pill> sayfasından doğrudan ya da <Pill href="/sohbet" icon="smart_toy">Chat</Pill> kısmından dijital ikizimle konuşarak müsaitliğinize göre randevunuzu kolayca oluşturabilirsiniz.</Bullet>
+              <Bullet>Ardından <Pill href="/randevu" icon="event_available">Randevu</Pill> sayfasından doğrudan ya da <Pill href="/sohbet" icon="smart_toy">Chat</Pill> kısmından dijital ikizimle konuşarak müsaitliğinize göre randevunuzu kolayca oluşturabilirsiniz.</Bullet>
               <Bullet><strong>Randevu sonrası size özel bir referans numarası</strong> verilecek. Bu numara ile randevunuzu iptal edebilir, değiştirebilir, görüşme özetinizi talep edebilir ve size özel birçok özelliği kullanabilirsiniz. <strong>Bu numarayı lütfen saklayın.</strong></Bullet>
             </Card>
           </FadeInView>

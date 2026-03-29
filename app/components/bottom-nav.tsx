@@ -5,10 +5,10 @@ import { usePathname } from "next/navigation"
 import { motion } from "framer-motion"
 
 const TABS = [
-  { href: "/", label: "Randevu", icon: "event_available" },
-  { href: "/testler", label: "Testler", icon: "assignment" },
+  { href: "/", label: "Psikolog", icon: "badge" },
+  { href: "/randevu", label: "Randevu", icon: "event_available" },
   { href: "/sohbet", label: "Chat", icon: "smart_toy" },
-  { href: "/psikolog", label: "Psikolog", icon: "badge" },
+  { href: "/testler", label: "Testler", icon: "assignment" },
   { href: "/kutuphane", label: "Keşfet", icon: "explore" },
 ]
 
