@@ -31,7 +31,7 @@ export function HeroSection() {
         {/* Giriş */}
         <FadeInView delay={0.1}>
           <p className="text-on-surface text-[17px] sm:text-lg leading-[1.9] mb-10">
-            <span className="float-left text-5xl font-extrabold text-primary/50 leading-[0.85] mr-2 mt-1 font-headline select-none">M</span>erhaba, ben Yusuf. Müdürlük ziyaretlerinde sizlerle tanışmak ve çalışan memnuniyeti anketiyle kurumu yakından tanımak benim için çok değerliydi. Şimdi <strong className="text-on-surface">bir adım öteye geçip sizinle birebir görüşmek</strong>, sizi yakından tanımak ve birlikte neler yapabileceğimizi konuşmak isterim.
+            <span className="float-left text-5xl font-extrabold text-primary/50 leading-[0.85] mr-2 mt-1 font-headline select-none">M</span>erhaba, ben Kurum Psikoloğu Yusuf. Müdürlük ziyaretlerinde sizlerle tanışmak ve çalışan memnuniyeti anketiyle kurumu yakından tanımak benim için çok değerliydi. Şimdi <strong className="text-on-surface">bir adım öteye geçip sizinle birebir görüşmek</strong>, sizi yakından tanımak ve birlikte neler yapabileceğimizi konuşmak isterim.
           </p>
         </FadeInView>
 
