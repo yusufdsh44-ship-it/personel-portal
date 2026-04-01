@@ -3,7 +3,7 @@ import { GoogleGenerativeAI, type Content, type Tool, SchemaType } from "@google
 import { supabase } from "@/app/lib/supabase"
 import { isRateLimited, getClientIp } from "@/app/lib/rate-limit"
 
-const MODEL = "gemini-2.0-flash" // ~1500 RPD free tier, function calling destekli
+const MODEL = "gemini-2.0-flash-lite" // yüksek RPD, hızlı, function calling destekli
 
 function getSystemPrompt() {
   const now = new Date()
@@ -508,31 +508,30 @@ export async function POST(request: NextRequest) {
       tools,
     })
 
-    // Retry — 429 rate limit’te Gemini’nin bekleme süresini parse et
+    // Retry — 429’da tek bir deneme, max 20s bekle
     async function sendWithRetry(chat: ReturnType<typeof model.startChat>, msg: Parameters<typeof chat.sendMessage>[0]) {
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < 2; i++) {
         try {
           return await chat.sendMessage(msg)
         } catch (e: unknown) {
-          const errObj = e instanceof Error ? e : new Error(String(e))
           const status = (e as { status?: number }).status
-          const message = errObj.message || ""
+          const message = (e instanceof Error ? e.message : String(e)) || ""
 
-          if (status === 429 && i < 2) {
-            // Hata mesajından bekleme süresini parse et: "retry in 39.87s"
-            let waitMs = 42000 // varsayılan 42s
+          if (status === 429 && i === 0) {
+            // Gemini’nin bekleme süresini parse et, max 20s
+            let waitMs = 15000
             const match = message.match(/retry in ([\d.]+)s/i)
             if (match) {
-              waitMs = Math.ceil(parseFloat(match[1]) * 1000) + 2000
+              waitMs = Math.min(Math.ceil(parseFloat(match[1]) * 1000) + 1000, 20000)
             }
-            console.log(`[chat] 429 rate limit, retry ${i + 1}/2, waiting ${Math.round(waitMs / 1000)}s`)
+            console.log(`[chat] 429, waiting ${Math.round(waitMs / 1000)}s`)
             await new Promise(r => setTimeout(r, waitMs))
             continue
           }
           throw e
         }
       }
-      throw new Error("Rate limit aşıldı — lütfen biraz bekleyin")
+      throw new Error("Yoğun talep — birkaç saniye sonra tekrar deneyin")
     }
 
     const chat = model.startChat({ history })
