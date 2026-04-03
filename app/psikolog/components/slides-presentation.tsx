@@ -17,7 +17,8 @@ interface SlideData {
   accent: string
   barColor: string
   bulletColor: string
-  light?: boolean       // true = krem arka plan, koyu metinler
+  light?: boolean
+  video?: string        // arka plan video URL
   iconFilled?: boolean
 }
 
@@ -44,8 +45,9 @@ const SLIDES: SlideData[] = [
     id: "giris",
     icon: "waving_hand",
     label: "Hoş Geldiniz",
-    title: "Merhaba, ben Kurum Psikoloğu Yusuf.",
+    title: "Merhaba, ben Yusuf.",
     accent: "from-[#2a1810] via-[#3d2518] to-[#5a3420]",
+    video: "/hero-video.mp4",
     barColor: "from-[#b5694d] via-[#c47a4a] to-[#d4956a]",
     bulletColor: "#d4956a",
     iconFilled: true,
@@ -64,8 +66,8 @@ const SLIDES: SlideData[] = [
     barColor: "from-[#2a6070] via-[#4a90a0] to-[#6ab0c0]",
     bulletColor: "#6ab0c0",
     content: (
-      <div className="text-white/80 text-sm leading-[1.7]">
-        <p className="mb-4">Belediyemizdeki <strong className="text-white font-semibold">2.238 personelin her biriyle bire bir tanışma görüşmesi</strong> gerçekleştiriyorum. Görüşme sırası müdürlüğünüze geldiğinde süreç üç adımda ilerliyor:</p>
+      <div className="text-white/80 text-xs sm:text-sm leading-[1.6] sm:leading-[1.7]">
+        <p className="mb-3">Belediyemizdeki <strong className="text-white font-semibold">2.238 personelin her biriyle bire bir tanışma görüşmesi</strong> gerçekleştiriyorum. Görüşme sırası müdürlüğünüze geldiğinde süreç üç adımda ilerliyor:</p>
 
         {/* Timeline — animasyonlu dikey çizgi */}
         <div className="relative ml-3.5">
@@ -89,10 +91,10 @@ const SLIDES: SlideData[] = [
             { n: 2, text: <>Testlerinizi tamamladıktan sonra <Pill href="/randevu" icon="event_available">Randevu</Pill> sayfasından veya <Pill href="/sohbet" icon="smart_toy">Chat</Pill> üzerinden dijital ikizimle konuşarak randevunuzu kolayca oluşturabilirsiniz.</> },
             { n: 3, text: <><strong className="text-white font-semibold">Randevu sonrası size özel bir referans numarası</strong> verilecek — iptal, değişiklik ve size özel birçok özellik bu numara ile kullanılabilir. <strong className="text-white font-semibold">Lütfen saklayın.</strong></> },
           ].map((step) => (
-            <div key={step.n} className="relative flex gap-3 pb-4 last:pb-0">
+            <div key={step.n} className="relative flex gap-2.5 pb-2.5 last:pb-0">
               {/* Numara — sırayla parlayan pulse */}
               <motion.div
-                className="relative z-10 w-7 h-7 rounded-full bg-[#6ab0c0] text-[#1a3a4a] flex items-center justify-center shrink-0 text-[11px] font-bold font-mono -ml-0.5"
+                className="relative z-10 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#6ab0c0] text-[#1a3a4a] flex items-center justify-center shrink-0 text-[10px] sm:text-[11px] font-bold font-mono -ml-0.5"
                 animate={{
                   boxShadow: [
                     "0 0 0 0 rgba(106,176,192,0.1)",
@@ -350,17 +352,59 @@ function Slide({ slide, index, isActive }: { slide: SlideData; index: number; is
   const isClosing = slide.id === "kapanis"
   const isLight = slide.light
   const hideIcon = isClosing || !slide.title
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [muted, setMuted] = useState(true)
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted
+      setMuted(videoRef.current.muted)
+    }
+  }
+
+  // Slide'dan ayrılınca videoyu durdur + sessize al
+  useEffect(() => {
+    if (!videoRef.current || !slide.video) return
+    if (isActive) {
+      videoRef.current.play().catch(() => {})
+    } else {
+      videoRef.current.pause()
+      videoRef.current.muted = true
+      setMuted(true)
+    }
+  }, [isActive, slide.video])
 
   return (
     <section
       id={`slide-${slide.id}`}
       className={`relative w-full h-[100dvh] overflow-hidden flex justify-center snap-start bg-gradient-to-br ${slide.accent} ${
-        slide.id === "ilk-adim" ? "items-start pt-[10dvh]" : "items-center"
+        slide.id === "ilk-adim" ? "items-start pt-[3dvh] sm:pt-[8dvh]" : "items-center"
       }`}
       style={{ scrollSnapAlign: "start" }}
     >
-      {/* Decorative circles — only on dark slides */}
-      {!isLight && (
+      {/* Video arka plan */}
+      {slide.video && (
+        <>
+          {/* Video — Safari + Chrome uyumlu, gizemli arka plan */}
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            loop
+            playsInline
+            webkit-playsinline="true"
+            className="absolute inset-0 w-full h-full object-cover opacity-40 scale-105"
+            style={{ filter: "blur(1px) saturate(0.7)" }}
+          >
+            <source src={slide.video} type="video/mp4" />
+          </video>
+          {/* Gradient overlay — derinlik + okunabilirlik */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#2a1810]/95 via-[#2a1810]/70 to-[#2a1810]/60" />
+        </>
+      )}
+
+      {/* Decorative circles — sadece koyu slide'larda, video yoksa */}
+      {!isLight && !slide.video && (
         <>
           <div className="absolute -top-[30%] -right-[20%] w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.04)_0%,transparent_70%)]" />
           <div className="absolute -bottom-[20%] -left-[10%] w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(255,150,80,0.06)_0%,transparent_70%)]" />
@@ -368,7 +412,7 @@ function Slide({ slide, index, isActive }: { slide: SlideData; index: number; is
       )}
 
       {/* Content */}
-      <div className="relative z-10 w-full max-w-2xl mx-auto px-5 sm:px-10">
+      <div className="relative z-10 w-full max-w-2xl mx-auto px-5 sm:px-10" style={slide.video ? { textShadow: "0 2px 20px rgba(0,0,0,0.7), 0 1px 3px rgba(0,0,0,0.4)" } : undefined}>
         {/* Slide number + label */}
         <motion.div
           initial={reduced ? {} : { opacity: 0, y: 10 }}
@@ -425,6 +469,17 @@ function Slide({ slide, index, isActive }: { slide: SlideData; index: number; is
           {slide.content}
         </motion.div>
       </div>
+
+      {/* Ses aç/kapa — sadece video slide'ında */}
+      {slide.video && (
+        <button
+          onClick={toggleMute}
+          className="absolute bottom-32 right-5 z-20 w-10 h-10 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/25 active:scale-90 transition-all"
+          aria-label={muted ? "Sesi aç" : "Sesi kapat"}
+        >
+          <span className="material-symbols-outlined text-lg">{muted ? "volume_off" : "volume_up"}</span>
+        </button>
+      )}
 
       {/* Bottom gradient bar */}
       <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${slide.barColor}`} />
@@ -536,19 +591,16 @@ export function SlidesPresentation() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => goTo(current + 1)}
-            className="fixed bottom-32 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-1.5 cursor-pointer"
+            className="fixed bottom-28 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center cursor-pointer"
           >
             {current === 0 ? (
-              <>
-                <motion.div
-                  animate={{ y: [0, 8, 0] }}
-                  transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-                  className="w-10 h-10 rounded-full bg-white/15 border border-white/20 flex items-center justify-center backdrop-blur-sm"
-                >
-                  <span className="material-symbols-outlined text-white text-xl">expand_more</span>
-                </motion.div>
-                <span className="text-[11px] font-mono text-white/50 tracking-widest uppercase">Kaydır</span>
-              </>
+              <motion.span
+                animate={{ y: [0, 5, 0] }}
+                transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+                className="material-symbols-outlined text-white/40 text-2xl"
+              >
+                expand_more
+              </motion.span>
             ) : (
               <motion.span
                 animate={{ y: [0, 4, 0] }}
