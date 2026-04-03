@@ -564,6 +564,42 @@ export function SlidesPresentation() {
   const [current, setCurrent] = useState(0)
   const containerRef = useRef<HTMLDivElement>(null)
   const isScrolling = useRef(false)
+  const hasInteracted = useRef(false)
+  const [showSwipeHint, setShowSwipeHint] = useState(false)
+
+  // Instagram-style peek animation — sadece ilk slide'da
+  useEffect(() => {
+    if (current !== 0) return
+    const container = containerRef.current
+    if (!container) return
+
+    const cancel = () => { hasInteracted.current = true; setShowSwipeHint(false) }
+    container.addEventListener("touchstart", cancel, { once: true })
+    container.addEventListener("wheel", cancel, { once: true })
+
+    const timers: ReturnType<typeof setTimeout>[] = []
+    const peek = (delay: number) => {
+      timers.push(setTimeout(() => {
+        if (hasInteracted.current) return
+        container.scrollTo({ top: 80, behavior: "smooth" })
+        setShowSwipeHint(true)
+        timers.push(setTimeout(() => {
+          if (hasInteracted.current) return
+          container.scrollTo({ top: 0, behavior: "smooth" })
+          timers.push(setTimeout(() => setShowSwipeHint(false), 400))
+        }, 700))
+      }, delay))
+    }
+
+    peek(2500)
+    peek(6500)
+
+    return () => {
+      timers.forEach(clearTimeout)
+      container.removeEventListener("touchstart", cancel)
+      container.removeEventListener("wheel", cancel)
+    }
+  }, [current])
 
   // Track current slide via Intersection Observer
   useEffect(() => {
@@ -660,25 +696,29 @@ export function SlidesPresentation() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => goTo(current + 1)}
-            className="fixed bottom-28 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center cursor-pointer"
+            className="fixed bottom-28 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-1 cursor-pointer"
           >
-            {current === 0 ? (
-              <motion.span
-                animate={{ y: [0, 5, 0] }}
-                transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-                className="material-symbols-outlined text-white/40 text-2xl"
-              >
-                expand_more
-              </motion.span>
-            ) : (
-              <motion.span
-                animate={{ y: [0, 4, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                className="material-symbols-outlined text-white/25 text-lg"
-              >
-                expand_more
-              </motion.span>
-            )}
+            <motion.span
+              animate={{ y: [0, 4, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              className={`material-symbols-outlined ${current === 0 ? "text-white/40 text-2xl" : "text-white/25 text-lg"}`}
+            >
+              expand_more
+            </motion.span>
+            {/* "Kaydır" yazısı — peek animasyonu sırasında belirir */}
+            <AnimatePresence>
+              {showSwipeHint && current === 0 && (
+                <motion.span
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 5 }}
+                  transition={{ duration: 0.3 }}
+                  className="text-[11px] font-mono text-white/50 tracking-widest uppercase"
+                >
+                  Kaydır
+                </motion.span>
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>
