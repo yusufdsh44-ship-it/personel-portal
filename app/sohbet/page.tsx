@@ -46,7 +46,7 @@ const WORKFLOWS = [
 const QUICK_PROMPTS = [
   "Süreç nasıl işliyor?",
   "Görüşme sonrası ne olacak?",
-  "Keşfet/Kütüphane nedir?",
+  "Gizlilik nasıl sağlanıyor?",
   "Referans kodum ne işe yarar?",
   "Psikolog hakkında bilgi",
   "Testleri neden dolduruyorum?",
@@ -62,6 +62,48 @@ export default function SohbetPage() {
 
   const isEmpty = messages.length === 0
 
+  // Animated typing placeholder — workflow kartlarındaki örnekleri kullanır
+  const ANIMATED_HINTS = [
+    "Randevu almak istiyorum",
+    "Seans raporumu görmek istiyorum",
+    "Psikoloğa mesaj göndermek istiyorum",
+    "Testlerimi tamamladım mı?",
+    "Görüşme sonrası ne olacak?",
+    "Süreç nasıl işliyor?",
+  ]
+  const [hintIdx, setHintIdx] = useState(0)
+  const [hintText, setHintText] = useState("")
+  const showAnimatedHint = isEmpty && !input && !loading
+
+  useEffect(() => {
+    if (!showAnimatedHint) return
+    const full = ANIMATED_HINTS[hintIdx]
+    let i = 0
+    let erasing = false
+    let timer: ReturnType<typeof setTimeout>
+    const tick = () => {
+      if (!erasing) {
+        if (i <= full.length) {
+          setHintText(full.slice(0, i))
+          i++
+          timer = setTimeout(tick, 45 + Math.random() * 35)
+        } else {
+          timer = setTimeout(() => { erasing = true; tick() }, 2200)
+        }
+      } else {
+        if (i > 0) {
+          i--
+          setHintText(full.slice(0, i))
+          timer = setTimeout(tick, 25)
+        } else {
+          setHintIdx(prev => (prev + 1) % ANIMATED_HINTS.length)
+        }
+      }
+    }
+    timer = setTimeout(tick, 600)
+    return () => clearTimeout(timer)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hintIdx, showAnimatedHint])
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight })
@@ -156,10 +198,10 @@ export default function SohbetPage() {
               <div className="flex flex-col items-center justify-between h-full">
                 {/* Header */}
                 <div className="text-center pt-4 pb-2">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-container to-primary/20 flex items-center justify-center mx-auto mb-2 shadow-lg shadow-primary/10">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-container to-primary/20 flex items-center justify-center mx-auto mb-2 shadow-lg shadow-black/5">
                     <span className="text-sm font-bold text-primary">YP</span>
                   </div>
-                  <h1 className="text-lg font-extrabold font-headline text-on-surface tracking-tight">
+                  <h1 className="text-lg font-headline font-bold text-on-surface tracking-tight">
                     Yusuf Pamuk&apos;un Dijital İkizi
                   </h1>
                   <p className="text-on-surface-variant/60 text-[11px]">
@@ -279,13 +321,38 @@ export default function SohbetPage() {
         {/* Input bar — pinned bottom */}
         <div className="shrink-0 px-4 pb-5 pt-2 bg-surface">
           <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
-            <div className="relative flex items-end bg-surface-container-high/40 rounded-3xl border border-outline-variant/20 focus-within:border-primary/30 transition-colors">
+            <motion.div
+              className={`relative flex items-end bg-surface-container-high/40 rounded-3xl border transition-colors ${
+                showAnimatedHint
+                  ? "border-primary/40"
+                  : "border-outline-variant/20 focus-within:border-primary/30"
+              }`}
+              animate={showAnimatedHint ? {
+                boxShadow: [
+                  "0 0 0 0 rgba(41,104,104,0), 0 0 0 0 rgba(41,104,104,0)",
+                  "0 0 24px 4px rgba(41,104,104,0.15), 0 0 8px 2px rgba(41,104,104,0.08)",
+                  "0 0 0 0 rgba(41,104,104,0), 0 0 0 0 rgba(41,104,104,0)",
+                ],
+              } : { boxShadow: "0 0 0 0 rgba(41,104,104,0)" }}
+              transition={showAnimatedHint ? { duration: 2.5, repeat: Infinity, ease: "easeInOut" } : { duration: 0.3 }}
+            >
+              {/* Animated typing placeholder */}
+              {showAnimatedHint && (
+                <div className="absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none text-sm text-primary/70 font-medium flex items-center">
+                  <span>{hintText}</span>
+                  <motion.span
+                    animate={{ opacity: [1, 0] }}
+                    transition={{ duration: 0.53, repeat: Infinity, repeatType: "reverse" }}
+                    className="inline-block w-[2px] h-[18px] bg-primary/70 ml-px rounded-full"
+                  />
+                </div>
+              )}
               <textarea
                 ref={textareaRef}
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder={isEmpty ? "Size nasıl yardımcı olabilirim?" : "Cevabınızı yazın..."}
+                placeholder={showAnimatedHint ? "" : (isEmpty ? "Size nasıl yardımcı olabilirim?" : "Cevabınızı yazın...")}
                 disabled={loading}
                 rows={1}
                 className="flex-1 bg-transparent resize-none px-5 py-3.5 text-sm text-on-surface placeholder:text-outline/40 outline-none max-h-40 disabled:opacity-50"
@@ -307,7 +374,7 @@ export default function SohbetPage() {
               >
                 <span className="material-symbols-outlined text-lg">arrow_upward</span>
               </button>
-            </div>
+            </motion.div>
             <p className="text-center text-[10px] text-on-surface-variant/40 mt-1.5">
               Dijital ikiz hatalar yapabilir.
             </p>

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
+import Link from "next/link"
 import { nanoid } from "nanoid"
 import { addDays, format, getDay, startOfDay } from "date-fns"
 import { tr } from "date-fns/locale"
@@ -119,7 +120,7 @@ export default function RandevuPage() {
           <div className="max-w-sm w-full text-center space-y-6">
             <SuccessCheck />
             <FadeIn delay={0.4}>
-              <h2 className="text-2xl font-headline font-extrabold text-on-surface tracking-tight">Talebiniz Alındı!</h2>
+              <h2 className="text-2xl font-headline font-bold text-on-surface tracking-tight">Talebiniz Alındı!</h2>
             </FadeIn>
             <FadeIn delay={0.6}>
               <p className="text-on-surface-variant leading-relaxed">
@@ -156,28 +157,11 @@ export default function RandevuPage() {
         {/* Hero */}
         <FadeIn>
         <section className="text-center space-y-3">
-          <h2 className="font-headline font-extrabold text-3xl text-on-surface tracking-tight">Randevunuzu Planlayın</h2>
+          <h2 className="font-display text-3xl text-on-surface tracking-tight">Randevunuzu Planlayın</h2>
           <p className="text-on-surface-variant text-sm leading-relaxed max-w-sm mx-auto">
             Görüşmeleriniz etik kurallar çerçevesinde sadece psikoloğunuz ile aranızda kalır.
           </p>
         </section>
-        </FadeIn>
-
-        {/* Quick call card */}
-        <FadeIn delay={0.1}>
-        <motion.div
-          whileHover={{ y: -2, boxShadow: "0 12px 40px rgba(41,104,104,0.06)" }}
-          transition={{ type: "spring", stiffness: 400, damping: 25 }}
-          className="glass-card p-5 rounded-3xl flex items-center gap-4 cursor-default"
-        >
-          <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
-            <span className="material-symbols-outlined text-primary">call</span>
-          </div>
-          <div className="flex-1">
-            <p className="text-xs font-semibold text-outline-variant uppercase tracking-wider mb-0.5">Hızlı Randevu</p>
-            <p className="text-sm font-medium text-on-surface">Telefonla da arayabilirsiniz: <span className="font-extrabold text-primary whitespace-nowrap">Dahili: 4405</span></p>
-          </div>
-        </motion.div>
         </FadeIn>
 
         {/* Step 1 — Kişisel Bilgiler */}
@@ -225,7 +209,7 @@ export default function RandevuPage() {
 
           {/* Testleri henüz doldurmadıysan */}
           {(!kseDurum || !bfiDurum) && (
-            <a href="/testler"
+            <Link href="/testler"
               className="flex items-center gap-3 p-4 rounded-2xl bg-amber-50 border border-amber-200 hover:bg-amber-100 transition-colors">
               <span className="material-symbols-outlined text-amber-600">arrow_forward</span>
               <div className="flex-1">
@@ -233,7 +217,7 @@ export default function RandevuPage() {
                 <p className="text-xs text-amber-700">Testleri online doldurmak için tıklayın</p>
               </div>
               <span className="material-symbols-outlined text-amber-400">open_in_new</span>
-            </a>
+            </Link>
           )}
 
           {/* KSE-53 */}
@@ -243,7 +227,7 @@ export default function RandevuPage() {
               <button type="button" onClick={() => setKseDurum("online")}
                 className={`flex flex-col items-center gap-2 p-4 rounded-2xl transition-all active:scale-95 ${
                   kseDurum === "online"
-                    ? "bg-primary text-on-primary shadow-lg shadow-primary/10"
+                    ? "bg-primary text-on-primary shadow-lg shadow-black/5"
                     : "bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high"
                 }`}>
                 <span className="material-symbols-outlined">devices</span>
@@ -252,7 +236,7 @@ export default function RandevuPage() {
               <button type="button" onClick={() => setKseDurum("kagit")}
                 className={`flex flex-col items-center gap-2 p-4 rounded-2xl transition-all active:scale-95 ${
                   kseDurum === "kagit"
-                    ? "bg-primary text-on-primary shadow-lg shadow-primary/10"
+                    ? "bg-primary text-on-primary shadow-lg shadow-black/5"
                     : "bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high"
                 }`}>
                 <span className="material-symbols-outlined">description</span>
@@ -268,7 +252,7 @@ export default function RandevuPage() {
               <button type="button" onClick={() => setBfiDurum("online")}
                 className={`flex flex-col items-center gap-2 p-4 rounded-2xl transition-all active:scale-95 ${
                   bfiDurum === "online"
-                    ? "bg-primary text-on-primary shadow-lg shadow-primary/10"
+                    ? "bg-primary text-on-primary shadow-lg shadow-black/5"
                     : "bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high"
                 }`}>
                 <span className="material-symbols-outlined">devices</span>
@@ -277,7 +261,7 @@ export default function RandevuPage() {
               <button type="button" onClick={() => setBfiDurum("kagit")}
                 className={`flex flex-col items-center gap-2 p-4 rounded-2xl transition-all active:scale-95 ${
                   bfiDurum === "kagit"
-                    ? "bg-primary text-on-primary shadow-lg shadow-primary/10"
+                    ? "bg-primary text-on-primary shadow-lg shadow-black/5"
                     : "bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high"
                 }`}>
                 <span className="material-symbols-outlined">description</span>
@@ -299,7 +283,7 @@ export default function RandevuPage() {
                 transition={{ type: "spring", stiffness: 400, damping: 25 }}
                 className={`flex flex-col items-center justify-center p-4 rounded-2xl ${
                   tur === t.value
-                    ? "bg-primary text-on-primary shadow-lg shadow-primary/10"
+                    ? "bg-primary text-on-primary shadow-lg shadow-black/5"
                     : "bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high"
                 }`}>
                 <span className="material-symbols-outlined mb-2">{t.icon}</span>
@@ -328,7 +312,7 @@ export default function RandevuPage() {
                   className={`flex-shrink-0 w-16 h-20 rounded-2xl flex flex-col items-center justify-center gap-1 ${
                     a ? "bg-primary text-on-primary shadow-md" : "bg-surface-lowest border border-outline-variant/10 text-on-surface hover:bg-surface-container"
                   }`}>
-                  <span className={`text-[10px] uppercase font-bold tracking-widest ${a ? "opacity-80" : "text-outline"}`}>
+                  <span className={`text-[10px] uppercase font-bold font-mono tracking-wider ${a ? "opacity-80" : "text-outline"}`}>
                     {format(d, "EEE", { locale: tr })}
                   </span>
                   <span className="text-xl font-extrabold tracking-tighter">{format(d, "d")}</span>
@@ -362,7 +346,7 @@ export default function RandevuPage() {
                     whileTap={!busy ? { scale: 0.9 } : undefined}
                     className={`py-3 px-1 rounded-xl text-sm font-medium transition-colors ${
                       busy ? "bg-surface-container-high text-outline-variant cursor-not-allowed line-through"
-                        : a ? "bg-primary text-on-primary font-bold shadow-lg shadow-primary/20"
+                        : a ? "bg-primary text-on-primary font-bold shadow-lg shadow-black/5"
                         : "bg-surface-lowest border border-outline-variant/10 text-on-surface hover:bg-primary-container"
                     }`}>{s}</motion.button>
                 )
@@ -409,19 +393,19 @@ export default function RandevuPage() {
             </div>
             <div className="grid grid-cols-2 gap-y-4 gap-x-2">
               <div>
-                <p className="text-[10px] uppercase font-bold text-outline-variant tracking-wider">TARİH & SAAT</p>
+                <p className="text-[10px] uppercase font-bold font-mono text-outline-variant tracking-wider">TARİH & SAAT</p>
                 <p className="text-sm font-bold text-on-surface">{format(new Date(date), "d MMMM EEEE", { locale: tr })}, {time}</p>
               </div>
               <div>
-                <p className="text-[10px] uppercase font-bold text-outline-variant tracking-wider">GÖRÜŞME</p>
+                <p className="text-[10px] uppercase font-bold font-mono text-outline-variant tracking-wider">GÖRÜŞME</p>
                 <p className="text-sm font-bold text-on-surface">{turLabel} Seans</p>
               </div>
               <div>
-                <p className="text-[10px] uppercase font-bold text-outline-variant tracking-wider">PERSONEL</p>
+                <p className="text-[10px] uppercase font-bold font-mono text-outline-variant tracking-wider">PERSONEL</p>
                 <p className="text-sm font-bold text-on-surface">{ad} - {mud}</p>
               </div>
               <div>
-                <p className="text-[10px] uppercase font-bold text-outline-variant tracking-wider">TESTLER</p>
+                <p className="text-[10px] uppercase font-bold font-mono text-outline-variant tracking-wider">TESTLER</p>
                 <p className="text-sm font-bold text-on-surface">
                   KSE: {kseDurum === "online" ? "Online" : "Kağıt"} · BFI: {bfiDurum === "online" ? "Online" : "Kağıt"}
                 </p>
@@ -429,7 +413,7 @@ export default function RandevuPage() {
             </div>
             {not.trim() && (
               <div>
-                <p className="text-[10px] uppercase font-bold text-outline-variant tracking-wider">NOT</p>
+                <p className="text-[10px] uppercase font-bold font-mono text-outline-variant tracking-wider">NOT</p>
                 <p className="text-sm text-on-surface">{not.trim()}</p>
               </div>
             )}
@@ -445,7 +429,7 @@ export default function RandevuPage() {
             <motion.button type="button" onClick={submit} disabled={sending || !allDone}
               whileTap={{ scale: 0.97 }}
               animate={{ opacity: allDone ? 1 : 0.4 }}
-              className="w-full h-16 bg-primary text-on-primary rounded-2xl font-headline font-bold text-lg shadow-xl shadow-primary/20 hover:opacity-90 transition-all flex items-center justify-center gap-3 disabled:shadow-none">
+              className="w-full h-16 bg-primary text-on-primary rounded-2xl font-headline font-bold text-lg shadow-xl shadow-black/5 hover:opacity-90 transition-all flex items-center justify-center gap-3 disabled:shadow-none">
               {sending ? (
                 <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}>
                   <span className="material-symbols-outlined">progress_activity</span>

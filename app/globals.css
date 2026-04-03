@@ -1,26 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  --primary: #296868;
-  --primary-dim: #1a5c5c;
-  --primary-container: #b0eeed;
-  --on-primary: #e0fffe;
-  --on-primary-container: #185b5b;
-  --secondary: #4e626c;
-  --secondary-container: #d0e6f2;
-  --on-surface: #121d1e;
-  --on-surface-variant: #3a4a4b;
-  --surface: #f3fbfb;
-  --surface-container: #e3f1f0;
-  --surface-container-low: #eaf6f6;
-  --surface-container-high: #dcebeb;
-  --surface-container-highest: #d4e6e6;
+  --primary: #b5694d;
+  --primary-dim: #8B5E3C;
+  --primary-container: #f0e0d0;
+  --on-primary: #faf6f2;
+  --on-primary-container: #2a1810;
+  --secondary: #6b6560;
+  --secondary-container: #e8e0d8;
+  --on-surface: #1a1a1a;
+  --on-surface-variant: #6b6560;
+  --surface: #f5f0eb;
+  --surface-container: #ede5dd;
+  --surface-container-low: #f0eae3;
+  --surface-container-high: #e8e0d8;
+  --surface-container-highest: #e0d8cf;
   --surface-container-lowest: #ffffff;
-  --outline: #6d7e7e;
-  --outline-variant: #a4b5b6;
-  --error: #a83836;
-  --tertiary: #4f6361;
-  --tertiary-container: #e8fefb;
+  --outline: #8a8580;
+  --outline-variant: #c8bfb6;
+  --error: #c0392b;
+  --tertiary: #7a4a2a;
+  --tertiary-container: #f5ebe3;
 }
 
 @theme inline {
@@ -43,8 +43,10 @@
   --color-outline-variant: var(--outline-variant);
   --color-tertiary: var(--tertiary);
   --color-tertiary-container: var(--tertiary-container);
-  --font-headline: "Manrope", system-ui, sans-serif;
-  --font-body: "Inter", system-ui, sans-serif;
+  --font-display: "Archivo Black", system-ui, sans-serif;
+  --font-headline: "DM Sans", system-ui, sans-serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
 body {
@@ -67,14 +69,13 @@ h1, h2, h3 { font-family: var(--font-headline) }
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
-/* Glass cards */
+/* Cards */
 .glass-card {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: #ffffff;
+  border: 1px solid #e8e0d8;
 }
 .nav-glass {
-  background: rgba(234, 246, 246, 0.92);
+  background: rgba(245, 240, 235, 0.92);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
 }
@@ -95,4 +96,4 @@ input, select, textarea { font-size: 16px !important }
 }
 
 /* Kontrast iyileştirme — opacity ile kullanılan metinler için */
-.text-muted-safe { color: #526263 }  /* 4.7:1 on #f3fbfb — WCAG AA pass */
+.text-muted-safe { color: #6b6560 }  /* 4.5:1 on #f5f0eb — WCAG AA pass */

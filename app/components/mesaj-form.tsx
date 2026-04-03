@@ -71,7 +71,7 @@ export function MesajForm() {
       <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
         <SuccessCheck />
         <FadeIn delay={0.4}>
-          <h2 className="text-2xl font-extrabold font-headline text-on-surface mt-8 mb-3">
+          <h2 className="text-2xl font-headline font-bold text-on-surface mt-8 mb-3">
             Mesajınız İletildi
           </h2>
         </FadeIn>
@@ -85,7 +85,7 @@ export function MesajForm() {
           <motion.button
             onClick={resetForm}
             whileTap={{ scale: 0.97 }}
-            className="px-8 py-4 rounded-2xl bg-primary text-on-primary font-bold shadow-lg shadow-primary/20 transition-all"
+            className="px-8 py-4 rounded-2xl bg-primary text-on-primary font-bold shadow-lg shadow-black/5 transition-all"
           >
             Yeni Mesaj Gönder
           </motion.button>
@@ -95,7 +95,7 @@ export function MesajForm() {
   }
 
   return (
-    <details className="group rounded-3xl border border-outline-variant/10 bg-surface-lowest shadow-[0_10px_40px_rgba(41,104,104,0.04)] overflow-hidden">
+    <details className="group rounded-3xl border border-outline-variant/10 bg-surface-lowest shadow-[0_10px_40px_rgba(0,0,0,0.04)] overflow-hidden">
       <summary className="flex items-center gap-4 p-5 cursor-pointer list-none select-none">
         <div className="w-11 h-11 rounded-2xl bg-primary-container flex items-center justify-center shrink-0">
           <span className="material-symbols-outlined text-primary text-xl filled">chat_bubble</span>
@@ -111,17 +111,17 @@ export function MesajForm() {
 
       {/* Anonim / İsimli Toggle */}
       <FadeInView>
-        <div className="bg-surface-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-[0_10px_40px_rgba(41,104,104,0.04)]">
-          <label className="block text-xs font-bold text-primary mb-3 ml-1 tracking-widest uppercase">
+        <div className="bg-surface-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
+          <label className="block text-xs font-bold font-mono text-primary mb-3 ml-1 tracking-wider uppercase">
             Kimlik Tercihi
           </label>
           <div className="grid grid-cols-2 gap-2">
             <motion.button type="button" onClick={() => setAnonim(true)} whileTap={{ scale: 0.95 }}
-              className={`py-3.5 rounded-2xl text-sm font-bold transition-all ${anonim ? "bg-primary text-on-primary shadow-md shadow-primary/20" : "bg-surface-container-low text-on-surface-variant hover:bg-white"}`}>
+              className={`py-3.5 rounded-2xl text-sm font-bold transition-all ${anonim ? "bg-primary text-on-primary shadow-md shadow-black/5" : "bg-surface-container-low text-on-surface-variant hover:bg-white"}`}>
               <span className="material-symbols-outlined text-base align-middle mr-1">visibility_off</span> Anonim
             </motion.button>
             <motion.button type="button" onClick={() => setAnonim(false)} whileTap={{ scale: 0.95 }}
-              className={`py-3.5 rounded-2xl text-sm font-bold transition-all ${!anonim ? "bg-primary text-on-primary shadow-md shadow-primary/20" : "bg-surface-container-low text-on-surface-variant hover:bg-white"}`}>
+              className={`py-3.5 rounded-2xl text-sm font-bold transition-all ${!anonim ? "bg-primary text-on-primary shadow-md shadow-black/5" : "bg-surface-container-low text-on-surface-variant hover:bg-white"}`}>
               <span className="material-symbols-outlined text-base align-middle mr-1">person</span> İsimli
             </motion.button>
           </div>
@@ -133,14 +133,14 @@ export function MesajForm() {
         {!anonim && (
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }} className="overflow-hidden">
-            <div className="bg-surface-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-[0_10px_40px_rgba(41,104,104,0.04)] space-y-5">
+            <div className="bg-surface-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-[0_10px_40px_rgba(0,0,0,0.04)] space-y-5">
               <div>
-                <label className="block text-xs font-bold text-primary mb-2 ml-1 tracking-widest uppercase">Ad Soyad</label>
+                <label className="block text-xs font-bold font-mono text-primary mb-2 ml-1 tracking-wider uppercase">Ad Soyad</label>
                 <input type="text" value={adSoyad} onChange={(e) => setAdSoyad(e.target.value)} placeholder="Adınız ve soyadınız"
                   className="w-full bg-surface-container-high/40 border-none rounded-2xl px-5 py-4 text-on-surface placeholder:text-outline/40 focus:ring-2 focus:ring-primary/20 transition-all outline-none" />
               </div>
               <div>
-                <label className="block text-xs font-bold text-primary mb-2 ml-1 tracking-widest uppercase">Müdürlük</label>
+                <label className="block text-xs font-bold font-mono text-primary mb-2 ml-1 tracking-wider uppercase">Müdürlük</label>
                 <MudurlukSelect value={mudurluk} onChange={setMudurluk} />
               </div>
             </div>
@@ -150,8 +150,8 @@ export function MesajForm() {
 
       {/* E-posta */}
       <FadeInView delay={0.05}>
-        <div className="bg-surface-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-[0_10px_40px_rgba(41,104,104,0.04)]">
-          <label className="block text-xs font-bold text-primary mb-2 ml-1 tracking-widest uppercase">
+        <div className="bg-surface-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
+          <label className="block text-xs font-bold font-mono text-primary mb-2 ml-1 tracking-wider uppercase">
             E-posta <span className="font-normal text-outline normal-case">(isteğe bağlı)</span>
           </label>
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="ornek@mail.com"
@@ -162,8 +162,8 @@ export function MesajForm() {
 
       {/* Kategori */}
       <FadeInView delay={0.1}>
-        <div className="bg-surface-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-[0_10px_40px_rgba(41,104,104,0.04)]">
-          <label className="block text-xs font-bold text-primary mb-3 ml-1 tracking-widest uppercase">Konu</label>
+        <div className="bg-surface-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
+          <label className="block text-xs font-bold font-mono text-primary mb-3 ml-1 tracking-wider uppercase">Konu</label>
           <div className="space-y-2">
             {KATEGORILER.map((k) => (
               <motion.button key={k.label} type="button" onClick={() => setKategori(k.label)}
@@ -182,8 +182,8 @@ export function MesajForm() {
 
       {/* Mesaj */}
       <FadeInView delay={0.15}>
-        <div className="bg-surface-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-[0_10px_40px_rgba(41,104,104,0.04)]">
-          <label className="block text-xs font-bold text-primary mb-2 ml-1 tracking-widest uppercase">Mesajınız</label>
+        <div className="bg-surface-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
+          <label className="block text-xs font-bold font-mono text-primary mb-2 ml-1 tracking-wider uppercase">Mesajınız</label>
           <textarea value={mesaj} onChange={(e) => setMesaj(e.target.value)}
             placeholder="Görüşme öncesi/sonrası düşünceleriniz, sorularınız veya paylaşmak istedikleriniz..."
             rows={6} maxLength={5000}
@@ -208,7 +208,7 @@ export function MesajForm() {
       {/* Gönder */}
       <PulseGlow>
         <motion.button onClick={handleSubmit} disabled={sending} whileTap={{ scale: 0.97 }}
-          className="w-full bg-primary hover:opacity-90 transition-all duration-300 py-5 rounded-3xl flex items-center justify-center gap-3 shadow-xl shadow-primary/20 disabled:opacity-50">
+          className="w-full bg-primary hover:opacity-90 transition-all duration-300 py-5 rounded-3xl flex items-center justify-center gap-3 shadow-xl shadow-black/5 disabled:opacity-50">
           {sending ? (
             <motion.span animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
               className="material-symbols-outlined text-on-primary">progress_activity</motion.span>

@@ -94,9 +94,9 @@ function TimelineItem({ logo, title, sub, meta }: EgitimItem) {
 function ExperienceCard({ initials, logo, title, role, period, current, featured }: DeneyimItem) {
   return (
     <motion.div
-      whileHover={{ y: -4, boxShadow: "0 12px 40px rgba(41,104,104,0.08)" }}
+      whileHover={{ y: -4, boxShadow: "0 12px 40px rgba(0,0,0,0.06)" }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
-      className={`bg-white/40 rounded-[1.5rem] border border-white/60 shadow-sm flex gap-5 transition-colors duration-300 hover:border-primary/15 ${featured ? "p-6" : "p-5"}`}
+      className={`bg-white/40 rounded-[1.5rem] border border-outline-variant/10 shadow-sm flex gap-5 transition-colors duration-300 ${featured ? "p-6" : "p-5"}`}
     >
       {/* Logo */}
       <div className={`${featured ? "w-20 h-20" : "w-16 h-16"} rounded-2xl bg-white flex items-center justify-center shrink-0 overflow-hidden shadow-md ring-1 ring-black/5`}>

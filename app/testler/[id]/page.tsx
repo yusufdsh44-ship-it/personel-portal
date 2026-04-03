@@ -55,7 +55,7 @@ export default function TestGirisPage({ params }: { params: Promise<{ id: string
           >
             <span className="material-symbols-outlined text-primary text-4xl filled">assignment</span>
           </motion.div>
-          <h2 className="text-3xl font-extrabold text-on-surface tracking-tight mb-2">
+          <h2 className="text-3xl font-display text-on-surface tracking-tight mb-2">
             {test.name}
           </h2>
           <p className="text-on-surface-variant text-xs font-medium mb-4">{test.fullName}</p>
@@ -78,10 +78,10 @@ export default function TestGirisPage({ params }: { params: Promise<{ id: string
 
         <div className="space-y-8">
           <FadeInView>
-          <div className="bg-surface-lowest p-8 rounded-3xl shadow-[0_20px_50px_rgba(41,104,104,0.05)] border border-outline-variant/10">
+          <div className="bg-surface-lowest p-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.04)] border border-outline-variant/10">
             <div className="space-y-6">
               <div>
-                <label className="block text-xs font-bold text-primary mb-2 ml-1 tracking-widest uppercase">
+                <label className="block text-xs font-bold font-mono text-primary mb-2 ml-1 tracking-wider uppercase">
                   Ad Soyad
                 </label>
                 <input
@@ -93,7 +93,7 @@ export default function TestGirisPage({ params }: { params: Promise<{ id: string
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-primary mb-2 ml-1 tracking-widest uppercase">
+                <label className="block text-xs font-bold font-mono text-primary mb-2 ml-1 tracking-wider uppercase">
                   Bağlı Olduğunuz Müdürlük / Birim
                 </label>
                 <MudurlukSelect value={mudurluk} onChange={setMudurluk} />
@@ -112,18 +112,18 @@ export default function TestGirisPage({ params }: { params: Promise<{ id: string
           <div className="grid grid-cols-3 gap-3">
             <div className="bg-tertiary-container/30 p-4 rounded-2xl flex flex-col items-center text-center">
               <span className="material-symbols-outlined text-tertiary mb-1.5">schedule</span>
-              <span className="text-[9px] font-bold text-tertiary uppercase tracking-tighter">Tahmini Süre</span>
+              <span className="text-[9px] font-bold font-mono text-tertiary uppercase tracking-tighter">Tahmini Süre</span>
               <span className="text-sm font-semibold text-on-surface">{test.estimatedMinutes}</span>
               <span className="text-[8px] text-on-surface-variant mt-0.5 leading-tight">Çoğu kişi bu sürede tamamlıyor</span>
             </div>
             <div className="bg-secondary-container/30 p-4 rounded-2xl flex flex-col items-center text-center">
               <span className="material-symbols-outlined text-secondary mb-1.5">quiz</span>
-              <span className="text-[9px] font-bold text-secondary uppercase tracking-tighter">Soru</span>
+              <span className="text-[9px] font-bold font-mono text-secondary uppercase tracking-tighter">Soru</span>
               <span className="text-sm font-semibold text-on-surface">{test.questions.length}</span>
             </div>
             <div className="bg-primary-container/30 p-4 rounded-2xl flex flex-col items-center text-center">
               <span className="material-symbols-outlined text-primary mb-1.5">lock_person</span>
-              <span className="text-[9px] font-bold text-primary uppercase tracking-tighter">Güvenlik</span>
+              <span className="text-[9px] font-bold font-mono text-primary uppercase tracking-tighter">Güvenlik</span>
               <span className="text-sm font-semibold text-on-surface">Kişiye Özel</span>
             </div>
           </div>
@@ -135,7 +135,7 @@ export default function TestGirisPage({ params }: { params: Promise<{ id: string
             <motion.button
               onClick={handleStart}
               whileTap={{ scale: 0.97 }}
-              className="w-full bg-primary hover:opacity-90 transition-all duration-300 py-5 rounded-3xl flex items-center justify-center gap-3 shadow-xl shadow-primary/20"
+              className="w-full bg-primary hover:opacity-90 transition-all duration-300 py-5 rounded-3xl flex items-center justify-center gap-3 shadow-xl shadow-black/5"
             >
               <span className="text-on-primary font-bold text-lg">Teste Başla</span>
               <motion.span

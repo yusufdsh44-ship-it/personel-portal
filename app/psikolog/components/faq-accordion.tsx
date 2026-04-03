@@ -21,7 +21,7 @@ export function FaqAccordion() {
         <div className="space-y-4">
           {FAQS.map((f, i) => (
             <FadeInView key={i} delay={i * 0.08}>
-              <div className="glass-card rounded-2xl border border-white/60 overflow-hidden hover:border-primary/15 transition-colors duration-300">
+              <div className="glass-card rounded-2xl overflow-hidden transition-colors duration-300">
                 <button
                   onClick={() => toggle(i)}
                   className="flex items-center justify-between w-full p-6 text-left"

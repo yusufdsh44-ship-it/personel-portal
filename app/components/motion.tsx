@@ -121,7 +121,7 @@ export function SuccessCheck() {
 export function PulseGlow({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
     <motion.div
-      animate={{ boxShadow: ["0 0 0 0 rgba(41,104,104,0)", "0 0 0 8px rgba(41,104,104,0.1)", "0 0 0 0 rgba(41,104,104,0)"] }}
+      animate={{ boxShadow: ["0 0 0 0 rgba(181,105,77,0)", "0 0 0 8px rgba(181,105,77,0.1)", "0 0 0 0 rgba(181,105,77,0)"] }}
       transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
       className={`rounded-2xl ${className}`}
     >
@@ -137,13 +137,12 @@ export function CountUp({ target, suffix = "", prefix = "", duration = 1.5 }: {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-40px" })
   const reduced = useReducedMotion()
-  const [display, setDisplay] = useState(reduced ? target : 0)
+  const resolvedInitial = reduced ? target : 0
+  const [display, setDisplay] = useState(resolvedInitial)
 
   useEffect(() => {
-    if (!isInView || reduced) {
-      setDisplay(target)
-      return
-    }
+    if (!isInView) return
+    if (reduced) return
     let start = 0
     const startTime = performance.now()
     const step = (now: number) => {

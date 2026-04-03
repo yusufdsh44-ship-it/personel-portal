@@ -21,10 +21,10 @@ export function StatsBar() {
                 <div className="flex items-center gap-2 mb-2">
                   <span className="material-symbols-outlined text-primary/60 text-lg">{stat.icon}</span>
                 </div>
-                <div className="text-3xl md:text-4xl font-headline font-extrabold text-on-surface tracking-tight">
+                <div className="text-3xl md:text-4xl font-display text-on-surface tracking-tight">
                   <CountUp target={stat.value} suffix={stat.suffix} />
                 </div>
-                <p className="text-xs text-on-surface-variant font-medium mt-1.5 uppercase tracking-wider">
+                <p className="text-xs text-on-surface-variant font-medium mt-1.5 font-mono uppercase tracking-wider">
                   {stat.label}
                 </p>
               </div>

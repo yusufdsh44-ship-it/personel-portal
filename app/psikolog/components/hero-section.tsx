@@ -31,7 +31,7 @@ export function HeroSection() {
         {/* Giriş */}
         <FadeInView delay={0.1}>
           <p className="text-on-surface text-[17px] sm:text-lg leading-[1.9] mb-10">
-            <span className="float-left text-5xl font-extrabold text-primary/50 leading-[0.85] mr-2 mt-1 font-headline select-none">M</span>erhaba, ben Kurum Psikoloğu Yusuf. Müdürlük ziyaretlerinde sizlerle tanışmak ve çalışan memnuniyeti anketiyle kurumu yakından tanımak benim için çok değerliydi. Şimdi <strong className="text-on-surface">bir adım öteye geçip sizinle birebir görüşmek</strong>, sizi yakından tanımak ve birlikte neler yapabileceğimizi konuşmak isterim.
+            <span className="float-left text-5xl font-display text-primary/50 leading-[0.85] mr-2 mt-1 select-none">M</span>erhaba, ben Yusuf. Müdürlük ziyaretlerinde sizlerle tanışmak ve çalışan memnuniyeti anketiyle kurumu yakından tanımak benim için çok değerliydi. Şimdi <strong className="text-on-surface">bir adım öteye geçip sizinle birebir görüşmek</strong>, sizi yakından tanımak ve birlikte neler yapabileceğimizi konuşmak isterim.
           </p>
         </FadeInView>
 
@@ -41,16 +41,16 @@ export function HeroSection() {
           {/* 🎯 Sürecin İlk Adımı */}
           <FadeInView delay={0.15}>
             <Card step={1} icon="target" accent="from-primary/10 to-transparent" iconBg="bg-primary" title="Sürecin İlk Adımı">
-              <Bullet>Belediyemizdeki <strong>2.300 personelin her biriyle bire bir tanışma görüşmesi</strong> gerçekleştiriyorum.</Bullet>
+              <Bullet>Belediyemizdeki <strong>2.238 personelin her biriyle bire bir tanışma görüşmesi</strong> gerçekleştiriyorum.</Bullet>
               <Bullet>Görüşme sırası müdürlüğünüze geldiğinde, önce <strong>KSE-53 ve BFI-2 testlerini</strong> doldurmanız gerekmektedir. <Pill href="/testler" icon="assignment">Testler</Pill> sayfasından online doldurabilir ya da PDF çıktısını alıp elden getirebilirsiniz.</Bullet>
               <Bullet>Ardından <Pill href="/randevu" icon="event_available">Randevu</Pill> sayfasından doğrudan ya da <Pill href="/sohbet" icon="smart_toy">Chat</Pill> kısmından dijital ikizimle konuşarak müsaitliğinize göre randevunuzu kolayca oluşturabilirsiniz.</Bullet>
-              <Bullet><strong>Randevu sonrası size özel bir referans numarası</strong> verilecek. Bu numara ile randevunuzu iptal edebilir, değiştirebilir, görüşme özetinizi talep edebilir ve size özel birçok özelliği kullanabilirsiniz. <strong>Bu numarayı lütfen saklayın.</strong></Bullet>
+              <Bullet><strong>Randevu sonrası size özel bir referans numarası</strong> verilecek. Bu numara ile randevunuzu iptal edebilir, değiştirebilir ve size özel birçok özelliği kullanabilirsiniz. <strong>Bu numarayı lütfen saklayın.</strong></Bullet>
             </Card>
           </FadeInView>
 
           {/* 🤝 Görüşme — Size Özel */}
           <FadeInView delay={0.2}>
-            <Card step={2} icon="handshake" accent="from-teal-100/60 to-transparent" iconBg="bg-teal-600" title="Görüşme — Size Özel">
+            <Card step={2} icon="handshake" accent="from-primary-container/60 to-transparent" iconBg="bg-primary-dim" title="Görüşme — Size Özel">
               <Bullet>Ben testlerinizi <strong>görüşmeden önce detaylıca inceliyorum</strong>. Böylece karşılaştığımızda sıfırdan değil, <strong>önde başlıyoruz</strong>.</Bullet>
               <Bullet>Kişilik yapınızı, sizi siz yapan dinamikleri birlikte keşfediyor, güçlü yönlerinizi birlikte fark ediyoruz.</Bullet>
             </Card>
@@ -58,10 +58,9 @@ export function HeroSection() {
 
           {/* 📄 Görüşme Sonrası */}
           <FadeInView delay={0.25}>
-            <Card step={3} icon="description" accent="from-blue-50/60 to-transparent" iconBg="bg-blue-500" title="Görüşme Sonrası — Görüşme Çıktınız">
-              <Bullet>Görüşmemizin ardından elinize somut bir çıktı geçiyor: <strong>sizin için özel bir görüşme notu</strong>. Konuştuklarımız, birlikte fark ettiğimiz güçlü yönleriniz ve birlikte belirlediğimiz sonraki adımlar.</Bullet>
-              <Bullet>Böylece konuştuklarımız sadece o ana ait kalmıyor, <strong>her zaman sizde kalıyor</strong>.</Bullet>
-              <Bullet>İster elden teslim alabilirsiniz, ister <strong>referans numaranızla</strong> <Pill href="/sohbet" icon="smart_toy">Chat</Pill> kısmından dijital ikizimden talep edebilirsiniz.</Bullet>
+            <Card step={3} icon="description" accent="from-blue-50/60 to-transparent" iconBg="bg-blue-500" title="Görüşme Sonrası — Kişisel Özetiniz">
+              <Bullet>Talep eden personelimiz için <strong>kişisel bir özet</strong> hazırlıyorum: güçlü yönleriniz, birlikte belirlediğimiz adımlar ve size özel kitap önerileri. Böylece konuştuklarımız sadece o ana ait kalmıyor, <strong>her zaman sizde kalıyor</strong>. Devam etmek isterseniz de her şeyi baştan anlatmanıza gerek kalmıyor.</Bullet>
+              <Bullet>Bu özeti görüşmemizin ardından <strong>birkaç gün içinde elden teslim</strong> alabilirsiniz.</Bullet>
             </Card>
           </FadeInView>
 
@@ -82,26 +81,17 @@ export function HeroSection() {
             </Card>
           </FadeInView>
 
-          {/* 📚 Keşfet — Bibliyoterapi */}
-          <FadeInView delay={0.4}>
-            <Card step={6} icon="explore" accent="from-amber-50/80 to-transparent" iconBg="bg-amber-500" title="Keşfet — Bibliyoterapi">
-              <Bullet><strong>Bibliyoterapi</strong>, kitapların iyileştirici gücünü kullanan bilimsel bir yöntem. <Pill href="/kutuphane" icon="explore">Keşfet</Pill> sayfasında sizin için seçtiğim kitap alıntıları, videolar ve içerikler paylaşıyorum.</Bullet>
-              <Bullet>Her görüşme sonrası konuştuklarımıza ve kişilik yapınıza göre <strong>size özel bir kitap listesi</strong> hazır olacak. Referans numaranızla ulaşabilirsiniz.</Bullet>
-              <Bullet><strong>2.300 kişilik ortak bir kütüphane</strong>. Siz de bir kitaptan etkilendiğiniz bir bölümü paylaşabilir, diğer personelimizin paylaşımlarını görebilir ve beğenebilirsiniz.</Bullet>
-            </Card>
-          </FadeInView>
-
           {/* ✉️ Her Zaman Ulaşabilirsiniz */}
-          <FadeInView delay={0.45}>
-            <Card step={7} icon="mail" accent="from-violet-50/60 to-transparent" iconBg="bg-violet-500" title="Her Zaman Ulaşabilirsiniz">
+          <FadeInView delay={0.4}>
+            <Card step={6} icon="mail" accent="from-violet-50/60 to-transparent" iconBg="bg-violet-500" title="Her Zaman Ulaşabilirsiniz">
               <Bullet>Aşağıdaki <Pill href="/mesaj" icon="edit_note">Mesaj</Pill> kısmından veya <Pill href="/sohbet" icon="smart_toy">Chat</Pill> kısmından <strong>anonim ya da isimli</strong> olarak bana ulaşabilirsiniz.</Bullet>
               <Bullet>Mesajlarınızı okuyor ve <strong>en kısa sürede dönüş yapıyorum</strong>.</Bullet>
             </Card>
           </FadeInView>
 
           {/* 🔒 Gizlilik */}
-          <FadeInView delay={0.5}>
-            <Card step={8} icon="verified_user" accent="from-slate-50/60 to-transparent" iconBg="bg-slate-600" title="Gizlilik">
+          <FadeInView delay={0.45}>
+            <Card step={7} icon="verified_user" accent="from-slate-50/60 to-transparent" iconBg="bg-slate-600" title="Gizlilik">
               <Bullet>Testleriniz, görüşmelerimiz ve tüm notlar <strong>yalnızca bende kalır</strong>.</Bullet>
               <Bullet>Amiriniz veya müdürünüz bu bilgilere <strong>erişemez</strong>.</Bullet>
               <Bullet>Tüm veriler <strong>256-bit şifreleme</strong> ile korunur. Bu mesleki etik kurallarımın gereği.</Bullet>
@@ -109,7 +99,7 @@ export function HeroSection() {
           </FadeInView>
 
           {/* İmza + Psikolog Kimdir */}
-          <FadeInView delay={0.55}>
+          <FadeInView delay={0.5}>
             <div className="rounded-2xl border border-outline-variant/10 overflow-hidden bg-white/40">
               {/* İmza */}
               <div className="flex items-center gap-4 px-5 py-5">
@@ -118,7 +108,7 @@ export function HeroSection() {
                 </div>
                 <div>
                   <p className="text-on-surface-variant italic text-[15px]">Görüşmek dileğiyle,</p>
-                  <p className="text-on-surface font-headline font-extrabold text-base mt-0.5">Uzm. Kl. Psk. Yusuf Pamuk</p>
+                  <p className="text-on-surface font-headline font-bold text-base mt-0.5">Uzm. Kl. Psk. Yusuf Pamuk</p>
                   <div className="flex items-center gap-2 text-[11px] text-on-surface-variant/50 mt-0.5">
                     <span>Dahili 4405</span>
                     <span>·</span>
@@ -128,10 +118,12 @@ export function HeroSection() {
               </div>
               {/* Kurumsal Psikolog Kimdir */}
               <details className="group border-t border-outline-variant/10">
-                <summary className="flex items-center gap-3 cursor-pointer select-none py-3 px-5 hover:bg-white/50 transition-all list-none">
-                  <span className="material-symbols-outlined text-primary/60 text-lg">badge</span>
-                  <span className="font-headline font-bold text-on-surface text-sm flex-1">Kurumsal Psikolog <span className="font-normal text-on-surface-variant/60">(Yusuf Pamuk)</span> Kimdir?</span>
-                  <span className="material-symbols-outlined text-on-surface-variant/40 text-lg transition-transform duration-300 group-open:rotate-180">expand_more</span>
+                <summary className="flex items-center gap-3 cursor-pointer select-none py-4 px-5 rounded-xl hover:bg-primary/5 active:scale-[0.99] transition-all list-none">
+                  <span className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                    <span className="material-symbols-outlined text-primary text-lg">badge</span>
+                  </span>
+                  <span className="font-headline font-bold text-primary text-sm flex-1">Kurumsal Psikolog (Yusuf Pamuk) Kimdir?</span>
+                  <span className="material-symbols-outlined text-primary/60 text-lg transition-transform duration-300 group-open:rotate-180">expand_more</span>
                 </summary>
                 <div className="pt-2 pb-2">
                   <TimelineSection />
@@ -161,7 +153,7 @@ function Card({ icon, accent, iconBg, title, step, children }: {
             </div>
           )}
         </div>
-        <h2 className="font-headline font-extrabold text-on-surface text-[17px]">{title}</h2>
+        <h2 className="font-headline font-bold text-on-surface text-[17px]">{title}</h2>
       </div>
       <ul className="px-5 py-5 space-y-3.5 text-on-surface-variant text-[15px] leading-[1.85] [&_strong]:text-on-surface [&_strong]:font-semibold">
         {children}

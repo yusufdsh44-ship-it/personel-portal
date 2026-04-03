@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
 const CHECKLIST = [
@@ -10,13 +10,11 @@ const CHECKLIST = [
 ]
 
 export function Onboarding() {
-  const [show, setShow] = useState<boolean | null>(null)
+  const [show, setShow] = useState(() => {
+    if (typeof window === "undefined") return false
+    return localStorage.getItem("onboarding_done") !== "1"
+  })
   const [step, setStep] = useState(0)
-
-  useEffect(() => {
-    const done = localStorage.getItem("onboarding_done") === "1"
-    setShow(!done)
-  }, [])
 
   if (!show) return null
 
@@ -56,7 +54,7 @@ export function Onboarding() {
                 <div className="w-20 h-20 rounded-3xl bg-primary/10 flex items-center justify-center mx-auto">
                   <span className="material-symbols-outlined text-primary text-4xl filled">psychology</span>
                 </div>
-                <h2 className="text-xl font-headline font-extrabold text-on-surface tracking-tight">
+                <h2 className="text-xl font-headline font-bold text-on-surface tracking-tight">
                   Psikolojik Destek Hizmetiniz
                 </h2>
                 <p className="text-on-surface-variant text-sm leading-relaxed">
@@ -71,7 +69,7 @@ export function Onboarding() {
                 <div className="w-20 h-20 rounded-3xl bg-tertiary-container/40 flex items-center justify-center mx-auto">
                   <span className="material-symbols-outlined text-tertiary text-4xl filled">route</span>
                 </div>
-                <h2 className="text-xl font-headline font-extrabold text-on-surface tracking-tight">
+                <h2 className="text-xl font-headline font-bold text-on-surface tracking-tight">
                   Nasıl Çalışır?
                 </h2>
                 <div className="space-y-3 text-left max-w-xs mx-auto pt-2">
@@ -99,7 +97,7 @@ export function Onboarding() {
                 <div className="w-20 h-20 rounded-3xl bg-green-50 flex items-center justify-center mx-auto">
                   <span className="material-symbols-outlined text-green-700 text-4xl filled">shield</span>
                 </div>
-                <h2 className="text-xl font-headline font-extrabold text-on-surface tracking-tight">
+                <h2 className="text-xl font-headline font-bold text-on-surface tracking-tight">
                   Gizlilik Garantisi
                 </h2>
                 <p className="text-on-surface-variant text-sm leading-relaxed">
@@ -118,7 +116,7 @@ export function Onboarding() {
             </button>
           )}
           <button onClick={isLast ? finish : () => setStep(step + 1)}
-            className="flex-1 py-3.5 rounded-2xl bg-primary text-on-primary font-bold text-sm shadow-lg shadow-primary/20 active:scale-95 transition-all">
+            className="flex-1 py-3.5 rounded-2xl bg-primary text-on-primary font-bold text-sm shadow-lg shadow-black/5 active:scale-95 transition-all">
             {isLast ? "Başlayalım" : "Devam"}
           </button>
         </div>

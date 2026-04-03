@@ -17,7 +17,7 @@ export default function BlogPage() {
       <div className="pt-24 pb-8 px-6 max-w-4xl mx-auto">
         <FadeIn>
         <section className="mb-12">
-          <h1 className="font-headline text-4xl font-extrabold text-on-surface tracking-tight leading-tight mb-4">Haftalık İçerikler</h1>
+          <h1 className="font-display text-4xl text-on-surface tracking-tight leading-tight mb-4">Haftalık İçerikler</h1>
           <p className="text-on-surface-variant text-lg max-w-2xl">İş yaşamınızda ruh sağlığınızı korumak için özenle hazırlanan haftalık rehberler ve yazılar.</p>
         </section>
         </FadeIn>
@@ -45,7 +45,7 @@ export default function BlogPage() {
                     <span className="material-symbols-outlined text-sm">timer</span> {a.time}
                   </span>
                   {a.featured ? (
-                    <button className="bg-primary text-on-primary px-6 py-2.5 rounded-full font-semibold text-sm hover:opacity-90 active:scale-95 shadow-md shadow-primary/10 transition-all">Devamını Oku</button>
+                    <button className="bg-primary text-on-primary px-6 py-2.5 rounded-full font-semibold text-sm hover:opacity-90 active:scale-95 shadow-md shadow-black/5 transition-all">Devamını Oku</button>
                   ) : (
                     <span className="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
                   )}

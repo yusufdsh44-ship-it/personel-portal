@@ -26,7 +26,7 @@ export function CtaSection() {
 
       {/* Randevu */}
       <FadeInView delay={0.05}>
-        <Link href="/randevu" className="flex items-center gap-4 py-3.5 px-5 rounded-2xl bg-primary text-on-primary shadow-md shadow-primary/15 hover:opacity-95 transition-all group">
+        <Link href="/randevu" className="flex items-center gap-4 py-3.5 px-5 rounded-2xl bg-primary text-on-primary shadow-md shadow-black/5 hover:opacity-95 transition-all group">
           <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined text-xl">calendar_add_on</span>
           </div>

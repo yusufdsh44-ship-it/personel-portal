@@ -17,7 +17,7 @@ export function CompetenciesSection() {
               <motion.div
                 whileHover={{ y: -4 }}
                 transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                className="glass-card rounded-2xl p-5 space-y-3 border border-white/60 hover:border-primary/20 transition-colors duration-300 h-full"
+                className="glass-card rounded-2xl p-5 space-y-3 hover:border-primary/20 transition-colors duration-300 h-full"
               >
                 <div className="flex items-center gap-2">
                   <motion.span
@@ -27,7 +27,7 @@ export function CompetenciesSection() {
                   >
                     {icon}
                   </motion.span>
-                  <h4 className="text-xs font-bold text-primary uppercase tracking-widest">{kategori}</h4>
+                  <h4 className="text-xs font-bold text-primary font-mono uppercase tracking-wider">{kategori}</h4>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {items.map(item => (

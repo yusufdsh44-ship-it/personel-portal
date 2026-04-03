@@ -9,14 +9,14 @@ const TABS = [
   { href: "/randevu", label: "Randevu", icon: "event_available" },
   { href: "/sohbet", label: "Chat", icon: "smart_toy" },
   { href: "/testler", label: "Testler", icon: "assignment" },
-  { href: "/kutuphane", label: "Keşfet", icon: "explore" },
+  { href: "/mesaj", label: "Mesaj", icon: "mail" },
 ]
 
 export function BottomNav() {
   const path = usePathname()
 
   return (
-    <nav aria-label="Ana navigasyon" className="fixed bottom-0 left-0 right-0 w-full z-50 nav-glass border-t border-teal-100/20 rounded-t-[2rem]">
+    <nav aria-label="Ana navigasyon" className="fixed bottom-0 left-0 right-0 w-full z-50 nav-glass border-t border-outline-variant/20 rounded-t-[2rem]">
       <div className="flex justify-around items-center px-2 pt-3 pb-7 max-w-lg mx-auto">
         {TABS.map(({ href, label, icon }) => {
           const active = href === "/" ? path === "/" : path.startsWith(href)
@@ -32,11 +32,11 @@ export function BottomNav() {
               )}
               <motion.span
                 whileTap={{ scale: 0.85 }}
-                className={`material-symbols-outlined text-2xl relative z-10 ${active ? "filled text-primary-dim" : "text-slate-500"}`}
+                className={`material-symbols-outlined text-2xl relative z-10 ${active ? "filled text-primary-dim" : "text-on-surface-variant"}`}
               >
                 {icon}
               </motion.span>
-              <span className={`text-xs font-semibold tracking-wide relative z-10 ${active ? "text-primary-dim" : "text-slate-500"}`}>
+              <span className={`text-xs font-semibold tracking-wide relative z-10 ${active ? "text-primary-dim" : "text-on-surface-variant"}`}>
                 {label}
               </span>
             </Link>

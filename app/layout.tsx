@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next"
-import { Manrope, Inter } from "next/font/google"
+import { Archivo_Black, Caveat, DM_Sans, JetBrains_Mono } from "next/font/google"
 import { BottomNav } from "./components/bottom-nav"
 import "./globals.css"
 
-const manrope = Manrope({ subsets: ["latin", "latin-ext"], variable: "--font-manrope", display: "swap" })
-const inter = Inter({ subsets: ["latin", "latin-ext"], variable: "--font-inter", display: "swap" })
+const archivoBlack = Archivo_Black({ weight: "400", subsets: ["latin", "latin-ext"], variable: "--font-archivo", display: "swap" })
+const dmSans = DM_Sans({ weight: ["300", "400", "500", "700"], subsets: ["latin", "latin-ext"], variable: "--font-dm-sans", display: "swap" })
+const jetbrainsMono = JetBrains_Mono({ weight: ["400", "500"], subsets: ["latin", "latin-ext"], variable: "--font-jetbrains", display: "swap" })
+const caveat = Caveat({ weight: ["400", "700"], subsets: ["latin", "latin-ext"], variable: "--font-caveat", display: "swap" })
 
 export const metadata: Metadata = {
   title: "Kurumsal Psikoloji Birimi — Arnavutköy Belediyesi",
@@ -21,22 +23,22 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#f3fbfb",
+  themeColor: "#f5f0eb",
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="tr" className={`${manrope.variable} ${inter.variable}`}>
+    <html lang="tr" className={`${archivoBlack.variable} ${dmSans.variable} ${jetbrainsMono.variable} ${caveat.variable}`}>
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
       </head>
       <body className="min-h-screen flex flex-col selection:bg-primary-container selection:text-on-primary-container">
-        <main className="flex-1 pb-24">
+        <main className="flex-1 pb-20">
           {children}
         </main>
 
-        <footer className="pb-28 pt-4 px-6 text-center">
-          <p className="text-[10px] text-teal-900/30">
+        <footer className="pb-20 pt-2 px-6 text-center">
+          <p className="text-[10px] text-on-surface-variant/30">
             powered by <span className="font-semibold">Uzm. Kl. Psk. Yusuf Pamuk</span>
           </p>
         </footer>

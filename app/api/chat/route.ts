@@ -3,7 +3,7 @@ import { GoogleGenerativeAI, type Content, type Tool, SchemaType } from "@google
 import { supabase } from "@/app/lib/supabase"
 import { isRateLimited, getClientIp } from "@/app/lib/rate-limit"
 
-const MODEL = "gemini-2.0-flash-lite" // yüksek RPD, hızlı, function calling destekli
+const MODEL = "gemini-2.5-flash" // stable, function calling destekli
 
 function getSystemPrompt() {
   const now = new Date()
@@ -58,13 +58,6 @@ SÜREÇ AKIŞI (personele anlatılması gereken adımlar):
 5. Görüşme sonrası kişiye özel bir görüşme notu/çıktı hazırlıyorum
 6. Bu çıktıyı elden teslim alabilir veya referans koduyla benden (dijital ikiz) talep edebilir
 7. İsteyen personelle düzenli takip görüşmeleri devam eder
-8. Görüşme sonrası kişilik yapısına göre özel bir kitap listesi hazırlıyorum (Keşfet/Kütüphane sayfasından erişilebilir)
-
-KEŞFET / KÜTÜPHANE:
-- Bibliyoterapi yöntemiyle seçtiğim kitap alıntıları, videolar ve içerikler paylaşıyorum
-- Görüşme sonrası kişiye özel kitap listesi hazırlanır — referans koduyla erişilebilir
-- 2.300 kişilik ortak bir kütüphane — personeller de kitap önerileri paylaşabilir ve beğenebilir
-
 GİZLİLİK:
 - Tüm görüşmeler, testler ve notlar yalnızca bende kalır
 - Amir, müdür veya herhangi bir üst makam bu bilgilere ERİŞEMEZ

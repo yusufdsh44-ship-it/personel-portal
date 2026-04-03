@@ -70,11 +70,11 @@ export default function MesajPage() {
   if (done) {
     return (
       <>
-        <Header title="Sakin Siginak" />
+        <Header />
         <div className="flex flex-col items-center justify-center h-[80vh] px-6 text-center">
           <SuccessCheck />
           <FadeIn delay={0.4}>
-            <h2 className="text-2xl font-extrabold font-headline text-on-surface mt-8 mb-3">
+            <h2 className="text-2xl font-headline font-bold text-on-surface mt-8 mb-3">
               Mesajınız İletildi
             </h2>
           </FadeIn>
@@ -89,7 +89,7 @@ export default function MesajPage() {
               onClick={resetForm}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
-              className="px-8 py-4 rounded-2xl bg-primary text-on-primary font-bold shadow-lg shadow-primary/20 hover:opacity-90 transition-all"
+              className="px-8 py-4 rounded-2xl bg-primary text-on-primary font-bold shadow-lg shadow-black/5 hover:opacity-90 transition-all"
             >
               Yeni Mesaj Gönder
             </motion.button>
@@ -101,7 +101,7 @@ export default function MesajPage() {
 
   return (
     <>
-      <Header title="Sakin Siginak" />
+      <Header />
       <div className="pt-24 pb-32 px-6 max-w-lg mx-auto">
         {/* Hero */}
         <FadeIn>
@@ -113,7 +113,7 @@ export default function MesajPage() {
             >
               <span className="material-symbols-outlined text-primary text-4xl filled">chat_bubble</span>
             </motion.div>
-            <h1 className="text-3xl font-extrabold font-headline text-on-surface tracking-tight mb-2">
+            <h1 className="text-3xl font-display text-on-surface tracking-tight mb-2">
               Psikoloğa Özel Mesaj
             </h1>
             <p className="text-on-surface-variant text-sm leading-relaxed">
@@ -126,8 +126,8 @@ export default function MesajPage() {
         <div className="space-y-6">
           {/* Anonim / İsimli Toggle */}
           <FadeInView>
-            <div className="bg-surface-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-[0_10px_40px_rgba(41,104,104,0.04)]">
-              <label className="block text-xs font-bold text-primary mb-3 ml-1 tracking-widest uppercase">
+            <div className="bg-surface-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
+              <label className="block text-xs font-bold font-mono text-primary mb-3 ml-1 tracking-wider uppercase">
                 Kimlik Tercihi
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -137,7 +137,7 @@ export default function MesajPage() {
                   whileTap={{ scale: 0.95 }}
                   className={`py-3.5 rounded-2xl text-sm font-bold transition-all ${
                     anonim
-                      ? "bg-primary text-on-primary shadow-md shadow-primary/20"
+                      ? "bg-primary text-on-primary shadow-md shadow-black/5"
                       : "bg-surface-container-low text-on-surface-variant hover:bg-white"
                   }`}
                 >
@@ -150,7 +150,7 @@ export default function MesajPage() {
                   whileTap={{ scale: 0.95 }}
                   className={`py-3.5 rounded-2xl text-sm font-bold transition-all ${
                     !anonim
-                      ? "bg-primary text-on-primary shadow-md shadow-primary/20"
+                      ? "bg-primary text-on-primary shadow-md shadow-black/5"
                       : "bg-surface-container-low text-on-surface-variant hover:bg-white"
                   }`}
                 >
@@ -171,9 +171,9 @@ export default function MesajPage() {
                 transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
                 className="overflow-hidden"
               >
-                <div className="bg-surface-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-[0_10px_40px_rgba(41,104,104,0.04)] space-y-5">
+                <div className="bg-surface-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-[0_10px_40px_rgba(0,0,0,0.04)] space-y-5">
                   <div>
-                    <label className="block text-xs font-bold text-primary mb-2 ml-1 tracking-widest uppercase">
+                    <label className="block text-xs font-bold font-mono text-primary mb-2 ml-1 tracking-wider uppercase">
                       Ad Soyad
                     </label>
                     <input
@@ -185,7 +185,7 @@ export default function MesajPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-primary mb-2 ml-1 tracking-widest uppercase">
+                    <label className="block text-xs font-bold font-mono text-primary mb-2 ml-1 tracking-wider uppercase">
                       Müdürlük
                     </label>
                     <MudurlukSelect value={mudurluk} onChange={setMudurluk} />
@@ -197,8 +197,8 @@ export default function MesajPage() {
 
           {/* E-posta */}
           <FadeInView delay={0.05}>
-            <div className="bg-surface-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-[0_10px_40px_rgba(41,104,104,0.04)]">
-              <label className="block text-xs font-bold text-primary mb-2 ml-1 tracking-widest uppercase">
+            <div className="bg-surface-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
+              <label className="block text-xs font-bold font-mono text-primary mb-2 ml-1 tracking-wider uppercase">
                 E-posta <span className="font-normal text-outline normal-case">(isteğe bağlı)</span>
               </label>
               <input
@@ -216,8 +216,8 @@ export default function MesajPage() {
 
           {/* Kategori */}
           <FadeInView delay={0.1}>
-            <div className="bg-surface-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-[0_10px_40px_rgba(41,104,104,0.04)]">
-              <label className="block text-xs font-bold text-primary mb-3 ml-1 tracking-widest uppercase">
+            <div className="bg-surface-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
+              <label className="block text-xs font-bold font-mono text-primary mb-3 ml-1 tracking-wider uppercase">
                 Konu
               </label>
               <div className="space-y-2">
@@ -247,8 +247,8 @@ export default function MesajPage() {
 
           {/* Mesaj */}
           <FadeInView delay={0.15}>
-            <div className="bg-surface-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-[0_10px_40px_rgba(41,104,104,0.04)]">
-              <label className="block text-xs font-bold text-primary mb-2 ml-1 tracking-widest uppercase">
+            <div className="bg-surface-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
+              <label className="block text-xs font-bold font-mono text-primary mb-2 ml-1 tracking-wider uppercase">
                 Mesajınız
               </label>
               <textarea
@@ -291,7 +291,7 @@ export default function MesajPage() {
               disabled={sending}
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.97 }}
-              className="w-full bg-primary hover:opacity-90 transition-all duration-300 py-5 rounded-3xl flex items-center justify-center gap-3 shadow-xl shadow-primary/20 disabled:opacity-50"
+              className="w-full bg-primary hover:opacity-90 transition-all duration-300 py-5 rounded-3xl flex items-center justify-center gap-3 shadow-xl shadow-black/5 disabled:opacity-50"
             >
               {sending ? (
                 <motion.span

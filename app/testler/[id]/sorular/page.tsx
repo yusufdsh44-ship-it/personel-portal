@@ -36,6 +36,53 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
   })
   const [briefingStep, setBriefingStep] = useState(0)
 
+  const total = test?.questions.length ?? 0
+
+  const select = useCallback((optIdx: number) => {
+    if (!test) return
+    const value = test.scale.min + optIdx
+    setAnswers(prev => ({ ...prev, [current]: value }))
+
+    if (current < total - 1) {
+      setTimeout(() => {
+        setDirection(1)
+        setCurrent(prev => prev + 1)
+      }, 350)
+    }
+  }, [current, total, test])
+
+  const goBack = useCallback(() => {
+    if (current > 0) {
+      setDirection(-1)
+      setCurrent(prev => prev - 1)
+      setControlWarning(false)
+    }
+  }, [current])
+
+  const goForward = useCallback(() => {
+    if (current < total - 1 && answers[current] !== undefined) {
+      setDirection(1)
+      setCurrent(prev => prev + 1)
+      setControlWarning(false)
+    }
+  }, [current, total, answers])
+
+  // Keyboard navigation
+  useEffect(() => {
+    if (!test) return
+    const handler = (e: KeyboardEvent) => {
+      if (done || submitting) return
+      if (e.key === "ArrowLeft") goBack()
+      if (e.key === "ArrowRight") goForward()
+      const num = parseInt(e.key)
+      if (!isNaN(num) && num >= test.scale.min && num <= test.scale.max) {
+        select(num - test.scale.min)
+      }
+    }
+    window.addEventListener("keydown", handler)
+    return () => window.removeEventListener("keydown", handler)
+  }, [test, done, submitting, goBack, goForward, select])
+
   // Persist answers to localStorage
   useEffect(() => {
     if (Object.keys(answers).length > 0) {
@@ -56,7 +103,6 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
     )
   }
 
-  const total = test.questions.length
   const progress = (Object.keys(answers).length / total) * 100
   const allAnswered = Object.keys(answers).length === total
 
@@ -73,7 +119,7 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
         <div className="w-16 h-16 rounded-3xl bg-primary-container flex items-center justify-center mb-6">
           <span className="material-symbols-outlined text-primary text-3xl">assignment</span>
         </div>
-        <h2 className="text-2xl font-extrabold font-headline text-on-surface tracking-tight mb-2">{test.name}</h2>
+        <h2 className="text-2xl font-headline font-bold text-on-surface tracking-tight mb-2">{test.name}</h2>
         <p className="text-on-surface-variant text-sm mb-6">{test.fullName}</p>
         <div className="grid grid-cols-3 gap-4 w-full max-w-xs mb-6">
           <div className="text-center">
@@ -97,7 +143,7 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
         <div className="w-16 h-16 rounded-3xl bg-secondary-container flex items-center justify-center mb-6">
           <span className="material-symbols-outlined text-secondary text-3xl">tune</span>
         </div>
-        <h2 className="text-xl font-extrabold font-headline text-on-surface tracking-tight mb-2">Yanıt Ölçeği</h2>
+        <h2 className="text-xl font-headline font-bold text-on-surface tracking-tight mb-2">Yanıt Ölçeği</h2>
         <p className="text-on-surface-variant text-sm mb-6">Her soru için aşağıdaki seçeneklerden birini işaretleyin</p>
         <div className="w-full max-w-xs space-y-2">
           {test.scale.labels.map((label, i) => (
@@ -116,7 +162,7 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
         <div className="w-16 h-16 rounded-3xl bg-tertiary-container flex items-center justify-center mb-6">
           <span className="material-symbols-outlined text-tertiary text-3xl">checklist</span>
         </div>
-        <h2 className="text-xl font-extrabold font-headline text-on-surface tracking-tight mb-6">Başlamadan Önce</h2>
+        <h2 className="text-xl font-headline font-bold text-on-surface tracking-tight mb-6">Başlamadan Önce</h2>
         <div className="w-full max-w-xs space-y-3 text-left">
           {[
             { icon: "check_circle", text: "Doğru ya da yanlış cevap yoktur" },
@@ -161,13 +207,13 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
         <div className="w-full max-w-xs space-y-3 pb-4">
           {briefingStep < steps.length - 1 ? (
             <button onClick={() => setBriefingStep(s => s + 1)}
-              className="w-full py-4 rounded-3xl bg-primary text-on-primary font-bold text-base shadow-lg shadow-primary/20 hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2">
+              className="w-full py-4 rounded-3xl bg-primary text-on-primary font-bold text-base shadow-lg shadow-black/5 hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2">
               Devam
               <span className="material-symbols-outlined">arrow_forward</span>
             </button>
           ) : (
             <button onClick={dismissBriefing}
-              className="w-full py-4 rounded-3xl bg-primary text-on-primary font-bold text-base shadow-lg shadow-primary/20 hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2">
+              className="w-full py-4 rounded-3xl bg-primary text-on-primary font-bold text-base shadow-lg shadow-black/5 hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2">
               Anladım, Teste Başla
               <span className="material-symbols-outlined">play_arrow</span>
             </button>
@@ -182,34 +228,6 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
       </div>
     )
   }
-
-  const select = useCallback((optIdx: number) => {
-    const value = test.scale.min + optIdx
-    setAnswers(prev => ({ ...prev, [current]: value }))
-
-    if (current < total - 1) {
-      setTimeout(() => {
-        setDirection(1)
-        setCurrent(prev => prev + 1)
-      }, 350)
-    }
-  }, [current, total, test.scale.min])
-
-  const goBack = useCallback(() => {
-    if (current > 0) {
-      setDirection(-1)
-      setCurrent(prev => prev - 1)
-      setControlWarning(false)
-    }
-  }, [current])
-
-  const goForward = useCallback(() => {
-    if (current < total - 1 && answers[current] !== undefined) {
-      setDirection(1)
-      setCurrent(prev => prev + 1)
-      setControlWarning(false)
-    }
-  }, [current, total, answers])
 
   const handleFinish = async () => {
     if (test.controlQuestion) {
@@ -264,27 +282,12 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
     }
   }
 
-  // Keyboard navigation
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (done || submitting) return
-      if (e.key === "ArrowLeft") goBack()
-      if (e.key === "ArrowRight") goForward()
-      const num = parseInt(e.key)
-      if (!isNaN(num) && num >= test.scale.min && num <= test.scale.max) {
-        select(num - test.scale.min)
-      }
-    }
-    window.addEventListener("keydown", handler)
-    return () => window.removeEventListener("keydown", handler)
-  }, [done, submitting, goBack, goForward, select, test.scale.min, test.scale.max])
-
   // --- Done Screen ---
   if (done) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen px-6 text-center">
         <SuccessCheck />
-        <h2 className="text-2xl font-extrabold font-headline text-on-surface mt-8 mb-2">
+        <h2 className="text-2xl font-headline font-bold text-on-surface mt-8 mb-2">
           Testiniz Kaydedildi
         </h2>
         <p className="text-on-surface-variant text-sm mb-6 max-w-sm">
@@ -309,7 +312,7 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
 
         <button
           onClick={() => router.push("/testler")}
-          className="px-8 py-4 rounded-2xl bg-primary text-on-primary font-bold shadow-lg shadow-primary/20 hover:opacity-90 active:scale-95 transition-all"
+          className="px-8 py-4 rounded-2xl bg-primary text-on-primary font-bold shadow-lg shadow-black/5 hover:opacity-90 active:scale-95 transition-all"
         >
           Testler Sayfasına Dön
         </button>
@@ -324,17 +327,17 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
   return (
     <>
       {/* Header */}
-      <header className="bg-teal-50/80 backdrop-blur-md fixed top-0 w-full z-50 shadow-sm shadow-teal-900/5">
+      <header className="bg-surface-container-low/80 backdrop-blur-md fixed top-0 w-full z-50 shadow-sm shadow-black/5">
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center gap-4">
             <button
               onClick={goBack}
               disabled={current === 0}
-              className="text-teal-800 hover:opacity-80 active:scale-95 disabled:opacity-30 transition-all"
+              className="text-on-surface hover:opacity-80 active:scale-95 disabled:opacity-30 transition-all"
             >
               <span className="material-symbols-outlined">arrow_back</span>
             </button>
-            <h1 className="text-teal-900 font-bold text-lg font-headline tracking-tight">
+            <h1 className="text-on-surface font-bold text-lg font-headline tracking-tight">
               {test.name}
             </h1>
           </div>
@@ -345,7 +348,7 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
                 Kaydedildi
               </span>
             )}
-            <span className="text-slate-500 text-xs font-medium tabular-nums">
+            <span className="text-on-surface-variant text-xs font-medium tabular-nums">
               {current + 1} / {total}
             </span>
           </div>
@@ -385,12 +388,12 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
             )}
 
             <div className="mb-4">
-              <span className="inline-block px-3 py-1 rounded-full bg-primary-container text-on-primary-container text-[10px] font-bold tracking-widest uppercase">
+              <span className="inline-block px-3 py-1 rounded-full bg-primary-container text-on-primary-container text-[10px] font-bold font-mono tracking-wider uppercase">
                 Soru {current + 1}
               </span>
             </div>
 
-            <h2 className="text-2xl md:text-3xl font-headline font-extrabold text-on-surface leading-tight tracking-tight">
+            <h2 className="text-2xl md:text-3xl font-headline font-bold text-on-surface leading-tight tracking-tight">
               {test.questions[current]}
             </h2>
 
@@ -444,7 +447,7 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
             <button
               onClick={handleFinish}
               disabled={!allAnswered || submitting}
-              className="flex-1 py-4 px-6 rounded-2xl bg-primary text-on-primary font-headline font-bold text-sm shadow-lg shadow-primary/20 transition-all hover:opacity-90 active:scale-95 disabled:opacity-40"
+              className="flex-1 py-4 px-6 rounded-2xl bg-primary text-on-primary font-headline font-bold text-sm shadow-lg shadow-black/5 transition-all hover:opacity-90 active:scale-95 disabled:opacity-40"
             >
               {submitting ? "Kaydediliyor..." : allAnswered ? "Testi Bitir" : `${total - Object.keys(answers).length} soru kaldı`}
             </button>
@@ -452,7 +455,7 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
             <button
               onClick={goForward}
               disabled={answers[current] === undefined}
-              className="flex-1 py-4 px-6 rounded-2xl bg-primary text-on-primary font-headline font-bold text-sm shadow-lg shadow-primary/20 transition-all hover:opacity-90 active:scale-95 disabled:opacity-40"
+              className="flex-1 py-4 px-6 rounded-2xl bg-primary text-on-primary font-headline font-bold text-sm shadow-lg shadow-black/5 transition-all hover:opacity-90 active:scale-95 disabled:opacity-40"
             >
               Sonraki
             </button>
