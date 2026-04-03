@@ -66,7 +66,7 @@ const SLIDES: SlideData[] = [
     barColor: "from-[#2a6070] via-[#4a90a0] to-[#6ab0c0]",
     bulletColor: "#6ab0c0",
     content: (
-      <div className="text-white/80 text-xs sm:text-sm leading-[1.6] sm:leading-[1.7]">
+      <div className="text-white/80 text-[13px] sm:text-sm leading-[1.65] sm:leading-[1.7]">
         <p className="mb-3">Belediyemizdeki <strong className="text-white font-semibold">2.238 personelin her biriyle bire bir tanışma görüşmesi</strong> gerçekleştiriyorum. Görüşme sırası müdürlüğünüze geldiğinde süreç üç adımda ilerliyor:</p>
 
         {/* Timeline — animasyonlu dikey çizgi */}
@@ -130,14 +130,23 @@ const SLIDES: SlideData[] = [
     bulletColor: "#e0b090",
     content: (
       <ul className="space-y-5 text-white/80 leading-[1.9]">
-        <li className="flex gap-3 items-start">
-          <span className="material-symbols-outlined text-[#e0b090] mt-0.5 shrink-0 text-lg">arrow_right</span>
-          <span>Ben testlerinizi <strong className="text-white font-semibold">görüşmeden önce detaylıca inceliyorum</strong>. Böylece karşılaştığımızda sıfırdan değil, <strong className="text-white font-semibold">önde başlıyoruz</strong>.</span>
-        </li>
-        <li className="flex gap-3 items-start">
-          <span className="material-symbols-outlined text-[#e0b090] mt-0.5 shrink-0 text-lg">arrow_right</span>
-          <span>Kişilik yapınızı, sizi siz yapan dinamikleri birlikte keşfediyor, güçlü yönlerinizi birlikte fark ediyoruz.</span>
-        </li>
+        {[
+          { icon: "person_search", text: <>Ben testlerinizi <strong className="text-white font-semibold">görüşmeden önce detaylıca inceliyorum</strong>. Böylece karşılaştığımızda sıfırdan değil, <strong className="text-white font-semibold">önde başlıyoruz</strong>.</> },
+          { icon: "diversity_1", text: <>Kişilik yapınızı, sizi siz yapan dinamikleri birlikte keşfediyor, güçlü yönlerinizi birlikte fark ediyoruz.</> },
+        ].map((item, i) => (
+          <motion.li key={i} className="flex gap-3 items-start"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 + i * 0.4 }}
+          >
+            <motion.span
+              className="material-symbols-outlined text-[#e0b090] mt-0.5 shrink-0 text-lg"
+              animate={{ scale: [1, 1.3, 1] }}
+              transition={{ duration: 0.8, delay: 1 + i * 0.4, repeat: Infinity, repeatDelay: 4 }}
+            >{item.icon}</motion.span>
+            <span>{item.text}</span>
+          </motion.li>
+        ))}
       </ul>
     ),
   },
@@ -151,14 +160,23 @@ const SLIDES: SlideData[] = [
     bulletColor: "#b080c0",
     content: (
       <ul className="space-y-5 text-white/80 leading-[1.9]">
-        <li className="flex gap-3 items-start">
-          <span className="material-symbols-outlined text-[#b080c0] mt-0.5 shrink-0 text-lg">arrow_right</span>
-          <span>Talep eden personelimiz için <strong className="text-white font-semibold">kişisel bir özet</strong> hazırlıyorum: güçlü yönleriniz, birlikte belirlediğimiz adımlar ve size özel kitap önerileri. Böylece konuştuklarımız sadece o ana ait kalmıyor, <strong className="text-white font-semibold">her zaman sizde kalıyor</strong>. Devam etmek isterseniz de her şeyi baştan anlatmanıza gerek kalmıyor.</span>
-        </li>
-        <li className="flex gap-3 items-start">
-          <span className="material-symbols-outlined text-[#b080c0] mt-0.5 shrink-0 text-lg">arrow_right</span>
-          <span>Bu özeti görüşmemizin ardından <strong className="text-white font-semibold">birkaç gün içinde elden teslim</strong> alabilirsiniz.</span>
-        </li>
+        {[
+          { icon: "note_alt", text: <>Talep eden personelimiz için <strong className="text-white font-semibold">kişisel bir özet</strong> hazırlıyorum: güçlü yönleriniz, birlikte belirlediğimiz adımlar ve size özel kitap önerileri. Böylece konuştuklarımız sadece o ana ait kalmıyor, <strong className="text-white font-semibold">her zaman sizde kalıyor</strong>. Devam etmek isterseniz de her şeyi baştan anlatmanıza gerek kalmıyor.</> },
+          { icon: "handshake", text: <>Bu özeti görüşmemizin ardından <strong className="text-white font-semibold">birkaç gün içinde elden teslim</strong> alabilirsiniz.</> },
+        ].map((item, i) => (
+          <motion.li key={i} className="flex gap-3 items-start"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 + i * 0.4 }}
+          >
+            <motion.span
+              className="material-symbols-outlined text-[#b080c0] mt-0.5 shrink-0 text-lg"
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ duration: 1.2, delay: 1 + i * 0.5, repeat: Infinity, repeatDelay: 4 }}
+            >{item.icon}</motion.span>
+            <span>{item.text}</span>
+          </motion.li>
+        ))}
       </ul>
     ),
   },
@@ -172,14 +190,26 @@ const SLIDES: SlideData[] = [
     bulletColor: "#80b898",
     content: (
       <ul className="space-y-5 text-white/80 leading-[1.9]">
-        <li className="flex gap-3 items-start">
-          <span className="material-symbols-outlined text-[#80b898] mt-0.5 shrink-0 text-lg">arrow_right</span>
-          <span>İlk görüşme <strong className="text-white font-semibold">tüm personelimizi</strong> kapsıyor.</span>
-        </li>
-        <li className="flex gap-3 items-start">
-          <span className="material-symbols-outlined text-[#80b898] mt-0.5 shrink-0 text-lg">arrow_right</span>
-          <span>Sonrasında, ortaya çıkan farkındalıkları derinleştirmek ve birlikte belirlediğimiz adımları takip etmek isteyen personelimizle <strong className="text-white font-semibold">düzenli görüşmelere</strong> devam ediyorum.</span>
-        </li>
+        {[
+          { icon: "groups", text: <>İlk görüşme <strong className="text-white font-semibold">tüm personelimizi</strong> kapsıyor.</> },
+          { icon: "sync", text: <>Sonrasında, ortaya çıkan farkındalıkları derinleştirmek ve birlikte belirlediğimiz adımları takip etmek isteyen personelimizle <strong className="text-white font-semibold">düzenli görüşmelere</strong> devam ediyorum.</> },
+        ].map((item, i) => (
+          <motion.li key={i} className="flex gap-3 items-start"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 + i * 0.4 }}
+          >
+            <motion.span
+              className="material-symbols-outlined text-[#80b898] mt-0.5 shrink-0 text-lg"
+              animate={i === 1 ? { rotate: [0, 360] } : { scale: [1, 1.2, 1] }}
+              transition={i === 1
+                ? { duration: 4, repeat: Infinity, ease: "linear" }
+                : { duration: 1, delay: 1, repeat: Infinity, repeatDelay: 4 }
+              }
+            >{item.icon}</motion.span>
+            <span>{item.text}</span>
+          </motion.li>
+        ))}
       </ul>
     ),
   },
@@ -192,20 +222,44 @@ const SLIDES: SlideData[] = [
     barColor: "from-[#1e5570] via-[#3a8aa0] to-[#60b8d0]",
     bulletColor: "#60b8d0",
     content: (
-      <ul className="space-y-4 text-white/80 leading-[1.9]">
-        <li className="flex gap-3 items-start">
-          <span className="material-symbols-outlined text-[#60b8d0] mt-0.5 shrink-0 text-lg">arrow_right</span>
-          <span><Pill href="/sohbet" icon="smart_toy">Chat</Pill> sayfasındaki dijital ikizim üzerinden <strong className="text-white font-semibold">randevunuzla ilgili her işlemi</strong> yapabilirsiniz.</span>
-        </li>
-        <li className="flex gap-3 items-start">
-          <span className="material-symbols-outlined text-[#60b8d0] mt-0.5 shrink-0 text-lg">arrow_right</span>
-          <span>Süreç hakkında bilgi edinebilir ya da aklınıza takılan her şeyi sorabilirsiniz.</span>
-        </li>
-        <li className="flex gap-3 items-start">
-          <span className="material-symbols-outlined text-[#60b8d0] mt-0.5 shrink-0 text-lg">arrow_right</span>
-          <span>Mesai saati gözetmeksizin, <strong className="text-white font-semibold">günün her saati</strong>.</span>
-        </li>
-      </ul>
+      <div className="space-y-5 text-white/80 leading-[1.9]">
+        {/* Typing indicator */}
+        <motion.div className="flex items-center gap-1.5 mb-2"
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
+        >
+          <div className="flex items-center gap-1 px-3 py-2 rounded-full bg-[#60b8d0]/15 border border-[#60b8d0]/20">
+            {[0, 1, 2].map(i => (
+              <motion.div key={i}
+                className="w-2 h-2 rounded-full bg-[#60b8d0]"
+                animate={{ y: [0, -6, 0], opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 0.8, delay: i * 0.15, repeat: Infinity, repeatDelay: 0.6 }}
+              />
+            ))}
+          </div>
+          <span className="text-[#60b8d0]/60 text-xs font-mono">7/24 aktif</span>
+        </motion.div>
+
+        <ul className="space-y-4">
+          {[
+            { text: <><Pill href="/sohbet" icon="smart_toy">Chat</Pill> sayfasındaki dijital ikizim üzerinden <strong className="text-white font-semibold">randevunuzla ilgili her işlemi</strong> yapabilirsiniz.</> },
+            { text: <>Süreç hakkında bilgi edinebilir ya da aklınıza takılan her şeyi sorabilirsiniz.</> },
+            { text: <>Mesai saati gözetmeksizin, <strong className="text-white font-semibold">günün her saati</strong>.</> },
+          ].map((item, i) => (
+            <motion.li key={i} className="flex gap-3 items-start"
+              initial={{ opacity: 0, x: -15 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4, delay: 0.8 + i * 0.3 }}
+            >
+              <motion.span
+                className="material-symbols-outlined text-[#60b8d0] mt-0.5 shrink-0 text-lg"
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 2, delay: i * 0.5, repeat: Infinity }}
+              >chat_bubble</motion.span>
+              <span>{item.text}</span>
+            </motion.li>
+          ))}
+        </ul>
+      </div>
     ),
   },
   {
@@ -218,14 +272,23 @@ const SLIDES: SlideData[] = [
     bulletColor: "#d4956a",
     content: (
       <ul className="space-y-5 text-white/80 leading-[1.9]">
-        <li className="flex gap-3 items-start">
-          <span className="material-symbols-outlined text-[#d4956a] mt-0.5 shrink-0 text-lg">arrow_right</span>
-          <span>Aşağıdaki <Pill href="/mesaj" icon="edit_note">Mesaj</Pill> kısmından veya <Pill href="/sohbet" icon="smart_toy">Chat</Pill> kısmından <strong className="text-white font-semibold">anonim ya da isimli</strong> olarak bana ulaşabilirsiniz.</span>
-        </li>
-        <li className="flex gap-3 items-start">
-          <span className="material-symbols-outlined text-[#d4956a] mt-0.5 shrink-0 text-lg">arrow_right</span>
-          <span>Mesajlarınızı okuyor ve <strong className="text-white font-semibold">en kısa sürede dönüş yapıyorum</strong>.</span>
-        </li>
+        {[
+          { icon: "send", text: <>Aşağıdaki <Pill href="/mesaj" icon="edit_note">Mesaj</Pill> kısmından veya <Pill href="/sohbet" icon="smart_toy">Chat</Pill> kısmından <strong className="text-white font-semibold">anonim ya da isimli</strong> olarak bana ulaşabilirsiniz.</> },
+          { icon: "mark_email_read", text: <>Mesajlarınızı okuyor ve <strong className="text-white font-semibold">en kısa sürede dönüş yapıyorum</strong>.</> },
+        ].map((item, i) => (
+          <motion.li key={i} className="flex gap-3 items-start"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 + i * 0.4 }}
+          >
+            <motion.span
+              className="material-symbols-outlined text-[#d4956a] mt-0.5 shrink-0 text-lg"
+              animate={i === 0 ? { x: [0, 4, 0], y: [0, -3, 0] } : { scale: [1, 1.2, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 + i }}
+            >{item.icon}</motion.span>
+            <span>{item.text}</span>
+          </motion.li>
+        ))}
       </ul>
     ),
   },
@@ -240,18 +303,24 @@ const SLIDES: SlideData[] = [
     iconFilled: true,
     content: (
       <ul className="space-y-4 text-white/80 leading-[1.9]">
-        <li className="flex gap-3 items-start">
-          <span className="material-symbols-outlined text-[#8888cc] mt-0.5 shrink-0 text-lg">arrow_right</span>
-          <span>Testleriniz, görüşmelerimiz ve tüm notlar <strong className="text-white font-semibold">yalnızca bende kalır</strong>.</span>
-        </li>
-        <li className="flex gap-3 items-start">
-          <span className="material-symbols-outlined text-[#8888cc] mt-0.5 shrink-0 text-lg">arrow_right</span>
-          <span>Amiriniz veya müdürünüz bu bilgilere <strong className="text-white font-semibold">erişemez</strong>.</span>
-        </li>
-        <li className="flex gap-3 items-start">
-          <span className="material-symbols-outlined text-[#8888cc] mt-0.5 shrink-0 text-lg">arrow_right</span>
-          <span>Tüm veriler <strong className="text-white font-semibold">256-bit şifreleme</strong> ile korunur. Bu mesleki etik kurallarımın gereği.</span>
-        </li>
+        {[
+          { icon: "lock", text: <>Testleriniz, görüşmelerimiz ve tüm notlar <strong className="text-white font-semibold">yalnızca bende kalır</strong>.</> },
+          { icon: "block", text: <>Amiriniz veya müdürünüz bu bilgilere <strong className="text-white font-semibold">erişemez</strong>.</> },
+          { icon: "encrypted", text: <>Tüm veriler <strong className="text-white font-semibold">256-bit şifreleme</strong> ile korunur. Bu mesleki etik kurallarımın gereği.</> },
+        ].map((item, i) => (
+          <motion.li key={i} className="flex gap-3 items-start"
+            initial={{ opacity: 0, x: -15 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 + i * 0.35 }}
+          >
+            <motion.span
+              className="material-symbols-outlined text-[#8888cc] mt-0.5 shrink-0 text-lg filled"
+              animate={{ scale: [1, 1.25, 1], opacity: [0.6, 1, 0.6] }}
+              transition={{ duration: 1.5, delay: 1.2 + i * 0.5, repeat: Infinity, repeatDelay: 3 }}
+            >{item.icon}</motion.span>
+            <span>{item.text}</span>
+          </motion.li>
+        ))}
       </ul>
     ),
   },
@@ -378,7 +447,7 @@ function Slide({ slide, index, isActive }: { slide: SlideData; index: number; is
     <section
       id={`slide-${slide.id}`}
       className={`relative w-full h-[100dvh] overflow-hidden flex justify-center snap-start bg-gradient-to-br ${slide.accent} ${
-        slide.id === "ilk-adim" ? "items-start pt-[3dvh] sm:pt-[8dvh]" : "items-center"
+        slide.id === "ilk-adim" ? "items-start pt-[2dvh] sm:pt-[6dvh]" : "items-center pb-20"
       }`}
       style={{ scrollSnapAlign: "start" }}
     >
