@@ -447,9 +447,13 @@ function Slide({ slide, index, isActive, peekOffset = 0 }: { slide: SlideData; i
     <section
       id={`slide-${slide.id}`}
       className={`relative w-full h-[100dvh] overflow-hidden flex justify-center snap-start bg-gradient-to-br ${slide.accent} ${
-        slide.id === "ilk-adim" ? "items-start pt-[2dvh] sm:pt-[5dvh]" : "items-center pb-20 sm:pb-32"
+        slide.id === "ilk-adim" ? "items-start pt-[2dvh] lg:items-center lg:pt-0 lg:pb-20" : "items-center pb-20 lg:pb-20"
       }`}
-      style={{ scrollSnapAlign: "start" }}
+      style={{
+        scrollSnapAlign: "start",
+        transform: peekOffset ? `translateY(${peekOffset}px)` : undefined,
+        transition: "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+      }}
     >
       {/* Video arka plan */}
       {slide.video && (
@@ -482,11 +486,8 @@ function Slide({ slide, index, isActive, peekOffset = 0 }: { slide: SlideData; i
 
       {/* Content */}
       <div
-        className="relative z-10 w-full max-w-2xl sm:max-w-3xl mx-auto px-5 sm:px-10 transition-transform duration-500 ease-out"
-        style={{
-          transform: peekOffset ? `translateY(${peekOffset}px)` : undefined,
-          ...(slide.video ? { textShadow: "0 2px 20px rgba(0,0,0,0.7), 0 1px 3px rgba(0,0,0,0.4)" } : {}),
-        }}
+        className="relative z-10 w-full max-w-2xl lg:max-w-4xl mx-auto px-5 sm:px-10 lg:px-16"
+        style={slide.video ? { textShadow: "0 2px 20px rgba(0,0,0,0.7), 0 1px 3px rgba(0,0,0,0.4)" } : undefined}
       >
         {/* Slide number + label */}
         <motion.div
@@ -539,7 +540,7 @@ function Slide({ slide, index, isActive, peekOffset = 0 }: { slide: SlideData; i
           initial={reduced ? {} : { opacity: 0, y: 20 }}
           animate={isActive ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.35 }}
-          className="text-sm sm:text-base"
+          className="text-sm sm:text-base lg:text-lg"
         >
           {slide.content}
         </motion.div>
@@ -574,44 +575,42 @@ export function SlidesPresentation() {
   const [showSwipeHint, setShowSwipeHint] = useState(false)
   const [peekOffset, setPeekOffset] = useState(0)
 
-  // Instagram-style peek — tüm ekran hafifçe yukarı kayar, geri döner
+  // Instagram-style peek — tüm slide hafifçe yukarı kayar, geri döner
   useEffect(() => {
     if (current !== 0) return
     const container = containerRef.current
     if (!container) return
 
     const cancel = () => { hasInteracted.current = true; setShowSwipeHint(false); setPeekOffset(0) }
-    container.addEventListener("touchstart", cancel, { once: true })
+    // Sadece gerçek scroll veya wheel ile iptal — buton dokunmalarında değil
+    const onScroll = () => { if (container.scrollTop > 10) cancel() }
+    container.addEventListener("scroll", onScroll, { passive: true })
     container.addEventListener("wheel", cancel, { once: true })
 
     const timers: ReturnType<typeof setTimeout>[] = []
     const peek = (delay: number) => {
-      // Yukarı kay
       timers.push(setTimeout(() => {
         if (hasInteracted.current) return
-        setPeekOffset(-40)
+        setPeekOffset(-50)
         setShowSwipeHint(true)
       }, delay))
-      // Geri dön
       timers.push(setTimeout(() => {
         if (hasInteracted.current) return
         setPeekOffset(0)
-      }, delay + 800))
-      // Yazıyı gizle
+      }, delay + 900))
       timers.push(setTimeout(() => {
         if (hasInteracted.current) return
         setShowSwipeHint(false)
-      }, delay + 1200))
+      }, delay + 1400))
     }
 
-    peek(3000)
-    peek(7500)
-    peek(12000)
+    peek(3500)
+    peek(10000)
     peek(16500)
 
     return () => {
       timers.forEach(clearTimeout)
-      container.removeEventListener("touchstart", cancel)
+      container.removeEventListener("scroll", onScroll)
       container.removeEventListener("wheel", cancel)
     }
   }, [current])
@@ -747,13 +746,13 @@ export function SlidesPresentation() {
 
 function CvItem({ logo, fallback, title, sub }: { logo?: string; fallback?: string; title: string; sub: string }) {
   return (
-    <div className="flex items-center gap-2.5">
-      <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shrink-0 overflow-hidden shadow-sm border border-[#e8e0d8]/60">
-        {logo ? <img src={logo} alt="" className="w-7 h-7 object-contain" /> : <span className="text-[#b5694d]/40 text-[9px] font-bold">{fallback}</span>}
+    <div className="flex items-center gap-2.5 lg:gap-4">
+      <div className="w-10 h-10 lg:w-14 lg:h-14 rounded-lg lg:rounded-xl bg-white flex items-center justify-center shrink-0 overflow-hidden shadow-sm border border-[#e8e0d8]/60">
+        {logo ? <img src={logo} alt="" className="w-7 h-7 lg:w-9 lg:h-9 object-contain" /> : <span className="text-[#b5694d]/40 text-[9px] lg:text-xs font-bold">{fallback}</span>}
       </div>
       <div className="min-w-0">
-        <p className="text-[#2a1810] font-semibold text-[13px] leading-tight truncate">{title}</p>
-        <p className="text-[#8a8580] text-[11px] leading-snug">{sub}</p>
+        <p className="text-[#2a1810] font-semibold text-[13px] lg:text-base leading-tight truncate">{title}</p>
+        <p className="text-[#8a8580] text-[11px] lg:text-sm leading-snug">{sub}</p>
       </div>
     </div>
   )
@@ -762,10 +761,10 @@ function CvItem({ logo, fallback, title, sub }: { logo?: string; fallback?: stri
 function CvSection({ icon, title, children }: { icon: string; title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h3 className="text-[11px] font-bold text-[#b5694d] flex items-center gap-1.5 mb-2 uppercase tracking-wider font-mono">
-        <span className="material-symbols-outlined text-base">{icon}</span> {title}
+      <h3 className="text-[11px] lg:text-sm font-bold text-[#b5694d] flex items-center gap-1.5 lg:gap-2 mb-2 lg:mb-4 uppercase tracking-wider font-mono">
+        <span className="material-symbols-outlined text-base lg:text-xl">{icon}</span> {title}
       </h3>
-      <div className="space-y-1.5">
+      <div className="space-y-1.5 lg:space-y-3.5">
         {children}
       </div>
     </div>
