@@ -581,18 +581,20 @@ export function SlidesPresentation() {
     const peek = (delay: number) => {
       timers.push(setTimeout(() => {
         if (hasInteracted.current) return
-        container.scrollTo({ top: 80, behavior: "smooth" })
+        container.scrollTo({ top: 60, behavior: "smooth" })
         setShowSwipeHint(true)
         timers.push(setTimeout(() => {
           if (hasInteracted.current) return
           container.scrollTo({ top: 0, behavior: "smooth" })
-          timers.push(setTimeout(() => setShowSwipeHint(false), 400))
-        }, 700))
+          timers.push(setTimeout(() => setShowSwipeHint(false), 500))
+        }, 1000))
       }, delay))
     }
 
-    peek(2500)
-    peek(6500)
+    peek(3500)
+    peek(8500)
+    peek(13500)
+    peek(18500)
 
     return () => {
       timers.forEach(clearTimeout)
