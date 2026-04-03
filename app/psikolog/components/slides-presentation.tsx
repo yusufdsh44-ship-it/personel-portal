@@ -416,7 +416,7 @@ function NavDots({ current, total, onGo }: { current: number; total: number; onG
    SLIDE COMPONENT
    ═══════════════════════════════════════════ */
 
-function Slide({ slide, index, isActive }: { slide: SlideData; index: number; isActive: boolean }) {
+function Slide({ slide, index, isActive, peekOffset = 0 }: { slide: SlideData; index: number; isActive: boolean; peekOffset?: number }) {
   const reduced = useReducedMotion()
   const isClosing = slide.id === "kapanis"
   const isLight = slide.light
@@ -447,7 +447,7 @@ function Slide({ slide, index, isActive }: { slide: SlideData; index: number; is
     <section
       id={`slide-${slide.id}`}
       className={`relative w-full h-[100dvh] overflow-hidden flex justify-center snap-start bg-gradient-to-br ${slide.accent} ${
-        slide.id === "ilk-adim" ? "items-start pt-[2dvh] sm:pt-[6dvh]" : "items-center pb-20"
+        slide.id === "ilk-adim" ? "items-start pt-[2dvh] sm:pt-[5dvh]" : "items-center pb-20 sm:pb-32"
       }`}
       style={{ scrollSnapAlign: "start" }}
     >
@@ -481,7 +481,13 @@ function Slide({ slide, index, isActive }: { slide: SlideData; index: number; is
       )}
 
       {/* Content */}
-      <div className="relative z-10 w-full max-w-2xl mx-auto px-5 sm:px-10" style={slide.video ? { textShadow: "0 2px 20px rgba(0,0,0,0.7), 0 1px 3px rgba(0,0,0,0.4)" } : undefined}>
+      <div
+        className="relative z-10 w-full max-w-2xl sm:max-w-3xl mx-auto px-5 sm:px-10 transition-transform duration-500 ease-out"
+        style={{
+          transform: peekOffset ? `translateY(${peekOffset}px)` : undefined,
+          ...(slide.video ? { textShadow: "0 2px 20px rgba(0,0,0,0.7), 0 1px 3px rgba(0,0,0,0.4)" } : {}),
+        }}
+      >
         {/* Slide number + label */}
         <motion.div
           initial={reduced ? {} : { opacity: 0, y: 10 }}
@@ -566,35 +572,42 @@ export function SlidesPresentation() {
   const isScrolling = useRef(false)
   const hasInteracted = useRef(false)
   const [showSwipeHint, setShowSwipeHint] = useState(false)
+  const [peekOffset, setPeekOffset] = useState(0)
 
-  // Instagram-style peek animation — sadece ilk slide'da
+  // Instagram-style peek — tüm ekran hafifçe yukarı kayar, geri döner
   useEffect(() => {
     if (current !== 0) return
     const container = containerRef.current
     if (!container) return
 
-    const cancel = () => { hasInteracted.current = true; setShowSwipeHint(false) }
+    const cancel = () => { hasInteracted.current = true; setShowSwipeHint(false); setPeekOffset(0) }
     container.addEventListener("touchstart", cancel, { once: true })
     container.addEventListener("wheel", cancel, { once: true })
 
     const timers: ReturnType<typeof setTimeout>[] = []
     const peek = (delay: number) => {
+      // Yukarı kay
       timers.push(setTimeout(() => {
         if (hasInteracted.current) return
-        container.scrollTo({ top: 60, behavior: "smooth" })
+        setPeekOffset(-40)
         setShowSwipeHint(true)
-        timers.push(setTimeout(() => {
-          if (hasInteracted.current) return
-          container.scrollTo({ top: 0, behavior: "smooth" })
-          timers.push(setTimeout(() => setShowSwipeHint(false), 500))
-        }, 1000))
       }, delay))
+      // Geri dön
+      timers.push(setTimeout(() => {
+        if (hasInteracted.current) return
+        setPeekOffset(0)
+      }, delay + 800))
+      // Yazıyı gizle
+      timers.push(setTimeout(() => {
+        if (hasInteracted.current) return
+        setShowSwipeHint(false)
+      }, delay + 1200))
     }
 
-    peek(3500)
-    peek(8500)
-    peek(13500)
-    peek(18500)
+    peek(3000)
+    peek(7500)
+    peek(12000)
+    peek(16500)
 
     return () => {
       timers.forEach(clearTimeout)
@@ -677,7 +690,7 @@ export function SlidesPresentation() {
         style={{ scrollSnapType: "y mandatory" }}
       >
         {SLIDES.map((slide, i) => (
-          <Slide key={slide.id} slide={slide} index={i} isActive={current === i} />
+          <Slide key={slide.id} slide={slide} index={i} isActive={current === i} peekOffset={i === 0 ? peekOffset : 0} />
         ))}
 
         {/* CV Slide — özel layout */}
