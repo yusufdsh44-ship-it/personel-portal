@@ -612,13 +612,13 @@ export function PwaInstall() {
           aria-label="Uygulamayı indir"
           className="h-11 rounded-full bg-primary text-on-primary shadow-lg shadow-black/10 flex items-center gap-1.5 overflow-hidden active:scale-95 transition-transform"
           animate={{ width: expanded ? 180 : 44 }}
-          transition={{ type: "spring", stiffness: 250, damping: 25 }}
+          transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           <span className="material-symbols-outlined text-lg shrink-0 ml-[11px]">install_mobile</span>
           <motion.span
             className="text-xs font-bold tracking-wide whitespace-nowrap pr-4"
             animate={{ opacity: expanded ? 1 : 0 }}
-            transition={{ duration: 0.15 }}
+            transition={{ duration: 0.4, delay: expanded ? 0.2 : 0, ease: "easeInOut" }}
           >
             Uygulamayı İndir
           </motion.span>
