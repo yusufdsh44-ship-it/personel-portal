@@ -603,45 +603,29 @@ export function PwaInstall() {
 
   return (
     <>
-      {/* Floating install button */}
+      {/* Floating install button — sağ üst */}
       <motion.div
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ type: "spring", stiffness: 300, damping: 20, delay: 1.5 }}
-        className="fixed bottom-28 left-5 z-40"
+        className="fixed top-4 right-4 z-40"
       >
-        <button
+        <motion.button
           onClick={handleButtonClick}
           aria-label="Uygulamayı indir"
-          className="rounded-full bg-primary text-on-primary shadow-lg shadow-black/10 flex items-center justify-center active:scale-95 transition-all"
+          className="h-11 rounded-full bg-primary text-on-primary shadow-lg shadow-black/10 flex items-center gap-1.5 overflow-hidden active:scale-95 transition-transform"
+          animate={{ width: dismissed ? 44 : expanded ? 180 : 44 }}
+          transition={{ type: "spring", stiffness: 250, damping: 25 }}
         >
-          <motion.div
-            className="flex items-center gap-1.5 overflow-hidden"
-            animate={
-              dismissed
-                ? { paddingLeft: 11, paddingRight: 11, paddingTop: 11, paddingBottom: 11 }
-                : expanded
-                  ? { paddingLeft: 12, paddingRight: 16, paddingTop: 10, paddingBottom: 10 }
-                  : { paddingLeft: 11, paddingRight: 11, paddingTop: 11, paddingBottom: 11 }
-            }
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+          <span className="material-symbols-outlined text-lg shrink-0 ml-[11px]">install_mobile</span>
+          <motion.span
+            className="text-xs font-bold tracking-wide whitespace-nowrap pr-4"
+            animate={{ opacity: !dismissed && expanded ? 1 : 0 }}
+            transition={{ duration: 0.15 }}
           >
-            <span className="material-symbols-outlined text-lg shrink-0">install_mobile</span>
-            <AnimatePresence>
-              {!dismissed && expanded && (
-                <motion.span
-                  initial={{ width: 0, opacity: 0 }}
-                  animate={{ width: "auto", opacity: 1 }}
-                  exit={{ width: 0, opacity: 0 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                  className="text-xs font-bold tracking-wide whitespace-nowrap overflow-hidden"
-                >
-                  Uygulamayı İndir
-                </motion.span>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        </button>
+            Uygulamayı İndir
+          </motion.span>
+        </motion.button>
       </motion.div>
 
       {/* Guide modal */}
