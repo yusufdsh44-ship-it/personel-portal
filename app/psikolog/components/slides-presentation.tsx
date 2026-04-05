@@ -452,7 +452,7 @@ function Slide({ slide, index, isActive, peekOffset = 0 }: { slide: SlideData; i
       style={{
         scrollSnapAlign: "start",
         transform: peekOffset ? `translateY(${peekOffset}px)` : undefined,
-        transition: "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+        transition: "transform 1s cubic-bezier(0.22, 0.61, 0.36, 1)",
       }}
     >
       {/* Video arka plan */}
@@ -590,17 +590,17 @@ export function SlidesPresentation() {
     const peek = (delay: number) => {
       timers.push(setTimeout(() => {
         if (hasInteracted.current) return
-        setPeekOffset(-50)
+        setPeekOffset(-30)
         setShowSwipeHint(true)
       }, delay))
       timers.push(setTimeout(() => {
         if (hasInteracted.current) return
         setPeekOffset(0)
-      }, delay + 900))
+      }, delay + 1400))
       timers.push(setTimeout(() => {
         if (hasInteracted.current) return
         setShowSwipeHint(false)
-      }, delay + 1400))
+      }, delay + 2000))
     }
 
     peek(3500)
