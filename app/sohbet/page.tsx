@@ -201,49 +201,48 @@ export default function SohbetPage() {
             {isEmpty && (
               <div className="flex flex-col items-center justify-between h-full">
                 {/* Header */}
-                <div className="text-center pt-4 pb-2">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-container to-primary/20 flex items-center justify-center mx-auto mb-2 shadow-lg shadow-black/5">
-                    <span className="text-sm font-bold text-primary">YP</span>
+                <div className="text-center pt-6 pb-2">
+                  <div className="inline-flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-primary/40 text-lg">smart_toy</span>
                   </div>
-                  <h1 className="text-lg font-headline font-bold text-on-surface tracking-tight">
+                  <h1 className="text-2xl sm:text-3xl text-primary tracking-tight" style={{ fontFamily: "var(--font-caveat), cursive" }}>
                     Dijital İkizim
                   </h1>
-                  <p className="text-on-surface-variant/60 text-[11px]">
-                    Uzm. Kl. Psk. · Kurumsal Psikoloji Birimi
-                  </p>
+                  <p className="text-on-surface-variant/40 text-[11px] mt-1">Size nasıl yardımcı olabilirim?</p>
                 </div>
 
                 {/* Workflow cards — kompakt 2x2 grid */}
                 <div className="w-full max-w-lg flex-1 flex flex-col justify-center">
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 gap-2.5">
                     {WORKFLOWS.slice(0, 4).map(w => (
                       <motion.button key={w.label} onClick={() => send(w.example)}
+                        whileHover={{ y: -2 }}
                         whileTap={{ scale: 0.97 }}
-                        className="text-left p-3 rounded-xl border border-outline-variant/12 hover:bg-surface-container-high/40 transition-colors"
+                        className="text-left p-3.5 rounded-2xl border border-outline-variant/10 bg-surface-container-low/30 hover:bg-surface-container-high/50 hover:border-outline-variant/20 transition-all"
                       >
-                        <div className="flex items-center gap-2 mb-1">
-                          <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${w.accent}`}>
-                            <span className="material-symbols-outlined text-sm">{w.icon}</span>
+                        <div className="flex items-center gap-2.5 mb-1.5">
+                          <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${w.accent}`}>
+                            <span className="material-symbols-outlined text-base">{w.icon}</span>
                           </div>
-                          <span className="text-xs font-bold text-on-surface">{w.label}</span>
+                          <span className="text-[13px] font-bold text-on-surface">{w.label}</span>
                         </div>
-                        <p className="text-[10px] text-on-surface-variant/60 leading-relaxed">{w.desc}</p>
+                        <p className="text-[11px] text-on-surface-variant/50 leading-relaxed">{w.desc}</p>
                       </motion.button>
                     ))}
                   </div>
 
                   {/* Quick prompts */}
-                  <div className="flex gap-1.5 mt-3 overflow-x-auto no-scrollbar pb-1">
+                  <div className="flex gap-1.5 mt-4 overflow-x-auto no-scrollbar pb-1">
                     {QUICK_PROMPTS.map(item => (
                       <button key={item} onClick={() => send(item)}
-                        className="text-[11px] px-3 py-1.5 rounded-full border border-outline-variant/12 text-on-surface-variant hover:bg-surface-container-high/40 whitespace-nowrap shrink-0 active:scale-95 transition-all">
+                        className="text-[11px] px-3.5 py-1.5 rounded-full border border-outline-variant/10 text-on-surface-variant/70 hover:bg-surface-container-high/40 hover:border-outline-variant/20 whitespace-nowrap shrink-0 active:scale-95 transition-all">
                         {item}
                       </button>
                     ))}
                   </div>
                 </div>
 
-                <p className="text-[10px] text-on-surface-variant/40 flex items-center gap-1 pb-1">
+                <p className="text-[10px] text-on-surface-variant/30 flex items-center gap-1 pb-1">
                   <span className="material-symbols-outlined text-[10px] filled">verified_user</span>
                   Tüm konuşmalar gizlidir.
                 </p>

@@ -98,5 +98,18 @@ input, select, textarea { font-size: 16px !important }
 /* Peek animasyon geçişi */
 .peek-transition { transition: transform 1s cubic-bezier(0.22, 0.61, 0.36, 1) }
 
+/* Bottom nav ikon animasyonları */
+@keyframes nav-shake   { 0%,100% { transform: rotate(0) }       20% { transform: rotate(-12deg) } 40% { transform: rotate(10deg) }  60% { transform: rotate(-6deg) } }
+@keyframes nav-bounce  { 0%,100% { transform: translateY(0) }   40% { transform: translateY(-6px) scale(1.15) } }
+@keyframes nav-wiggle  { 0%,100% { transform: rotate(0) }       15% { transform: rotate(15deg) }  35% { transform: rotate(-15deg) } 55% { transform: rotate(10deg) } 75% { transform: rotate(-5deg) } }
+@keyframes nav-flip    { 0% { transform: rotateY(0) }           100% { transform: rotateY(360deg) } }
+@keyframes nav-hop     { 0%,100% { transform: translateY(0) rotate(0) }  30% { transform: translateY(-4px) rotate(-8deg) }  60% { transform: rotate(6deg) } }
+
+.nav-anim-badge           { animation: nav-shake  0.5s ease }
+.nav-anim-event_available { animation: nav-bounce 0.45s ease }
+.nav-anim-smart_toy       { animation: nav-wiggle 0.6s ease }
+.nav-anim-assignment      { animation: nav-flip   0.5s ease }
+.nav-anim-mail            { animation: nav-hop    0.5s ease }
+
 /* Kontrast iyileştirme — opacity ile kullanılan metinler için */
 .text-muted-safe { color: #6b6560 }  /* 4.5:1 on #f5f0eb — WCAG AA pass */

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import { Archivo_Black, Caveat, DM_Sans, JetBrains_Mono } from "next/font/google"
+import Script from "next/script"
 import { BottomNav } from "./components/bottom-nav"
 import { PwaInstall } from "./components/pwa-install"
 import "./globals.css"
@@ -38,13 +39,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Psikoloji" />
         <meta name="mobile-web-app-capable" content="yes" />
-        <script dangerouslySetInnerHTML={{ __html: `
-          if ('serviceWorker' in navigator && location.hostname !== 'localhost') {
-            window.addEventListener('load', () => {
-              navigator.serviceWorker.register('/sw.js')
-            })
-          }
-        `}} />
       </head>
       <body className="min-h-screen flex flex-col selection:bg-primary-container selection:text-on-primary-container">
         <main className="flex-1 pb-20">
@@ -59,6 +53,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <BottomNav />
         <PwaInstall />
+        <Script id="sw" strategy="afterInteractive">{`
+          if ('serviceWorker' in navigator) {
+            if (location.hostname === 'localhost') {
+              navigator.serviceWorker.getRegistrations().then(r => r.forEach(w => w.unregister()))
+            } else {
+              navigator.serviceWorker.register('/sw.js')
+            }
+          }
+        `}</Script>
       </body>
     </html>
   )

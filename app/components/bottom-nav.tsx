@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { motion } from "framer-motion"
 
 const TABS = [
   { href: "/", label: "Psikolog", icon: "badge", color: "text-[#8B5E3C]", bg: "bg-[#8B5E3C]/10" },
@@ -24,18 +23,14 @@ export function BottomNav() {
             <Link key={href} href={href} aria-label={label} aria-current={active ? "page" : undefined}
               className="relative flex flex-col items-center justify-center gap-1 px-3 sm:px-5 py-2 min-w-0">
               {active && (
-                <motion.div
-                  layoutId="nav-pill"
-                  className={`absolute inset-0 ${bg} rounded-full`}
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                />
+                <div className={`absolute inset-0 ${bg} rounded-full transition-all duration-300`} />
               )}
-              <motion.span
-                whileTap={{ scale: 0.85 }}
-                className={`material-symbols-outlined text-2xl relative z-10 transition-colors duration-200 ${color} ${active ? "filled" : ""}`}
+              <span
+                key={`${icon}-${active}`}
+                className={`material-symbols-outlined text-2xl relative z-10 transition-colors duration-200 inline-block ${color} ${active ? `filled nav-anim-${icon}` : ""}`}
               >
                 {icon}
-              </motion.span>
+              </span>
               <span className={`text-xs font-semibold tracking-wide relative z-10 transition-colors duration-200 ${active ? color : "text-on-surface-variant"}`}>
                 {label}
               </span>

@@ -531,7 +531,8 @@ function Slide({ slide, index, isActive, peekOffset = 0 }: { slide: SlideData; i
             transition={{ duration: 0.6, delay: 0.2 }}
             className={`tracking-tight mb-3 sm:mb-6 ${
               isLight ? "text-[#2a1810]" : "text-white"
-            } ${isClosing ? "font-display text-lg sm:text-2xl" : slide.id === "giris" ? "font-[family-name:var(--font-caveat)] text-3xl sm:text-5xl" : "font-display text-xl sm:text-4xl"}`}
+            } ${isClosing ? "font-bold text-2xl sm:text-3xl" : slide.id === "giris" ? "font-bold text-3xl sm:text-5xl" : "font-display text-xl sm:text-4xl"}`}
+            style={slide.id === "giris" || isClosing ? { fontFamily: "var(--font-caveat), cursive" } : undefined}
           >
             {slide.title}
           </motion.h2>
@@ -779,14 +780,8 @@ function CvSlide() {
       className="relative w-full h-[100dvh] overflow-hidden snap-start bg-gradient-to-br from-[#f5f0eb] to-[#ede5dd] flex flex-col"
       style={{ scrollSnapAlign: "start" }}
     >
-      {/* Header — kompakt */}
-      <div className="text-center pt-5 sm:pt-10 pb-2 sm:pb-4 px-5">
-        <p className="font-mono text-[10px] text-[#8a8580] tracking-wider uppercase mb-0.5">Kurumsal Psikolog</p>
-        <p className="font-display text-[#2a1810] text-xl sm:text-3xl lg:text-4xl tracking-tight">Yusuf Pamuk</p>
-      </div>
-
       {/* Grid — 3 kolon desktop, tek kolon mobil */}
-      <div className="flex-1 overflow-hidden px-5 sm:px-8 lg:px-16 pb-3">
+      <div className="flex-1 overflow-hidden px-5 sm:px-8 lg:px-16 pt-5 sm:pt-10 pb-20">
         <div className="max-w-4xl lg:max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6 lg:gap-12 content-start">
           {/* Kolon 1: Eğitim */}
           <CvSection icon="school" title="Eğitim">
