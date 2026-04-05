@@ -586,18 +586,15 @@ export function PwaInstall() {
   const { platform, isStandalone, showGuide, dismissed, ready, handleButtonClick, closeGuide } = usePwaInstall()
   const [expanded, setExpanded] = useState(true)
 
-  // Cycle: 4s expanded → 8s collapsed → repeat
+  // Cycle: 4s expanded → 8s collapsed → repeat (always)
   useEffect(() => {
-    if (dismissed) return
-    const cycle = () => {
+    const collapse = setTimeout(() => setExpanded(false), 4000)
+    const interval = setInterval(() => {
       setExpanded(true)
-      const collapseTimer = setTimeout(() => setExpanded(false), 4000)
-      return collapseTimer
-    }
-    const collapseTimer = cycle()
-    const interval = setInterval(cycle, 12000)
-    return () => { clearTimeout(collapseTimer); clearInterval(interval) }
-  }, [dismissed])
+      setTimeout(() => setExpanded(false), 4000)
+    }, 12000)
+    return () => { clearTimeout(collapse); clearInterval(interval) }
+  }, [])
 
   if (!ready || isStandalone) return null
 
@@ -614,13 +611,13 @@ export function PwaInstall() {
           onClick={handleButtonClick}
           aria-label="Uygulamayı indir"
           className="h-11 rounded-full bg-primary text-on-primary shadow-lg shadow-black/10 flex items-center gap-1.5 overflow-hidden active:scale-95 transition-transform"
-          animate={{ width: dismissed ? 44 : expanded ? 180 : 44 }}
+          animate={{ width: expanded ? 180 : 44 }}
           transition={{ type: "spring", stiffness: 250, damping: 25 }}
         >
           <span className="material-symbols-outlined text-lg shrink-0 ml-[11px]">install_mobile</span>
           <motion.span
             className="text-xs font-bold tracking-wide whitespace-nowrap pr-4"
-            animate={{ opacity: !dismissed && expanded ? 1 : 0 }}
+            animate={{ opacity: expanded ? 1 : 0 }}
             transition={{ duration: 0.15 }}
           >
             Uygulamayı İndir
