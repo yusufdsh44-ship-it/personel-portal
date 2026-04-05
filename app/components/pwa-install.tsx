@@ -584,6 +584,20 @@ function PwaInstallGuide({ platform, onClose }: { platform: Platform; onClose: (
 // ─── Main Component ────────────────────────────────────────
 export function PwaInstall() {
   const { platform, isStandalone, showGuide, dismissed, ready, handleButtonClick, closeGuide } = usePwaInstall()
+  const [expanded, setExpanded] = useState(true)
+
+  // Cycle: 4s expanded → 8s collapsed → repeat
+  useEffect(() => {
+    if (dismissed) return
+    const cycle = () => {
+      setExpanded(true)
+      const collapseTimer = setTimeout(() => setExpanded(false), 4000)
+      return collapseTimer
+    }
+    const collapseTimer = cycle()
+    const interval = setInterval(cycle, 12000)
+    return () => { clearTimeout(collapseTimer); clearInterval(interval) }
+  }, [dismissed])
 
   if (!ready || isStandalone) return null
 
@@ -596,26 +610,38 @@ export function PwaInstall() {
         transition={{ type: "spring", stiffness: 300, damping: 20, delay: 1.5 }}
         className="fixed bottom-28 left-5 z-40"
       >
-        {dismissed ? (
-          <button
-            onClick={handleButtonClick}
-            aria-label="Uygulamayı indir"
-            className="w-11 h-11 rounded-full bg-primary/80 text-on-primary shadow-md flex items-center justify-center active:scale-90 transition-all"
+        <button
+          onClick={handleButtonClick}
+          aria-label="Uygulamayı indir"
+          className="rounded-full bg-primary text-on-primary shadow-lg shadow-black/10 flex items-center justify-center active:scale-95 transition-all"
+        >
+          <motion.div
+            className="flex items-center gap-1.5 overflow-hidden"
+            animate={
+              dismissed
+                ? { paddingLeft: 11, paddingRight: 11, paddingTop: 11, paddingBottom: 11 }
+                : expanded
+                  ? { paddingLeft: 12, paddingRight: 16, paddingTop: 10, paddingBottom: 10 }
+                  : { paddingLeft: 11, paddingRight: 11, paddingTop: 11, paddingBottom: 11 }
+            }
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
-            <span className="material-symbols-outlined text-lg">install_mobile</span>
-          </button>
-        ) : (
-          <PulseGlow className="rounded-full">
-            <button
-              onClick={handleButtonClick}
-              aria-label="Uygulamayı indir"
-              className="flex items-center gap-1.5 pl-3 pr-4 py-2.5 rounded-full bg-primary text-on-primary shadow-lg shadow-black/10 active:scale-95 transition-all"
-            >
-              <span className="material-symbols-outlined text-lg">install_mobile</span>
-              <span className="text-xs font-bold tracking-wide">Uygulamayı İndir</span>
-            </button>
-          </PulseGlow>
-        )}
+            <span className="material-symbols-outlined text-lg shrink-0">install_mobile</span>
+            <AnimatePresence>
+              {!dismissed && expanded && (
+                <motion.span
+                  initial={{ width: 0, opacity: 0 }}
+                  animate={{ width: "auto", opacity: 1 }}
+                  exit={{ width: 0, opacity: 0 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                  className="text-xs font-bold tracking-wide whitespace-nowrap overflow-hidden"
+                >
+                  Uygulamayı İndir
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </button>
       </motion.div>
 
       {/* Guide modal */}
