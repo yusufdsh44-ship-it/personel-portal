@@ -433,12 +433,15 @@ function Slide({ slide, index, isActive, peekOffset = 0 }: { slide: SlideData; i
 
   // Slide'dan ayrılınca videoyu durdur + sessize al
   useEffect(() => {
-    if (!videoRef.current || !slide.video) return
+    const v = videoRef.current
+    if (!v || !slide.video) return
     if (isActive) {
-      videoRef.current.play().catch(() => {})
+      v.muted = true
+      const tryPlay = () => v.play().catch(() => setTimeout(tryPlay, 500))
+      tryPlay()
     } else {
-      videoRef.current.pause()
-      videoRef.current.muted = true
+      v.pause()
+      v.muted = true
       setMuted(true)
     }
   }, [isActive, slide.video])
@@ -464,7 +467,7 @@ function Slide({ slide, index, isActive, peekOffset = 0 }: { slide: SlideData; i
             muted
             loop
             playsInline
-            webkit-playsinline="true"
+            preload="auto"
             className="absolute inset-0 w-full h-full object-cover opacity-40 scale-105"
             style={{ filter: "blur(1px) saturate(0.7)" }}
           >
