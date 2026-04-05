@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import { Archivo_Black, Caveat, DM_Sans, JetBrains_Mono } from "next/font/google"
 import { BottomNav } from "./components/bottom-nav"
+import { PwaInstall } from "./components/pwa-install"
 import "./globals.css"
 
 const archivoBlack = Archivo_Black({ weight: "400", subsets: ["latin", "latin-ext"], variable: "--font-archivo", display: "swap" })
@@ -57,6 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </footer>
 
         <BottomNav />
+        <PwaInstall />
       </body>
     </html>
   )
