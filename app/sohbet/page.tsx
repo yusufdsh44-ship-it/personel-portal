@@ -52,6 +52,15 @@ const QUICK_PROMPTS = [
   "Testleri neden dolduruyorum?",
 ]
 
+const ANIMATED_HINTS = [
+  "Randevu almak istiyorum",
+  "Seans raporumu görmek istiyorum",
+  "Psikoloğa mesaj göndermek istiyorum",
+  "Testlerimi tamamladım mı?",
+  "Görüşme sonrası ne olacak?",
+  "Süreç nasıl işliyor?",
+]
+
 export default function SohbetPage() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
@@ -62,15 +71,6 @@ export default function SohbetPage() {
 
   const isEmpty = messages.length === 0
 
-  // Animated typing placeholder — workflow kartlarındaki örnekleri kullanır
-  const ANIMATED_HINTS = [
-    "Randevu almak istiyorum",
-    "Seans raporumu görmek istiyorum",
-    "Psikoloğa mesaj göndermek istiyorum",
-    "Testlerimi tamamladım mı?",
-    "Görüşme sonrası ne olacak?",
-    "Süreç nasıl işliyor?",
-  ]
   const [hintIdx, setHintIdx] = useState(0)
   const [hintText, setHintText] = useState("")
   const showAnimatedHint = isEmpty && !input && !loading
@@ -102,7 +102,6 @@ export default function SohbetPage() {
     }
     timer = setTimeout(tick, 600)
     return () => clearTimeout(timer)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hintIdx, showAnimatedHint])
 
   useEffect(() => {

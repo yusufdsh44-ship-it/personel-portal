@@ -19,9 +19,17 @@ export async function GET() {
     kapaliSlotlar: m.kapali_slotlar ?? [],
   }))
 
+  const today = new Date()
+  const todayStr = today.toISOString().split("T")[0]
+  const endDate = new Date(today)
+  endDate.setDate(endDate.getDate() + 21)
+  const endDateStr = endDate.toISOString().split("T")[0]
+
   const { data: talepler } = await supabase
     .from("randevu_talepleri")
     .select("istenen_tarih, istenen_saat, durum")
+    .gte("istenen_tarih", todayStr)
+    .lte("istenen_tarih", endDateStr)
     .neq("durum", "Reddedildi")
     .neq("durum", "İptal")
 
@@ -31,7 +39,6 @@ export async function GET() {
   }
 
   // Haftalik kapali slotlar (genel)
-  const today = new Date()
   for (let i = 0; i <= 21; i++) {
     const d = new Date(today)
     d.setDate(d.getDate() + i)
@@ -47,7 +54,7 @@ export async function GET() {
   }
 
   // Tarihe ozel kapali slotlar
-  const { data: kapaliTarihRows } = await supabase.from("kapali_tarih_slotlari").select("tarih, saat")
+  const { data: kapaliTarihRows } = await supabase.from("kapali_tarih_slotlari").select("tarih, saat").gte("tarih", todayStr).lte("tarih", endDateStr)
   for (const k of kapaliTarihRows ?? []) {
     doluSlotlar.add(`${k.tarih}_${k.saat}`)
   }

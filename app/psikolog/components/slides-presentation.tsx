@@ -570,7 +570,6 @@ function Slide({ slide, index, isActive, peekOffset = 0 }: { slide: SlideData; i
 export function SlidesPresentation() {
   const [current, setCurrent] = useState(0)
   const containerRef = useRef<HTMLDivElement>(null)
-  const isScrolling = useRef(false)
   const hasInteracted = useRef(false)
   const [showSwipeHint, setShowSwipeHint] = useState(false)
   const [peekOffset, setPeekOffset] = useState(0)
@@ -781,12 +780,12 @@ function CvSlide() {
       {/* Header — kompakt */}
       <div className="text-center pt-5 sm:pt-10 pb-2 sm:pb-4 px-5">
         <p className="font-mono text-[10px] text-[#8a8580] tracking-wider uppercase mb-0.5">Kurumsal Psikolog</p>
-        <p className="font-display text-[#2a1810] text-xl sm:text-3xl tracking-tight">Yusuf Pamuk</p>
+        <p className="font-display text-[#2a1810] text-xl sm:text-3xl lg:text-4xl tracking-tight">Yusuf Pamuk</p>
       </div>
 
       {/* Grid — 3 kolon desktop, tek kolon mobil */}
-      <div className="flex-1 overflow-hidden px-5 sm:px-8 pb-3">
-        <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6 content-start">
+      <div className="flex-1 overflow-hidden px-5 sm:px-8 lg:px-16 pb-3">
+        <div className="max-w-4xl lg:max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6 lg:gap-12 content-start">
           {/* Kolon 1: Eğitim */}
           <CvSection icon="school" title="Eğitim">
             <CvItem logo="/logos/galatasaray.png" title="Galatasaray Üniversitesi" sub="Stratejik İletişim — Yüksek Lisans · Devam" />

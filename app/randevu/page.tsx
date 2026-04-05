@@ -2,12 +2,11 @@
 
 import { useState, useMemo, useEffect } from "react"
 import Link from "next/link"
-import { nanoid } from "nanoid"
+
 import { addDays, format, getDay, startOfDay } from "date-fns"
 import { tr } from "date-fns/locale"
 import { Header } from "../components/header"
-import { FadeIn, FadeInView, StaggerContainer, StaggerItem, SuccessCheck, PulseGlow, motion, AnimatePresence } from "../components/motion"
-import { MUDURLUKLER } from "../lib/test-data"
+import { FadeIn, SuccessCheck, PulseGlow, motion, AnimatePresence } from "../components/motion"
 import { MudurlukSelect } from "../components/mudurluk-select"
 
 type Tur = "ilk" | "takip" | "acil"
@@ -93,7 +92,6 @@ export default function RandevuPage() {
       const r = await fetch("/api/randevu", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          id: nanoid(),
           adSoyad: ad.trim(),
           mudurluk: effectiveMud,
           gorusmeTuru: turApi,

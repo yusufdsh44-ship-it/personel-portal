@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { FadeIn, FadeInView, SuccessCheck, PulseGlow, motion, AnimatePresence } from "./motion"
-import { MUDURLUKLER } from "../lib/test-data"
 import { MudurlukSelect } from "./mudurluk-select"
 
 const KATEGORILER = [

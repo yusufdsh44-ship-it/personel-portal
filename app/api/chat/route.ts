@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { GoogleGenerativeAI, type Content, type Tool, SchemaType } from "@google/generative-ai"
 import { supabase } from "@/app/lib/supabase"
 import { isRateLimited, getClientIp } from "@/app/lib/rate-limit"
+import { generateRefCode } from "@/app/lib/ref-code"
 
 const MODEL = "gemini-2.5-flash" // stable, function calling destekli
 
@@ -192,16 +193,6 @@ const tools: Tool[] = [
     ],
   },
 ]
-
-// --- Referans kodu üretici ---
-function generateRefCode(): string {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
-  const bytes = new Uint8Array(8)
-  crypto.getRandomValues(bytes)
-  let code = "KPB-"
-  for (let i = 0; i < 8; i++) code += chars[bytes[i] % chars.length]
-  return code
-}
 
 // --- Tool implementations ---
 

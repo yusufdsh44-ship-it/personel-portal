@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { Header } from "../components/header"
 import { FadeIn, FadeInView, SuccessCheck, PulseGlow, motion, AnimatePresence } from "../components/motion"
-import { MUDURLUKLER } from "../lib/test-data"
 import { MudurlukSelect } from "../components/mudurluk-select"
 
 const KATEGORILER = [

@@ -14,27 +14,28 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
   const STORAGE_KEY = `test_progress_${id}`
   const POS_KEY = `${STORAGE_KEY}_pos`
 
-  const [current, setCurrent] = useState(() => {
-    if (typeof window === 'undefined') return 0
-    return parseInt(localStorage.getItem(POS_KEY) || '0')
-  })
-  const [answers, setAnswers] = useState<Record<number, number>>(() => {
-    if (typeof window === 'undefined') return {}
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY)
-      return saved ? JSON.parse(saved) : {}
-    } catch { return {} }
-  })
+  const [current, setCurrent] = useState(0)
+  const [answers, setAnswers] = useState<Record<number, number>>({})
   const [direction, setDirection] = useState(1)
   const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
   const [controlWarning, setControlWarning] = useState(false)
   const BRIEFING_KEY = `test_briefing_${id}`
-  const [briefingDone, setBriefingDone] = useState(() => {
-    if (typeof window === 'undefined') return false
-    return localStorage.getItem(BRIEFING_KEY) === "1"
-  })
+  const [briefingDone, setBriefingDone] = useState(false)
   const [briefingStep, setBriefingStep] = useState(0)
+
+  // Hydrate state from localStorage on mount
+  useEffect(() => {
+    const savedPos = localStorage.getItem(POS_KEY)
+    if (savedPos) setCurrent(parseInt(savedPos))
+
+    try {
+      const savedAnswers = localStorage.getItem(STORAGE_KEY)
+      if (savedAnswers) setAnswers(JSON.parse(savedAnswers))
+    } catch { /* ignore */ }
+
+    if (localStorage.getItem(BRIEFING_KEY) === "1") setBriefingDone(true)
+  }, [POS_KEY, STORAGE_KEY, BRIEFING_KEY])
 
   const total = test?.questions.length ?? 0
 

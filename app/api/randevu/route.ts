@@ -1,16 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { supabase } from "@/app/lib/supabase"
 import { isRateLimited, getClientIp } from "@/app/lib/rate-limit"
-
-// Referans kodu üretici
-function generateRefCode(): string {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
-  const bytes = new Uint8Array(8)
-  crypto.getRandomValues(bytes)
-  let code = "KPB-"
-  for (let i = 0; i < 8; i++) code += chars[bytes[i] % chars.length]
-  return code
-}
+import { generateRefCode } from "@/app/lib/ref-code"
 
 // Whitelist doğrulama
 const VALID_TURLER = ["İlk Görüşme", "Takip", "Acil"]
