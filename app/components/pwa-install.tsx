@@ -114,94 +114,132 @@ function Highlight({ children, round = false }: { children: ReactNode; round?: b
   )
 }
 
+// ─── iOS-realistic wrapper ─────────────────────────────────
+function IosMockup({ children }: { children: ReactNode }) {
+  return (
+    <div
+      className="mx-auto max-w-[300px] rounded-2xl overflow-hidden border border-[#d1d1d6] shadow-md"
+      style={{ fontFamily: "-apple-system, system-ui, sans-serif" }}
+    >
+      {children}
+    </div>
+  )
+}
+
 // ─── iOS Safari Steps ──────────────────────────────────────
 function IosSafariStep1() {
   return (
     <div className="space-y-3">
       <div className="text-center">
-        <h3 className="font-headline font-bold text-on-surface text-lg">Paylaş butonuna dokunun</h3>
-        <p className="text-on-surface-variant text-sm mt-1">Safari&apos;nin alt çubuğundaki paylaş simgesini bulun</p>
+        <h3 className="font-headline font-bold text-on-surface text-lg">Adım 1</h3>
+        <p className="text-on-surface-variant text-sm mt-1">Alt çubuktaki paylaş simgesine dokunun</p>
       </div>
 
-      <div className="mx-auto max-w-[280px]">
-        {/* Mini page preview */}
-        <div className="bg-surface-container rounded-2xl p-3 border border-outline-variant/30">
-          <div className="bg-white rounded-xl h-24 mb-3 flex items-center justify-center border border-outline-variant/20">
-            <div className="text-center">
-              <span className="material-symbols-outlined text-primary/20 text-3xl">language</span>
-              <p className="text-[10px] text-on-surface-variant/30 mt-0.5">kurumsalpsikoloji.com</p>
-            </div>
-          </div>
-
-          {/* Safari toolbar */}
-          <div className="bg-white rounded-xl px-3 py-2.5 flex items-center justify-between border border-outline-variant/20">
-            <span className="material-symbols-outlined text-on-surface-variant/30 text-lg">arrow_back_ios</span>
-            <span className="material-symbols-outlined text-on-surface-variant/30 text-lg">arrow_forward_ios</span>
-
-            <Highlight round>
-              <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
-                <span className="material-symbols-outlined text-primary text-lg">ios_share</span>
-              </div>
-            </Highlight>
-
-            <span className="material-symbols-outlined text-on-surface-variant/30 text-lg">menu_book</span>
-            <span className="material-symbols-outlined text-on-surface-variant/30 text-lg">filter_none</span>
+      <IosMockup>
+        {/* Simulated page area */}
+        <div className="bg-white h-28 flex items-center justify-center">
+          <div className="text-center opacity-40">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/icons/icon-96.png" alt="" className="w-10 h-10 mx-auto rounded-lg" />
+            <p className="text-[10px] text-[#8e8e93] mt-1">kurumsalpsikoloji.com</p>
           </div>
         </div>
 
-        <TapHint />
-      </div>
+        {/* Safari bottom bar — iOS 15+ style */}
+        <div className="bg-[#f2f2f7] border-t border-[#c6c6c8]">
+          {/* URL bar */}
+          <div className="mx-3 mt-2 mb-2 bg-white/80 rounded-xl px-3 py-1.5 text-center">
+            <span className="text-[13px] text-[#8e8e93]">kurumsalpsikoloji.com</span>
+          </div>
+          {/* Toolbar icons */}
+          <div className="flex items-center justify-around px-4 pb-2 pt-0.5">
+            <span className="material-symbols-outlined text-[#007aff] text-[22px]" style={{ fontVariationSettings: "'wght' 300" }}>
+              arrow_back_ios
+            </span>
+            <span className="material-symbols-outlined text-[#c7c7cc] text-[22px]" style={{ fontVariationSettings: "'wght' 300" }}>
+              arrow_forward_ios
+            </span>
+
+            {/* Share — highlighted */}
+            <Highlight round>
+              <div className="w-10 h-10 rounded-full bg-[#007aff]/10 flex items-center justify-center">
+                <span className="material-symbols-outlined text-[#007aff] text-[22px]" style={{ fontVariationSettings: "'wght' 300" }}>
+                  ios_share
+                </span>
+              </div>
+            </Highlight>
+
+            <span className="material-symbols-outlined text-[#007aff] text-[22px]" style={{ fontVariationSettings: "'wght' 300" }}>
+              menu_book
+            </span>
+            <span className="material-symbols-outlined text-[#007aff] text-[22px]" style={{ fontVariationSettings: "'wght' 300" }}>
+              filter_none
+            </span>
+          </div>
+        </div>
+      </IosMockup>
+
+      <TapHint />
     </div>
   )
 }
 
 function IosSafariStep2() {
-  const items = [
-    { icon: "content_copy", label: "Kopyala" },
-    { icon: "chat_bubble_outline", label: "Mesaj Gönder" },
+  const actions = [
+    { icon: "link", label: "Bağlantıyı Kopyala" },
     { icon: "add_box", label: "Ana Ekrana Ekle", active: true },
-    { icon: "bookmark_add", label: "Yer İmi Ekle" },
+    { icon: "bookmark_add", label: "Sık Kullanılanlara Ekle" },
+    { icon: "chrome_reader_mode", label: "Okuma Listesine Ekle" },
   ]
 
   return (
     <div className="space-y-3">
       <div className="text-center">
-        <h3 className="font-headline font-bold text-on-surface text-lg">&quot;Ana Ekrana Ekle&quot;ye dokunun</h3>
-        <p className="text-on-surface-variant text-sm mt-1">Listede aşağı kaydırarak bu seçeneği bulun</p>
+        <h3 className="font-headline font-bold text-on-surface text-lg">Adım 2</h3>
+        <p className="text-on-surface-variant text-sm mt-1">Listede &quot;Ana Ekrana Ekle&quot;yi bulup dokunun</p>
       </div>
 
-      <div className="mx-auto max-w-[280px]">
-        <div className="bg-white rounded-2xl border border-outline-variant/30 overflow-hidden shadow-sm">
-          {items.map((item, i) => (
-            <div
-              key={i}
-              className={`flex items-center gap-3 px-4 py-3 border-b border-outline-variant/15 last:border-0 transition-colors ${
-                item.active ? "bg-primary/8" : ""
-              }`}
-            >
-              {item.active ? (
+      <IosMockup>
+        {/* Share sheet grab handle */}
+        <div className="bg-[#f2f2f7] pt-2 pb-3 px-4">
+          <div className="w-9 h-1 rounded-full bg-[#c6c6c8] mx-auto mb-3" />
+
+          {/* Page info */}
+          <div className="flex items-center gap-2.5 mb-1">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/icons/icon-96.png" alt="" className="w-10 h-10 rounded-lg" />
+            <div className="min-w-0 flex-1">
+              <p className="text-[15px] font-medium text-black truncate">Kurumsal Psikoloji Birimi</p>
+              <p className="text-[13px] text-[#8e8e93] truncate">kurumsalpsikoloji.com</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Action list */}
+        <div className="bg-white">
+          {actions.map((item, i) => (
+            <div key={i} className={`relative ${item.active ? "bg-[#007aff]/8" : ""}`}>
+              {item.active && (
                 <Highlight>
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-primary/15 flex items-center justify-center">
-                      <span className="material-symbols-outlined text-primary text-lg">{item.icon}</span>
-                    </div>
-                    <span className="text-sm font-bold text-primary">{item.label}</span>
+                  <div className="flex items-center gap-3 px-4 py-3 w-full">
+                    <span className="material-symbols-outlined text-[#007aff] text-[22px]">{item.icon}</span>
+                    <span className="text-[15px] font-semibold text-[#007aff]">{item.label}</span>
                   </div>
                 </Highlight>
-              ) : (
-                <>
-                  <div className="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center">
-                    <span className="material-symbols-outlined text-on-surface-variant/50 text-lg">{item.icon}</span>
-                  </div>
-                  <span className="text-sm text-on-surface-variant/60">{item.label}</span>
-                </>
               )}
+              {!item.active && (
+                <div className="flex items-center gap-3 px-4 py-3">
+                  <span className="material-symbols-outlined text-[#8e8e93] text-[22px]">{item.icon}</span>
+                  <span className="text-[15px] text-black/70">{item.label}</span>
+                </div>
+              )}
+              {i < actions.length - 1 && <div className="ml-14 border-b border-[#c6c6c8]/40" />}
             </div>
           ))}
         </div>
+      </IosMockup>
 
-        <TapHint />
-      </div>
+      <TapHint />
     </div>
   )
 }
@@ -210,38 +248,37 @@ function IosSafariStep3() {
   return (
     <div className="space-y-3">
       <div className="text-center">
-        <h3 className="font-headline font-bold text-on-surface text-lg">&quot;Ekle&quot; butonuna dokunun</h3>
-        <p className="text-on-surface-variant text-sm mt-1">Uygulamayı ana ekranınıza eklemek için onaylayın</p>
+        <h3 className="font-headline font-bold text-on-surface text-lg">Adım 3</h3>
+        <p className="text-on-surface-variant text-sm mt-1">Sağ üstteki &quot;Ekle&quot; yazısına dokunun</p>
       </div>
 
-      <div className="mx-auto max-w-[280px]">
-        <div className="bg-white rounded-2xl border border-outline-variant/30 p-5 shadow-sm">
-          {/* App preview */}
-          <div className="flex items-center gap-3 mb-5">
-            <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center border border-primary/20">
-              <span className="material-symbols-outlined text-primary text-2xl filled">psychology</span>
-            </div>
-            <div>
-              <p className="font-bold text-on-surface text-sm">Psikoloji</p>
-              <p className="text-[11px] text-on-surface-variant">kurumsalpsikoloji.com</p>
-            </div>
-          </div>
-
-          {/* Buttons */}
-          <div className="flex gap-3">
-            <button type="button" className="flex-1 py-2.5 rounded-xl bg-surface-container text-on-surface-variant text-sm font-medium">
-              Vazgeç
-            </button>
-            <Highlight>
-              <button type="button" className="px-8 py-2.5 rounded-xl bg-primary text-on-primary text-sm font-bold">
-                Ekle
-              </button>
-            </Highlight>
-          </div>
+      <IosMockup>
+        {/* iOS Navigation bar — exact match of the screenshot */}
+        <div className="bg-[#f9f9f9] border-b border-[#c6c6c8]/60 px-4 py-3 flex items-center justify-between">
+          <span className="text-[17px] text-[#007aff]">Vazgeç</span>
+          <span className="text-[17px] font-semibold text-black">Ana Ekrana Ekle</span>
+          <Highlight>
+            <span className="text-[17px] font-semibold text-[#007aff] px-1">Ekle</span>
+          </Highlight>
         </div>
 
-        <TapHint />
-      </div>
+        {/* Content area — matches the real iOS dialog */}
+        <div className="bg-white px-4 pt-4 pb-6">
+          <div className="flex items-center gap-3 mb-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/icons/icon-192.png" alt="" className="w-14 h-14 rounded-[14px] shadow-sm border border-black/5" />
+            <div className="min-w-0 flex-1">
+              <p className="text-[17px] text-black">Psikoloji</p>
+              <p className="text-[13px] text-[#8e8e93] truncate">https://www.kurumsalpsikoloji.com/</p>
+            </div>
+          </div>
+          <p className="text-[13px] text-[#8e8e93] leading-relaxed">
+            Ana ekranınıza, bu web sitesine kolayca erişebilmeniz için bir simge eklenir.
+          </p>
+        </div>
+      </IosMockup>
+
+      <TapHint />
     </div>
   )
 }
@@ -442,9 +479,9 @@ const STEPS: Record<string, React.FC[]> = {
 }
 
 const SUBTITLES: Record<string, string> = {
-  "ios-safari": "Mağazaya gerek yok — 3 kolay adımda telefonunuza ekleyin",
-  android: "Mağazaya gerek yok — 2 adımda telefonunuza ekleyin",
-  desktop: "Tarayıcınızdan bilgisayarınıza yükleyin",
+  "ios-safari": "Mağazaya gerek yok — 3 kolay adımda telefonunuza indirin",
+  android: "Mağazaya gerek yok — 2 adımda telefonunuza indirin",
+  desktop: "Tarayıcınızdan bilgisayarınıza indirin",
 }
 
 // ─── Guide Modal ───────────────────────────────────────────
@@ -476,7 +513,7 @@ function PwaInstallGuide({ platform, onClose }: { platform: Platform; onClose: (
             <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
               <span className="material-symbols-outlined text-primary text-lg">install_mobile</span>
             </div>
-            <span className="font-headline font-bold text-on-surface text-sm">Uygulamayı Yükle</span>
+            <span className="font-headline font-bold text-on-surface text-sm">Uygulamayı İndir</span>
           </div>
           <button
             onClick={onClose}
@@ -562,7 +599,7 @@ export function PwaInstall() {
         {dismissed ? (
           <button
             onClick={handleButtonClick}
-            aria-label="Uygulamayı yükle"
+            aria-label="Uygulamayı indir"
             className="w-11 h-11 rounded-full bg-primary/80 text-on-primary shadow-md flex items-center justify-center active:scale-90 transition-all"
           >
             <span className="material-symbols-outlined text-lg">install_mobile</span>
@@ -571,11 +608,11 @@ export function PwaInstall() {
           <PulseGlow className="rounded-full">
             <button
               onClick={handleButtonClick}
-              aria-label="Uygulamayı yükle"
+              aria-label="Uygulamayı indir"
               className="flex items-center gap-1.5 pl-3 pr-4 py-2.5 rounded-full bg-primary text-on-primary shadow-lg shadow-black/10 active:scale-95 transition-all"
             >
               <span className="material-symbols-outlined text-lg">install_mobile</span>
-              <span className="text-xs font-bold tracking-wide">Yükle</span>
+              <span className="text-xs font-bold tracking-wide">Uygulamayı İndir</span>
             </button>
           </PulseGlow>
         )}
