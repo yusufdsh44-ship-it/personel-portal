@@ -1,4 +1,4 @@
-const CACHE_NAME = "psikoloji-v1"
+const CACHE_NAME = "psikoloji-v2"
 
 const PRECACHE_URLS = [
   "/",
