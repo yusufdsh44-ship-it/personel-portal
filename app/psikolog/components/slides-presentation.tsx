@@ -446,15 +446,12 @@ function Slide({ slide, index, isActive, peekOffset = 0 }: { slide: SlideData; i
   return (
     <section
       id={`slide-${slide.id}`}
-      className={`relative w-full h-[100dvh] overflow-hidden flex justify-center snap-start bg-gradient-to-br ${slide.accent} ${
+      className={`relative w-full h-[100dvh] overflow-hidden flex justify-center snap-start bg-gradient-to-br peek-transition ${slide.accent} ${
         slide.id === "ilk-adim" ? "items-start pt-[2dvh] lg:items-center lg:pt-0 lg:pb-20" : "items-center pb-20 lg:pb-20"
       }`}
       style={{
         scrollSnapAlign: "start",
         transform: peekOffset ? `translateY(${peekOffset}px)` : undefined,
-        transitionProperty: "transform",
-        transitionDuration: "1s",
-        transitionTimingFunction: "cubic-bezier(0.22, 0.61, 0.36, 1)",
       }}
     >
       {/* Video arka plan */}
