@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef, useCallback, type ReactNode } from "react"
+import { usePathname } from "next/navigation"
 import { motion, AnimatePresence, PulseGlow } from "./motion"
 
 // ─── Types ─────────────────────────────────────────────────
@@ -131,8 +132,8 @@ function IosSafariStep1() {
   return (
     <div className="space-y-3">
       <div className="text-center">
-        <h3 className="font-headline font-bold text-on-surface text-lg">Adım 1</h3>
-        <p className="text-on-surface-variant text-sm mt-1">Alt çubuktaki paylaş simgesine dokunun</p>
+        <h3 className="font-headline font-bold text-on-surface text-lg">Paylaş&apos;a dokunun</h3>
+        <p className="text-on-surface-variant text-sm mt-1">Alttaki bu simgeye dokunun</p>
       </div>
 
       <IosMockup>
@@ -195,8 +196,8 @@ function IosSafariStep2() {
   return (
     <div className="space-y-3">
       <div className="text-center">
-        <h3 className="font-headline font-bold text-on-surface text-lg">Adım 2</h3>
-        <p className="text-on-surface-variant text-sm mt-1">Listede &quot;Ana Ekrana Ekle&quot;yi bulup dokunun</p>
+        <h3 className="font-headline font-bold text-on-surface text-lg">&quot;Ana Ekrana Ekle&quot;ye dokunun</h3>
+        <p className="text-on-surface-variant text-sm mt-1">Listeden bu seçeneği bulun</p>
       </div>
 
       <IosMockup>
@@ -248,8 +249,8 @@ function IosSafariStep3() {
   return (
     <div className="space-y-3">
       <div className="text-center">
-        <h3 className="font-headline font-bold text-on-surface text-lg">Adım 3</h3>
-        <p className="text-on-surface-variant text-sm mt-1">Sağ üstteki &quot;Ekle&quot; yazısına dokunun</p>
+        <h3 className="font-headline font-bold text-on-surface text-lg">&quot;Ekle&quot;ye dokunun</h3>
+        <p className="text-on-surface-variant text-sm mt-1">Sağ üstteki mavi yazıya dokunun — bu kadar!</p>
       </div>
 
       <IosMockup>
@@ -288,8 +289,8 @@ function AndroidStep1() {
   return (
     <div className="space-y-3">
       <div className="text-center">
-        <h3 className="font-headline font-bold text-on-surface text-lg">Menü butonuna dokunun</h3>
-        <p className="text-on-surface-variant text-sm mt-1">Chrome&apos;un sağ üstündeki üç nokta menüsünü açın</p>
+        <h3 className="font-headline font-bold text-on-surface text-lg">Üç noktaya dokunun</h3>
+        <p className="text-on-surface-variant text-sm mt-1">Sağ üstteki menüyü açın</p>
       </div>
 
       <div className="mx-auto max-w-[280px]">
@@ -332,7 +333,7 @@ function AndroidStep2() {
     <div className="space-y-3">
       <div className="text-center">
         <h3 className="font-headline font-bold text-on-surface text-lg">&quot;Uygulamayı Yükle&quot;ye dokunun</h3>
-        <p className="text-on-surface-variant text-sm mt-1">Açılan menüden bu seçeneği bulun</p>
+        <p className="text-on-surface-variant text-sm mt-1">Bu seçeneğe dokunun — bu kadar!</p>
       </div>
 
       <div className="mx-auto max-w-[280px]">
@@ -372,8 +373,8 @@ function DesktopStep1() {
   return (
     <div className="space-y-3">
       <div className="text-center">
-        <h3 className="font-headline font-bold text-on-surface text-lg">Yükle simgesine tıklayın</h3>
-        <p className="text-on-surface-variant text-sm mt-1">Adres çubuğunun sağ tarafındaki simgeyi bulun</p>
+        <h3 className="font-headline font-bold text-on-surface text-lg">Bu simgeye tıklayın</h3>
+        <p className="text-on-surface-variant text-sm mt-1">Adres çubuğunun sağında</p>
       </div>
 
       <div className="mx-auto max-w-sm">
@@ -399,8 +400,8 @@ function DesktopStep2() {
   return (
     <div className="space-y-3">
       <div className="text-center">
-        <h3 className="font-headline font-bold text-on-surface text-lg">&quot;Yükle&quot; butonuna tıklayın</h3>
-        <p className="text-on-surface-variant text-sm mt-1">Açılan pencerede yüklemeyi onaylayın</p>
+        <h3 className="font-headline font-bold text-on-surface text-lg">&quot;Yükle&quot;ye tıklayın</h3>
+        <p className="text-on-surface-variant text-sm mt-1">Bu kadar!</p>
       </div>
 
       <div className="mx-auto max-w-[280px]">
@@ -452,11 +453,10 @@ function IosOtherWarning({ onClose }: { onClose: () => void }) {
       <div className="w-20 h-20 rounded-3xl bg-amber-50 flex items-center justify-center mx-auto">
         <span className="material-symbols-outlined text-amber-600 text-4xl">warning</span>
       </div>
-      <h3 className="font-headline font-bold text-on-surface text-lg">Safari Gerekli</h3>
+      <h3 className="font-headline font-bold text-on-surface text-lg">Safari&apos;den açın</h3>
       <p className="text-on-surface-variant text-sm leading-relaxed">
-        Uygulamayı yüklemek için <strong className="text-on-surface">Safari</strong> tarayıcısını
-        kullanmanız gerekmektedir. Aşağıdaki butona dokunarak adresi kopyalayın,
-        ardından Safari&apos;de yapıştırıp açın.
+        Bu özellik sadece <strong className="text-on-surface">Safari</strong>&apos;de çalışır.
+        Adresi kopyalayıp Safari&apos;de açın.
       </p>
       <button
         onClick={copyUrl}
@@ -472,16 +472,31 @@ function IosOtherWarning({ onClose }: { onClose: () => void }) {
 }
 
 // ─── Step Registry ─────────────────────────────────────────
-const STEPS: Record<string, React.FC[]> = {
-  "ios-safari": [IosSafariStep1, IosSafariStep2, IosSafariStep3],
-  android: [AndroidStep1, AndroidStep2],
-  desktop: [DesktopStep1, DesktopStep2],
+// ─── Final "Done" Step ────────────────────────────────────
+function DoneStep() {
+  return (
+    <div className="space-y-3">
+      <div className="text-center">
+        <h3 className="font-headline font-bold text-on-surface text-lg">Hazır!</h3>
+        <p className="text-on-surface-variant text-sm mt-1">Ana ekranınızda bu şekilde görünecek</p>
+      </div>
+      <div className="flex justify-center py-4">
+        <div className="flex flex-col items-center gap-2">
+          <div className="w-16 h-16 rounded-[18px] bg-white shadow-lg border border-black/5 flex items-center justify-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/icons/icon-192.png" alt="" className="w-14 h-14 rounded-[14px]" />
+          </div>
+          <span className="text-xs font-medium text-on-surface">Psikoloji</span>
+        </div>
+      </div>
+    </div>
+  )
 }
 
-const SUBTITLES: Record<string, string> = {
-  "ios-safari": "Mağazaya gerek yok — 3 kolay adımda telefonunuza indirin",
-  android: "Mağazaya gerek yok — 2 adımda telefonunuza indirin",
-  desktop: "Tarayıcınızdan bilgisayarınıza indirin",
+const STEPS: Record<string, React.FC[]> = {
+  "ios-safari": [IosSafariStep1, IosSafariStep2, IosSafariStep3, DoneStep],
+  android: [AndroidStep1, AndroidStep2, DoneStep],
+  desktop: [DesktopStep1, DesktopStep2, DoneStep],
 }
 
 // ─── Guide Modal ───────────────────────────────────────────
@@ -527,9 +542,6 @@ function PwaInstallGuide({ platform, onClose }: { platform: Platform; onClose: (
           <IosOtherWarning onClose={onClose} />
         ) : (
           <div className="space-y-4 mt-3">
-            {/* Subtitle */}
-            <p className="text-center text-xs text-on-surface-variant">{SUBTITLES[platform]}</p>
-
             {/* Progress dots */}
             {totalSteps > 1 && (
               <div className="flex justify-center gap-2">
@@ -584,23 +596,32 @@ function PwaInstallGuide({ platform, onClose }: { platform: Platform; onClose: (
 // ─── Main Component ────────────────────────────────────────
 export function PwaInstall() {
   const { platform, isStandalone, showGuide, dismissed, ready, handleButtonClick, closeGuide } = usePwaInstall()
+  const pathname = usePathname()
+  const isPsikolog = pathname === "/" || pathname === "/psikolog"
   const [expanded, setExpanded] = useState(true)
+  const [cyclesDone, setCyclesDone] = useState(false)
 
-  // Cycle: 4s expanded → 8s collapsed → repeat (always)
+  // Psikolog sayfasında 3 kez aç-kapa, sonra ikon
   useEffect(() => {
-    const collapse = setTimeout(() => setExpanded(false), 4000)
+    if (!isPsikolog) { setExpanded(false); setCyclesDone(true); return }
+    let count = 0
+    const collapse = setTimeout(() => setExpanded(false), 3000)
     const interval = setInterval(() => {
+      count++
+      if (count >= 3) { clearInterval(interval); setCyclesDone(true); return }
       setExpanded(true)
-      setTimeout(() => setExpanded(false), 4000)
-    }, 12000)
+      setTimeout(() => setExpanded(false), 3000)
+    }, 8000)
     return () => { clearTimeout(collapse); clearInterval(interval) }
-  }, [])
+  }, [isPsikolog])
 
-  if (!ready || isStandalone) return null
+  if (!ready || isStandalone || !isPsikolog) return null
+
+  const showText = expanded && !cyclesDone
 
   return (
     <>
-      {/* Floating install button — sağ üst */}
+      {/* Floating install button — sadece psikolog sayfasında */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -611,14 +632,14 @@ export function PwaInstall() {
           onClick={handleButtonClick}
           aria-label="Uygulamayı indir"
           className="h-11 rounded-full bg-primary text-on-primary shadow-lg shadow-black/10 flex items-center gap-1.5 overflow-hidden active:scale-95 transition-transform"
-          animate={{ width: expanded ? 180 : 44 }}
+          animate={{ width: showText ? 180 : 44 }}
           transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           <span className="material-symbols-outlined text-lg shrink-0 ml-[11px]">install_mobile</span>
           <motion.span
             className="text-xs font-bold tracking-wide whitespace-nowrap pr-4"
-            animate={{ opacity: expanded ? 1 : 0 }}
-            transition={{ duration: 0.4, delay: expanded ? 0.2 : 0, ease: "easeInOut" }}
+            animate={{ opacity: showText ? 1 : 0 }}
+            transition={{ duration: 0.3, delay: showText ? 0.15 : 0 }}
           >
             Uygulamayı İndir
           </motion.span>

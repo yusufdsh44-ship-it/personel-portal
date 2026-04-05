@@ -206,7 +206,7 @@ export default function SohbetPage() {
                     <span className="text-sm font-bold text-primary">YP</span>
                   </div>
                   <h1 className="text-lg font-headline font-bold text-on-surface tracking-tight">
-                    Yusuf Pamuk&apos;un Dijital İkizi
+                    Dijital İkizim
                   </h1>
                   <p className="text-on-surface-variant/60 text-[11px]">
                     Uzm. Kl. Psk. · Kurumsal Psikoloji Birimi
@@ -328,17 +328,17 @@ export default function SohbetPage() {
             <motion.div
               className={`relative flex items-end bg-surface-container-high/40 rounded-3xl border transition-colors ${
                 showAnimatedHint
-                  ? "border-primary/40"
+                  ? "border-primary/20"
                   : "border-outline-variant/20 focus-within:border-primary/30"
               }`}
               animate={showAnimatedHint ? {
                 boxShadow: [
-                  "0 0 0 0 rgba(41,104,104,0), 0 0 0 0 rgba(41,104,104,0)",
-                  "0 0 24px 4px rgba(41,104,104,0.15), 0 0 8px 2px rgba(41,104,104,0.08)",
-                  "0 0 0 0 rgba(41,104,104,0), 0 0 0 0 rgba(41,104,104,0)",
+                  "0 0 0 0 rgba(41,104,104,0)",
+                  "0 0 12px 2px rgba(41,104,104,0.08)",
+                  "0 0 0 0 rgba(41,104,104,0)",
                 ],
               } : { boxShadow: "0 0 0 0 rgba(41,104,104,0)" }}
-              transition={showAnimatedHint ? { duration: 2.5, repeat: Infinity, ease: "easeInOut" } : { duration: 0.3 }}
+              transition={showAnimatedHint ? { duration: 4, repeat: Infinity, ease: "easeInOut" } : { duration: 0.3 }}
             >
               {/* Animated typing placeholder — tıklanabilir */}
               {showAnimatedHint && (
@@ -404,7 +404,7 @@ export default function SohbetPage() {
               </button>
             </motion.div>
             <p className="text-center text-[10px] text-on-surface-variant/40 mt-1.5">
-              Dijital ikiz hatalar yapabilir.
+              Dijital ikiz hatalar yapabilir. · powered by <span className="font-semibold">Yusuf Pamuk</span>
             </p>
           </form>
         </div>

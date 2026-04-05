@@ -39,7 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="apple-mobile-web-app-title" content="Psikoloji" />
         <meta name="mobile-web-app-capable" content="yes" />
         <script dangerouslySetInnerHTML={{ __html: `
-          if ('serviceWorker' in navigator) {
+          if ('serviceWorker' in navigator && location.hostname !== 'localhost') {
             window.addEventListener('load', () => {
               navigator.serviceWorker.register('/sw.js')
             })
