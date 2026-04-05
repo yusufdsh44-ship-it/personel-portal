@@ -452,7 +452,9 @@ function Slide({ slide, index, isActive, peekOffset = 0 }: { slide: SlideData; i
       style={{
         scrollSnapAlign: "start",
         transform: peekOffset ? `translateY(${peekOffset}px)` : undefined,
-        transition: "transform 1s cubic-bezier(0.22, 0.61, 0.36, 1)",
+        transitionProperty: "transform",
+        transitionDuration: "1s",
+        transitionTimingFunction: "cubic-bezier(0.22, 0.61, 0.36, 1)",
       }}
     >
       {/* Video arka plan */}
