@@ -181,7 +181,12 @@ export default function SohbetPage() {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault()
-      send(input)
+      // Hint aktifse ve input boşsa → hint metnini gönder
+      if (!input.trim() && showAnimatedHint && hintText.length === ANIMATED_HINTS[hintIdx].length) {
+        send(ANIMATED_HINTS[hintIdx])
+      } else {
+        send(input)
+      }
     }
   }
 
@@ -335,16 +340,36 @@ export default function SohbetPage() {
               } : { boxShadow: "0 0 0 0 rgba(41,104,104,0)" }}
               transition={showAnimatedHint ? { duration: 2.5, repeat: Infinity, ease: "easeInOut" } : { duration: 0.3 }}
             >
-              {/* Animated typing placeholder */}
+              {/* Animated typing placeholder — tıklanabilir */}
               {showAnimatedHint && (
-                <div className="absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none text-sm text-primary/70 font-medium flex items-center">
-                  <span>{hintText}</span>
-                  <motion.span
-                    animate={{ opacity: [1, 0] }}
-                    transition={{ duration: 0.53, repeat: Infinity, repeatType: "reverse" }}
-                    className="inline-block w-[2px] h-[18px] bg-primary/70 ml-px rounded-full"
-                  />
-                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const full = ANIMATED_HINTS[hintIdx]
+                    setInput(full)
+                    setHintText("")
+                    setTimeout(() => textareaRef.current?.focus(), 50)
+                  }}
+                  className="absolute left-5 right-14 top-1/2 -translate-y-1/2 text-sm text-primary/70 font-medium flex items-center justify-between cursor-pointer hover:text-primary transition-colors"
+                >
+                  <span className="flex items-center">
+                    <span>{hintText}</span>
+                    <motion.span
+                      animate={{ opacity: [1, 0] }}
+                      transition={{ duration: 0.53, repeat: Infinity, repeatType: "reverse" }}
+                      className="inline-block w-[2px] h-[18px] bg-primary/70 ml-px rounded-full"
+                    />
+                  </span>
+                  {hintText.length === ANIMATED_HINTS[hintIdx].length && (
+                    <motion.span
+                      initial={{ opacity: 0, x: -5 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      className="text-[10px] text-primary/40 font-mono tracking-wider flex items-center gap-1 shrink-0"
+                    >
+                      tıkla veya <span className="material-symbols-outlined text-xs">keyboard_return</span>
+                    </motion.span>
+                  )}
+                </button>
               )}
               <textarea
                 ref={textareaRef}
@@ -367,8 +392,12 @@ export default function SohbetPage() {
                 </button>
               )}
               <button
-                type="submit"
-                disabled={!input.trim() || loading}
+                type="button"
+                onClick={() => {
+                  if (input.trim()) { send(input) }
+                  else if (showAnimatedHint && hintText.length === ANIMATED_HINTS[hintIdx].length) { send(ANIMATED_HINTS[hintIdx]) }
+                }}
+                disabled={(!input.trim() && !(showAnimatedHint && hintText.length === ANIMATED_HINTS[hintIdx].length)) || loading}
                 className="w-9 h-9 m-2 rounded-full bg-primary text-on-primary flex items-center justify-center hover:opacity-90 active:scale-95 transition-all disabled:opacity-20 shrink-0"
               >
                 <span className="material-symbols-outlined text-lg">arrow_upward</span>

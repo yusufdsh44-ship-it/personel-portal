@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { supabase } from "@/app/lib/supabase"
+import { isRateLimited, getClientIp } from "@/app/lib/rate-limit"
 
 function getWeekday(dateStr: string): number {
   const d = new Date(dateStr + "T12:00:00")
@@ -7,7 +8,12 @@ function getWeekday(dateStr: string): number {
   return d.getDay() === 0 ? 7 : d.getDay()
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const ip = getClientIp(request)
+  if (isRateLimited(ip, 20, 60_000)) {
+    return NextResponse.json({ error: "Çok fazla istek." }, { status: 429 })
+  }
+
   const { data: musaitlikRows } = await supabase.from("musaitlik").select("*").order("gun")
   const musaitlik = (musaitlikRows ?? []).map(m => ({
     id: m.id,

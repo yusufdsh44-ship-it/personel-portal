@@ -22,6 +22,10 @@ export function isRateLimited(ip: string, limit = 5, windowMs = 60_000): boolean
 }
 
 export function getClientIp(request: Request): string {
+  // Vercel sets x-real-ip from actual client (not spoofable)
+  const realIp = request.headers.get("x-real-ip")
+  if (realIp) return realIp.trim()
+  // Fallback: first entry in x-forwarded-for (less reliable)
   const forwarded = request.headers.get("x-forwarded-for")
   return forwarded?.split(",")[0]?.trim() || "unknown"
 }

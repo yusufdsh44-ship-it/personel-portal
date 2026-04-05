@@ -30,11 +30,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Ad soyad gereklidir." }, { status: 400 })
   }
 
+  const email = !anonim && typeof body.email === "string" ? body.email.trim() : null
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return NextResponse.json({ error: "Geçerli bir e-posta adresi giriniz." }, { status: 400 })
+  }
+
   const { error } = await supabase.from("mesajlar").insert({
     anonim,
-    ad_soyad: anonim ? null : String(body.adSoyad).trim(),
-    mudurluk: anonim ? null : body.mudurluk ? String(body.mudurluk).trim() : null,
-    email: anonim ? null : (body.email ? String(body.email).trim() : null),
+    ad_soyad: anonim ? null : String(body.adSoyad).trim().slice(0, 100),
+    mudurluk: anonim ? null : body.mudurluk ? String(body.mudurluk).trim().slice(0, 100) : null,
+    email,
     kategori,
     mesaj,
   })

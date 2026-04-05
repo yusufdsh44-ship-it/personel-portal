@@ -53,12 +53,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Geçersiz cevap değeri." }, { status: 400 })
   }
 
+  // Her gönderim ayrı satır — tüm geçmiş korunur
   const { error } = await supabase.from("test_sonuclari").insert({
     ad_soyad: adSoyad,
     mudurluk,
     test_turu: testTuru,
     cevaplar: body.cevaplar,
-    tarih: new Date().toISOString(), // Server timestamp — client tarihine güvenme
+    tarih: new Date().toISOString(),
     kaynak: "online",
   })
 
@@ -75,7 +76,7 @@ export async function POST(request: NextRequest) {
 
     try {
       await resend.emails.send({
-        from: "Sakin Sığınak <onboarding@resend.dev>",
+        from: "Kurumsal Psikoloji Birimi <onboarding@resend.dev>",
         to: NOTIFY_EMAIL,
         subject: `Yeni ${testTuru} Sonucu — ${adSoyad}`,
         html: `
@@ -88,7 +89,7 @@ export async function POST(request: NextRequest) {
               <tr><td style="padding:8px 0;color:#666">Tarih</td><td style="padding:8px 0">${tarihStr}</td></tr>
             </table>
             <p style="color:#999;font-size:12px;margin-top:24px;border-top:1px solid #eee;padding-top:12px">
-              Bu bildirim Sakin Sığınak personel portalı tarafından otomatik gönderilmiştir.
+              Bu bildirim Kurumsal Psikoloji Birimi personel portalı tarafından otomatik gönderilmiştir.
             </p>
           </div>
         `,

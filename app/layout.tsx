@@ -31,6 +31,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="tr" className={`${archivoBlack.variable} ${dmSans.variable} ${jetbrainsMono.variable} ${caveat.variable}`}>
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Psikoloji" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <script dangerouslySetInnerHTML={{ __html: `
+          if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+              navigator.serviceWorker.register('/sw.js')
+            })
+          }
+        `}} />
       </head>
       <body className="min-h-screen flex flex-col selection:bg-primary-container selection:text-on-primary-container">
         <main className="flex-1 pb-20">
