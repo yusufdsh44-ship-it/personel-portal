@@ -12,9 +12,6 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
   const router = useRouter()
   const test = TESTS[id]
 
-  const STORAGE_KEY = `test_progress_${id}`
-  const POS_KEY = `${STORAGE_KEY}_pos`
-
   const [current, setCurrent] = useState(0)
   const [answers, setAnswers] = useState<Record<number, number>>({})
   const [direction, setDirection] = useState(1)
@@ -23,25 +20,8 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
   const [controlWarning, setControlWarning] = useState(false)
   const autoAdvanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const { userInfo } = useTestUser()
-  const BRIEFING_KEY = `test_briefing_${id}`
   const [briefingDone, setBriefingDone] = useState(false)
   const [briefingStep, setBriefingStep] = useState(0)
-
-  // Hydrate state from localStorage on mount
-  useEffect(() => {
-    const savedPos = localStorage.getItem(POS_KEY)
-    if (savedPos) {
-      const pos = parseInt(savedPos)
-      setCurrent(pos < total ? pos : Math.max(0, total - 1))
-    }
-
-    try {
-      const savedAnswers = localStorage.getItem(STORAGE_KEY)
-      if (savedAnswers) setAnswers(JSON.parse(savedAnswers))
-    } catch { /* ignore */ }
-
-    if (localStorage.getItem(BRIEFING_KEY) === "1") setBriefingDone(true)
-  }, [POS_KEY, STORAGE_KEY, BRIEFING_KEY])
 
   const total = test?.questions.length ?? 0
 
@@ -94,17 +74,6 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
     return () => window.removeEventListener("keydown", handler)
   }, [test, done, submitting, goBack, goForward, select])
 
-  // Persist answers to localStorage
-  useEffect(() => {
-    if (Object.keys(answers).length > 0) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(answers))
-    }
-  }, [answers, STORAGE_KEY])
-
-  // Persist position
-  useEffect(() => {
-    localStorage.setItem(POS_KEY, String(current))
-  }, [current, POS_KEY])
 
   if (!test) {
     return (
@@ -118,7 +87,6 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
   const allAnswered = Object.keys(answers).length === total
 
   const dismissBriefing = () => {
-    localStorage.setItem(BRIEFING_KEY, "1")
     setBriefingDone(true)
   }
 
@@ -284,10 +252,6 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
 
       if (!res.ok) throw new Error("Kayıt hatası")
       setDone(true)
-
-      // Clean up test progress
-      localStorage.removeItem(STORAGE_KEY)
-      localStorage.removeItem(POS_KEY)
     } catch {
       alert("Bir hata oluştu. Lütfen tekrar deneyin.")
     } finally {
@@ -335,8 +299,6 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
 
   const selectedValue = answers[current]
   const selectedIdx = selectedValue !== undefined ? selectedValue - test.scale.min : -1
-  const savedCount = Object.keys(answers).length
-
   return (
     <>
       {/* Header */}
@@ -355,12 +317,6 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
             </h1>
           </div>
           <div className="flex items-center gap-3">
-            {savedCount > 0 && (
-              <span className="flex items-center gap-1 text-[10px] text-green-700 bg-green-50 px-2 py-1 rounded-full">
-                <span className="material-symbols-outlined text-xs">check_circle</span>
-                Kaydedildi
-              </span>
-            )}
             <span className="text-on-surface-variant text-xs font-medium tabular-nums">
               {current + 1} / {total}
             </span>
