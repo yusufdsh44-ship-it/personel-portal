@@ -608,7 +608,7 @@ export function PwaInstall() {
     const collapse = setTimeout(() => setExpanded(false), 3000)
     const interval = setInterval(() => {
       count++
-      if (count >= 3) { clearInterval(interval); setCyclesDone(true); return }
+      if (count >= 2) { clearInterval(interval); setCyclesDone(true); return }
       setExpanded(true)
       setTimeout(() => setExpanded(false), 3000)
     }, 8000)
@@ -626,7 +626,7 @@ export function PwaInstall() {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ type: "spring", stiffness: 300, damping: 20, delay: 1.5 }}
-        className="fixed top-4 right-4 z-40"
+        className="fixed top-4 right-4 z-[11]"
       >
         <motion.button
           onClick={handleButtonClick}

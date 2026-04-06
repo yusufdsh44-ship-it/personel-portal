@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import Link from "next/link"
+import { CountUp } from "../../components/motion"
 
 /* ═══════════════════════════════════════════
    SLIDE DATA
@@ -66,20 +67,29 @@ const SLIDES: SlideData[] = [
     barColor: "from-[#2a6070] via-[#4a90a0] to-[#6ab0c0]",
     bulletColor: "#6ab0c0",
     content: (
+      <p className="text-white/80 leading-[1.9]">
+        Belediyemizdeki <strong className="text-white font-semibold">2.238 personelin her biriyle bire bir tanışma görüşmesi</strong> gerçekleştiriyorum. Görüşme sırası müdürlüğünüze geldiğinde süreç üç adımda ilerliyor:
+      </p>
+    ),
+  },
+  {
+    id: "adimlar",
+    icon: "checklist",
+    label: "3 Adım",
+    title: "Üç Adımda Süreç",
+    accent: "from-[#1a3a4a] via-[#1e4d5e] to-[#2a6070]",
+    barColor: "from-[#2a6070] via-[#4a90a0] to-[#6ab0c0]",
+    bulletColor: "#6ab0c0",
+    content: (
       <div className="text-white/80 text-[13px] sm:text-sm leading-[1.65] sm:leading-[1.7]">
-        <p className="mb-3">Belediyemizdeki <strong className="text-white font-semibold">2.238 personelin her biriyle bire bir tanışma görüşmesi</strong> gerçekleştiriyorum. Görüşme sırası müdürlüğünüze geldiğinde süreç üç adımda ilerliyor:</p>
-
         {/* Timeline — animasyonlu dikey çizgi */}
         <div className="relative ml-3.5">
-          {/* Statik arka plan çizgi */}
           <div className="absolute left-[13px] top-3 bottom-3 w-px bg-[#6ab0c0]/15" />
-          {/* Animasyonlu dolma çizgisi */}
           <motion.div
             className="absolute left-[13px] top-3 bottom-3 w-px bg-[#6ab0c0]/60 origin-top"
             animate={{ scaleY: [0, 1] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", repeatDelay: 1 }}
           />
-          {/* Akan ışık noktası */}
           <motion.div
             className="absolute left-[11px] w-[7px] h-[7px] rounded-full bg-[#6ab0c0] shadow-[0_0_8px_2px_rgba(106,176,192,0.5)]"
             animate={{ top: ["12px", "calc(100% - 12px)"] }}
@@ -87,12 +97,11 @@ const SLIDES: SlideData[] = [
           />
 
           {[
-            { n: 1, text: <>İlk olarak <strong className="text-white font-semibold">KSE-53 ve BFI-2 testlerini</strong> <Pill href="/testler" icon="assignment">Testler</Pill> sayfasından online doldurabilir ya da PDF çıktısını alıp elden getirebilirsiniz. Testler görüşmenin temelini oluşturduğu için <strong className="text-white font-semibold">randevu öncesinde tamamlanması gerekmektedir</strong>.</> },
-            { n: 2, text: <>Testlerinizi tamamladıktan sonra <Pill href="/randevu" icon="event_available">Randevu</Pill> sayfasından veya <Pill href="/sohbet" icon="smart_toy">Chat</Pill> üzerinden dijital ikizimle konuşarak randevunuzu kolayca oluşturabilirsiniz.</> },
-            { n: 3, text: <><strong className="text-white font-semibold">Randevu sonrası size özel bir referans numarası</strong> verilecek — iptal, değişiklik ve size özel birçok özellik bu numara ile kullanılabilir. <strong className="text-white font-semibold">Lütfen saklayın.</strong></> },
+            { n: 1, title: "Testler", text: <><strong className="text-white font-semibold">KSE-53 ve BFI-2 testlerini</strong> <Pill href="/testler" icon="assignment">Testler</Pill> sayfasından online doldurabilir ya da PDF çıktısını alıp elden getirebilirsiniz. Testler görüşmenin temelini oluşturduğu için <strong className="text-white font-semibold">randevu öncesinde tamamlanması gerekmektedir</strong>.</> },
+            { n: 2, title: "Randevu", text: <>Testlerinizi tamamladıktan sonra <Pill href="/randevu" icon="event_available">Randevu</Pill> sayfasından veya <Pill href="/sohbet" icon="smart_toy">Chat</Pill> üzerinden dijital ikizimle konuşarak randevunuzu kolayca oluşturabilirsiniz.</> },
+            { n: 3, title: "Referans Kodu", text: <><strong className="text-white font-semibold">Randevu sonrası size özel bir referans numarası</strong> verilecek — iptal, değişiklik ve size özel birçok özellik bu numara ile kullanılabilir. <strong className="text-white font-semibold">Lütfen saklayın.</strong></> },
           ].map((step) => (
             <div key={step.n} className="relative flex gap-2.5 pb-2.5 last:pb-0">
-              {/* Numara — sırayla parlayan pulse */}
               <motion.div
                 className="relative z-10 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#6ab0c0] text-[#1a3a4a] flex items-center justify-center shrink-0 text-[10px] sm:text-[11px] font-bold font-mono -ml-0.5"
                 animate={{
@@ -113,7 +122,10 @@ const SLIDES: SlideData[] = [
               >
                 {step.n}
               </motion.div>
-              <span className="pt-0.5">{step.text}</span>
+              <div className="pt-0.5">
+                <span className="text-[#6ab0c0] text-[11px] font-bold uppercase tracking-widest block mb-1">{step.title}</span>
+                <span>{step.text}</span>
+              </div>
             </div>
           ))}
         </div>
@@ -161,8 +173,7 @@ const SLIDES: SlideData[] = [
     content: (
       <ul className="space-y-5 text-white/80 leading-[1.9]">
         {[
-          { icon: "note_alt", text: <>Talep eden personelimiz için <strong className="text-white font-semibold">kişisel bir özet</strong> hazırlıyorum: güçlü yönleriniz, birlikte belirlediğimiz adımlar ve size özel kitap önerileri. Böylece konuştuklarımız sadece o ana ait kalmıyor, <strong className="text-white font-semibold">her zaman sizde kalıyor</strong>. Devam etmek isterseniz de her şeyi baştan anlatmanıza gerek kalmıyor.</> },
-          { icon: "handshake", text: <>Bu özeti görüşmemizin ardından <strong className="text-white font-semibold">birkaç gün içinde elden teslim</strong> alabilirsiniz.</> },
+          { icon: "note_alt", text: <>Talep eden personelimiz için <strong className="text-white font-semibold">kişisel bir özet</strong> hazırlıyorum: kişilik yapınız, güçlü yönleriniz, sizi zorlayan ve besleyen dinamikler, birlikte belirlediğimiz adımlar ve size özel öneriler. Böylece konuştuklarımız sadece o ana ait kalmıyor, <strong className="text-white font-semibold">her zaman sizde kalıyor</strong>. Devam etmek isterseniz de her şeyi baştan anlatmanıza gerek kalmıyor.</> },
         ].map((item, i) => (
           <motion.li key={i} className="flex gap-3 items-start"
             initial={{ opacity: 0, x: -20 }}
@@ -328,7 +339,7 @@ const SLIDES: SlideData[] = [
     id: "kapanis",
     icon: "psychology",
     label: "Kapanış",
-    title: "Görüşmek dileğiyle.",
+    title: "Görüşmek dileğiyle...",
     accent: "from-[#2a1810] via-[#3d2518] to-[#5a3420]",
     barColor: "from-[#b5694d] via-[#c47a4a] to-[#d4956a]",
     bulletColor: "#d4956a",
@@ -413,6 +424,52 @@ function NavDots({ current, total, onGo }: { current: number; total: number; onG
 }
 
 /* ═══════════════════════════════════════════
+   HANDWRITE — el yazısı efekti
+   ═══════════════════════════════════════════ */
+
+function Handwrite({ text, active, reduced, className = "" }: { text: string; active: boolean; reduced: boolean | null; className?: string }) {
+  const [count, setCount] = useState(reduced ? text.length : 0)
+
+  useEffect(() => {
+    if (!active || reduced) { setCount(text.length); return }
+    setCount(0)
+    let i = 0
+    const step = () => {
+      i++
+      setCount(i)
+      if (i < text.length) {
+        const ch = text[i - 1]
+        const pause = ch === "," || ch === "." ? 400 : ch === " " ? 150 : 100 + Math.random() * 50
+        setTimeout(step, pause)
+      }
+    }
+    setTimeout(step, 500)
+  }, [active, text, reduced])
+
+  return (
+    <h2
+      className={`font-bold text-3xl sm:text-5xl text-white tracking-tight ${className}`}
+      style={{ fontFamily: "var(--font-caveat), cursive" }}
+    >
+      {text.split("").map((ch, i) => (
+        <span
+          key={i}
+          className="inline-block transition-all duration-500"
+          style={{
+            opacity: i < count ? 1 : 0,
+            transform: i < count ? "translateY(0) scale(1)" : "translateY(8px) scale(0.8)",
+            transitionTimingFunction: "cubic-bezier(0.22, 0.61, 0.36, 1)",
+            ...(ch === " " ? { width: "0.25em" } : {}),
+          }}
+        >
+          {ch === " " ? "\u00A0" : ch}
+        </span>
+      ))}
+    </h2>
+  )
+}
+
+/* ═══════════════════════════════════════════
    SLIDE COMPONENT
    ═══════════════════════════════════════════ */
 
@@ -450,7 +507,7 @@ function Slide({ slide, index, isActive, peekOffset = 0 }: { slide: SlideData; i
     <section
       id={`slide-${slide.id}`}
       className={`relative w-full h-[100dvh] overflow-hidden flex justify-center snap-start bg-gradient-to-br peek-transition ${slide.accent} ${
-        slide.id === "ilk-adim" ? "items-start pt-[2dvh] lg:items-center lg:pt-0 lg:pb-20" : "items-center pb-20 lg:pb-20"
+        "items-center pb-28 sm:pb-20"
       }`}
       style={{
         scrollSnapAlign: "start",
@@ -525,24 +582,28 @@ function Slide({ slide, index, isActive, peekOffset = 0 }: { slide: SlideData; i
 
         {/* Title */}
         {slide.title && (
-          <motion.h2
-            initial={reduced ? {} : { opacity: 0, y: 20 }}
-            animate={isActive ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className={`tracking-tight mb-3 sm:mb-6 ${
-              isLight ? "text-[#2a1810]" : "text-white"
-            } ${isClosing ? "font-bold text-2xl sm:text-3xl" : slide.id === "giris" ? "font-bold text-3xl sm:text-5xl" : "font-display text-xl sm:text-4xl"}`}
-            style={slide.id === "giris" || isClosing ? { fontFamily: "var(--font-caveat), cursive" } : undefined}
-          >
-            {slide.title}
-          </motion.h2>
+          slide.id === "giris" || slide.id === "kapanis" ? (
+            <Handwrite text={slide.title} active={isActive} reduced={reduced} className="mb-3 sm:mb-6" />
+          ) : (
+            <motion.h2
+              initial={reduced ? {} : { opacity: 0, y: 20 }}
+              animate={isActive ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className={`tracking-tight mb-3 sm:mb-6 ${
+                isLight ? "text-[#2a1810]" : "text-white"
+              } ${isClosing ? "font-bold text-2xl sm:text-3xl" : "font-display text-xl sm:text-4xl"}`}
+              style={isClosing ? { fontFamily: "var(--font-caveat), cursive" } : undefined}
+            >
+              {slide.title}
+            </motion.h2>
+          )
         )}
 
         {/* Body */}
         <motion.div
           initial={reduced ? {} : { opacity: 0, y: 20 }}
           animate={isActive ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.35 }}
+          transition={{ duration: 0.6, delay: slide.id === "giris" ? 3.5 : 0.35 }}
           className="text-sm sm:text-base lg:text-lg"
         >
           {slide.content}

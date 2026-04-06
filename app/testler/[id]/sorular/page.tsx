@@ -1,6 +1,6 @@
 "use client"
 
-import { use, useState, useCallback, useEffect } from "react"
+import { use, useState, useCallback, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { TESTS } from "@/app/lib/test-data"
@@ -21,6 +21,7 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
   const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
   const [controlWarning, setControlWarning] = useState(false)
+  const autoAdvanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const { userInfo } = useTestUser()
   const BRIEFING_KEY = `test_briefing_${id}`
   const [briefingDone, setBriefingDone] = useState(false)
@@ -50,15 +51,18 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
     setAnswers(prev => ({ ...prev, [current]: value }))
 
     if (current < total - 1) {
-      setTimeout(() => {
+      if (autoAdvanceTimer.current) clearTimeout(autoAdvanceTimer.current)
+      autoAdvanceTimer.current = setTimeout(() => {
+        autoAdvanceTimer.current = null
         setDirection(1)
-        setCurrent(prev => prev + 1)
+        setCurrent(prev => Math.min(prev + 1, total - 1))
       }, 350)
     }
   }, [current, total, test])
 
   const goBack = useCallback(() => {
     if (current > 0) {
+      if (autoAdvanceTimer.current) { clearTimeout(autoAdvanceTimer.current); autoAdvanceTimer.current = null }
       setDirection(-1)
       setCurrent(prev => prev - 1)
       setControlWarning(false)
@@ -67,8 +71,9 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
 
   const goForward = useCallback(() => {
     if (current < total - 1 && answers[current] !== undefined) {
+      if (autoAdvanceTimer.current) { clearTimeout(autoAdvanceTimer.current); autoAdvanceTimer.current = null }
       setDirection(1)
-      setCurrent(prev => prev + 1)
+      setCurrent(prev => Math.min(prev + 1, total - 1))
       setControlWarning(false)
     }
   }, [current, total, answers])
