@@ -3,8 +3,12 @@ import { GoogleGenerativeAI, type Content, type Tool, SchemaType } from "@google
 import { supabase } from "@/app/lib/supabase"
 import { isRateLimited, getClientIp } from "@/app/lib/rate-limit"
 import { generateRefCode } from "@/app/lib/ref-code"
+import { verifyTurnstile } from "@/app/lib/security/captcha"
+import { chatRequestSchema } from "@/app/lib/security/schemas"
 
-const MODEL = "gemini-2.5-flash" // stable, function calling destekli
+const MODEL = "gemini-2.5-flash"
+
+const NO_STORE = { "Cache-Control": "no-store" } as const
 
 function getSystemPrompt() {
   const now = new Date()
@@ -448,41 +452,54 @@ async function executeTool(name: string, args: Record<string, unknown>): Promise
 
 export async function POST(request: NextRequest) {
   const ip = getClientIp(request)
-  if (isRateLimited(ip, 10, 60_000)) {
-    return NextResponse.json({ error: "Çok fazla istek. Lütfen bir dakika bekleyin." }, { status: 429 })
+
+  // Sliding-window rate limit: 5/min + 50/day
+  if (isRateLimited(`chat:m:${ip}`, 5, 60_000)) {
+    return NextResponse.json(
+      { error: "Çok fazla istek. Lütfen bir dakika bekleyin." },
+      { status: 429, headers: NO_STORE },
+    )
+  }
+  if (isRateLimited(`chat:d:${ip}`, 50, 86_400_000)) {
+    return NextResponse.json(
+      { error: "Günlük istek limitine ulaştınız. Yarın tekrar deneyebilirsiniz." },
+      { status: 429, headers: NO_STORE },
+    )
+  }
+
+  // Parse + Zod validation
+  let body: unknown
+  try {
+    body = await request.json()
+  } catch {
+    return NextResponse.json({ error: "Geçersiz istek." }, { status: 400, headers: NO_STORE })
+  }
+
+  const parsed = chatRequestSchema.safeParse(body)
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Geçersiz istek formatı." }, { status: 400, headers: NO_STORE })
+  }
+
+  // CAPTCHA verification (skipped when env not configured)
+  const captchaOk = await verifyTurnstile(parsed.data.turnstileToken ?? "")
+  if (!captchaOk) {
+    return NextResponse.json({ error: "Doğrulama başarısız." }, { status: 403, headers: NO_STORE })
   }
 
   const apiKey = process.env.GEMINI_API_KEY
   if (!apiKey) {
     console.error("[chat] GEMINI_API_KEY is not set")
-    return NextResponse.json({ error: "Şu an yanıt veremiyorum. Lütfen biraz sonra tekrar deneyin." }, { status: 500 })
+    return NextResponse.json({ error: "Şu an yanıt veremiyorum." }, { status: 500, headers: NO_STORE })
   }
 
-  let body: { messages: Array<{ role: string; content: string }> }
-  try {
-    body = await request.json()
-  } catch {
-    return NextResponse.json({ error: "Geçersiz istek." }, { status: 400 })
-  }
-
-  if (!body.messages || !Array.isArray(body.messages) || body.messages.length === 0) {
-    return NextResponse.json({ error: "Mesaj gerekli." }, { status: 400 })
-  }
-
-  // Validate and sanitize message history
-  const validMessages = body.messages
-    .filter(m => m && typeof m.content === "string" && m.content.trim().length > 0)
-    .slice(-30) // Max 30 mesaj — API abuse önlemi
-  if (validMessages.length === 0) {
-    return NextResponse.json({ error: "Mesaj içeriği boş." }, { status: 400 })
-  }
+  const validMessages = parsed.data.messages
 
   const history: Content[] = validMessages.slice(0, -1).map(m => ({
     role: m.role === "user" ? "user" : "model",
-    parts: [{ text: String(m.content) }],
+    parts: [{ text: m.content }],
   }))
 
-  const lastMessage = String(validMessages[validMessages.length - 1].content)
+  const lastMessage = validMessages[validMessages.length - 1].content
   const genAI = new GoogleGenerativeAI(apiKey)
 
   try {
@@ -541,14 +558,13 @@ export async function POST(request: NextRequest) {
     let text = ""
     try { text = response.text?.() ?? "" } catch { text = "" }
     const finalMessage = text || lastToolResult || "İşleminiz gerçekleştirildi."
-    return NextResponse.json({ message: finalMessage, model: MODEL })
+    return NextResponse.json({ message: finalMessage }, { headers: NO_STORE })
 
   } catch (err: unknown) {
-    const errMsg = err instanceof Error ? err.message : String(err)
-    console.error(`[chat] ${MODEL} error:`, errMsg)
+    console.error(`[chat] error:`, err instanceof Error ? err.message : String(err))
     return NextResponse.json(
       { error: "Şu an yanıt veremiyorum. Lütfen tekrar deneyin." },
-      { status: 500 }
+      { status: 500, headers: NO_STORE },
     )
   }
 }

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { TESTS } from "@/app/lib/test-data"
 import { SuccessCheck } from "@/app/components/motion"
+import { useTestUser } from "../test-context"
 
 export default function TestSorularPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
@@ -20,9 +21,17 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
   const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
   const [controlWarning, setControlWarning] = useState(false)
+  const { userInfo } = useTestUser()
   const BRIEFING_KEY = `test_briefing_${id}`
   const [briefingDone, setBriefingDone] = useState(false)
   const [briefingStep, setBriefingStep] = useState(0)
+
+  // Sayfa yenilendiginde PII context bos olur — bilgi girmesi icin geri yonlendir
+  useEffect(() => {
+    if (!userInfo.adSoyad) {
+      router.replace(`/testler/${id}`)
+    }
+  }, [userInfo.adSoyad, id, router])
 
   // Hydrate state from localStorage on mount
   useEffect(() => {
@@ -243,8 +252,6 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
 
     setSubmitting(true)
 
-    const adSoyad = sessionStorage.getItem("test_adSoyad") || ""
-    const mudurluk = sessionStorage.getItem("test_mudurluk") || ""
     const unanswered = Array.from({ length: total }, (_, i) => i).filter(i => answers[i] === undefined)
     if (unanswered.length > 0) {
       setDirection(1)
@@ -260,8 +267,8 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          adSoyad,
-          mudurluk,
+          adSoyad: userInfo.adSoyad,
+          mudurluk: userInfo.mudurluk,
           testTuru: test.name,
           cevaplar,
           tarih: new Date().toISOString(),
@@ -271,9 +278,7 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
       if (!res.ok) throw new Error("Kayıt hatası")
       setDone(true)
 
-      // Clean up all storage
-      sessionStorage.removeItem("test_adSoyad")
-      sessionStorage.removeItem("test_mudurluk")
+      // Clean up test progress
       localStorage.removeItem(STORAGE_KEY)
       localStorage.removeItem(POS_KEY)
     } catch {

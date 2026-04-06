@@ -6,12 +6,14 @@ import { Header } from "../../components/header"
 import { FadeIn, FadeInView, PulseGlow, motion } from "../../components/motion"
 import { TESTS, MUDURLUKLER } from "@/app/lib/test-data"
 import { MudurlukSelect } from "@/app/components/mudurluk-select"
+import { useTestUser } from "./test-context"
 
 export default function TestGirisPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
   const router = useRouter()
   const test = TESTS[id]
 
+  const { setUserInfo } = useTestUser()
   const [adSoyad, setAdSoyad] = useState("")
   const [mudurluk, setMudurluk] = useState("")
   const [error, setError] = useState("")
@@ -37,8 +39,7 @@ export default function TestGirisPage({ params }: { params: Promise<{ id: string
       return
     }
     setError("")
-    sessionStorage.setItem("test_adSoyad", adSoyad.trim())
-    sessionStorage.setItem("test_mudurluk", mudurluk)
+    setUserInfo({ adSoyad: adSoyad.trim(), mudurluk })
     router.push(`/testler/${id}/sorular`)
   }
 

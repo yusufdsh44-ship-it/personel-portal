@@ -1,9 +1,22 @@
 "use client"
 
 import { useState, useRef, useEffect, useCallback } from "react"
+import Script from "next/script"
 import Markdown from "react-markdown"
 import { Header } from "../components/header"
 import { motion } from "../components/motion"
+
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (container: string | HTMLElement, opts: Record<string, unknown>) => string
+      reset: (widgetId: string) => void
+      remove: (widgetId: string) => void
+    }
+  }
+}
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""
 
 interface Message {
   role: "user" | "assistant"
@@ -22,9 +35,9 @@ const WORKFLOWS = [
   },
   {
     icon: "description",
-    label: "Seans Raporu",
-    desc: "Ref kodunla görüşme sonrası raporunu al",
-    example: "Seans raporumu görmek istiyorum",
+    label: "Görüşme Özeti",
+    desc: "Görüşme özetimi PDF olarak istiyorum",
+    example: "Görüşme özetimi PDF olarak istiyorum",
     accent: "bg-emerald-50 text-emerald-700",
   },
   {
@@ -43,14 +56,6 @@ const WORKFLOWS = [
   },
 ]
 
-const QUICK_PROMPTS = [
-  "Süreç nasıl işliyor?",
-  "Görüşme sonrası ne olacak?",
-  "Gizlilik nasıl sağlanıyor?",
-  "Referans kodum ne işe yarar?",
-  "Psikolog hakkında bilgi",
-  "Testleri neden dolduruyorum?",
-]
 
 const ANIMATED_HINTS = [
   "Randevu almak istiyorum",
@@ -70,6 +75,25 @@ export default function SohbetPage() {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   const isEmpty = messages.length === 0
+
+  // Turnstile CAPTCHA (invisible mode)
+  const turnstileTokenRef = useRef("")
+  const turnstileWidgetRef = useRef("")
+  const turnstileContainerRef = useRef<HTMLDivElement>(null)
+
+  const initTurnstile = useCallback(() => {
+    if (!TURNSTILE_SITE_KEY || !window.turnstile || !turnstileContainerRef.current) return
+    if (turnstileWidgetRef.current) return // already initialized
+    turnstileWidgetRef.current = window.turnstile.render(turnstileContainerRef.current, {
+      sitekey: TURNSTILE_SITE_KEY,
+      size: "invisible",
+      callback: (token: string) => { turnstileTokenRef.current = token },
+    })
+  }, [])
+
+  useEffect(() => {
+    if (TURNSTILE_SITE_KEY && window.turnstile) initTurnstile()
+  }, [initTurnstile])
 
   const [hintIdx, setHintIdx] = useState(0)
   const [hintText, setHintText] = useState("")
@@ -142,7 +166,10 @@ export default function SohbetPage() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: newMessages.map(m => ({ role: m.role, content: m.content })) }),
+        body: JSON.stringify({
+          messages: newMessages.map(m => ({ role: m.role, content: m.content })),
+          ...(turnstileTokenRef.current ? { turnstileToken: turnstileTokenRef.current } : {}),
+        }),
         signal: controller.signal,
       })
       if (!res.ok) {
@@ -169,6 +196,10 @@ export default function SohbetPage() {
     } finally {
       clearTimeout(timeoutId)
       setLoading(false)
+      // Reset Turnstile for next request
+      if (turnstileWidgetRef.current && window.turnstile) {
+        window.turnstile.reset(turnstileWidgetRef.current)
+      }
       setTimeout(() => textareaRef.current?.focus(), 100)
     }
   }, [messages, loading])
@@ -193,15 +224,23 @@ export default function SohbetPage() {
   return (
     <>
       <Header />
+      {/* Turnstile invisible widget */}
+      <div ref={turnstileContainerRef} className="hidden" />
+      {TURNSTILE_SITE_KEY && (
+        <Script
+          src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+          onReady={initTurnstile}
+        />
+      )}
       <div className="fixed inset-0 flex flex-col pt-16 pb-24 z-10 bg-surface">
         {/* Messages area */}
         <div ref={scrollRef} className="flex-1 overflow-y-auto">
           <div className="max-w-3xl mx-auto px-4 py-6">
             {/* Empty state — viewport'a sigacak, scroll yok */}
             {isEmpty && (
-              <div className="flex flex-col items-center justify-between h-full">
+              <div className="flex flex-col items-center justify-center h-full">
                 {/* Header */}
-                <div className="text-center pt-6 pb-2">
+                <div className="text-center pb-4">
                   <div className="inline-flex items-center gap-2 mb-2">
                     <span className="material-symbols-outlined text-primary/40 text-lg">smart_toy</span>
                   </div>
@@ -231,21 +270,8 @@ export default function SohbetPage() {
                     ))}
                   </div>
 
-                  {/* Quick prompts */}
-                  <div className="flex gap-1.5 mt-4 overflow-x-auto no-scrollbar pb-1">
-                    {QUICK_PROMPTS.map(item => (
-                      <button key={item} onClick={() => send(item)}
-                        className="text-[11px] px-3.5 py-1.5 rounded-full border border-outline-variant/10 text-on-surface-variant/70 hover:bg-surface-container-high/40 hover:border-outline-variant/20 whitespace-nowrap shrink-0 active:scale-95 transition-all">
-                        {item}
-                      </button>
-                    ))}
-                  </div>
                 </div>
 
-                <p className="text-[10px] text-on-surface-variant/30 flex items-center gap-1 pb-1">
-                  <span className="material-symbols-outlined text-[10px] filled">verified_user</span>
-                  Tüm konuşmalar gizlidir.
-                </p>
               </div>
             )}
 
@@ -322,7 +348,7 @@ export default function SohbetPage() {
         </div>
 
         {/* Input bar — pinned bottom */}
-        <div className="shrink-0 px-4 pb-5 pt-2 bg-surface">
+        <div className="shrink-0 px-4 pb-2 pt-2 bg-surface">
           <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
             <motion.div
               className={`relative flex items-end bg-surface-container-high/40 rounded-3xl border transition-colors ${
@@ -365,7 +391,7 @@ export default function SohbetPage() {
                       animate={{ opacity: 1, x: 0 }}
                       className="text-[10px] text-primary/40 font-mono tracking-wider flex items-center gap-1 shrink-0"
                     >
-                      tıkla veya <span className="material-symbols-outlined text-xs">keyboard_return</span>
+                      gönder
                     </motion.span>
                   )}
                 </button>
@@ -402,7 +428,7 @@ export default function SohbetPage() {
                 <span className="material-symbols-outlined text-lg">arrow_upward</span>
               </button>
             </motion.div>
-            <p className="text-center text-[10px] text-on-surface-variant/40 mt-1.5">
+            <p className="text-center text-[10px] text-on-surface-variant/40 mt-1">
               Dijital ikiz hatalar yapabilir. · powered by <span className="font-semibold">Yusuf Pamuk</span>
             </p>
           </form>

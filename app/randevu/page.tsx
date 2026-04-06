@@ -20,17 +20,6 @@ type TestDurum = "" | "online" | "kagit"
 
 interface Musaitlik { gun: number; baslangic: string; bitis: string; slotDk: number; aktif: boolean }
 
-function makeSlots(b: string, e: string, dk: number): string[] {
-  const s: string[] = []
-  let m = b.split(":").reduce((a,b)=>a*60+Number(b),0)
-  const end = e.split(":").reduce((a,b)=>a*60+Number(b),0)
-  while (m + dk <= end) {
-    s.push(`${String(Math.floor(m/60)).padStart(2,"0")}:${String(m%60).padStart(2,"0")}`)
-    m += dk
-  }
-  return s
-}
-
 export default function RandevuPage() {
   const [ad, setAd] = useState("")
   const [unvan, setUnvan] = useState<"" | "Başkan" | "Başkan Yardımcısı" | "Müdür">("")
@@ -46,15 +35,26 @@ export default function RandevuPage() {
   const [refCode, setRefCode] = useState("")
   const [err, setErr] = useState("")
   const [musaitlik, setMusaitlik] = useState<Musaitlik[]>([])
-  const [dolu, setDolu] = useState<Set<string>>(new Set())
   const [loading, setLoading] = useState(true)
+  const [availableSlots, setAvailableSlots] = useState<string[]>([])
+  const [slotsLoading, setSlotsLoading] = useState(false)
 
   useEffect(() => {
     fetch("/api/musaitlik").then(r => r.json()).then(d => {
       setMusaitlik(d.musaitlik || [])
-      setDolu(new Set(d.doluSlotlar || []))
     }).catch(() => setErr("Takvim yüklenemedi. Lütfen sayfayı yenileyin veya Dahili 4405'i arayın.")).finally(() => setLoading(false))
   }, [])
+
+  // Secilen tarih icin musait slotlari getir
+  useEffect(() => {
+    if (!date) { setAvailableSlots([]); return }
+    setSlotsLoading(true)
+    fetch(`/api/musaitlik?tarih=${date}`)
+      .then(r => r.json())
+      .then(d => setAvailableSlots(d.musaitSlotlar || []))
+      .catch(() => setAvailableSlots([]))
+      .finally(() => setSlotsLoading(false))
+  }, [date])
 
   const days = useMemo(() => {
     const r: Date[] = []
@@ -67,11 +67,7 @@ export default function RandevuPage() {
     return r
   }, [musaitlik])
 
-  const slots = useMemo(() => {
-    if (!date) return []
-    const c = musaitlik.find(m => m.gun === getDay(new Date(date)))
-    return c?.aktif ? makeSlots(c.baslangic, c.bitis, c.slotDk) : []
-  }, [date, musaitlik])
+  const slots = availableSlots
 
   const turItem = TURLER.find(t => t.value === tur)
   const turLabel = turItem?.label ?? ""
@@ -335,22 +331,23 @@ export default function RandevuPage() {
               variants={{ show: { transition: { staggerChildren: 0.03 } }, hidden: {} }}
               initial="hidden" animate="show" key={date}
             >
-              {slots.map(s => {
-                const busy = dolu.has(`${date}_${s}`)
+              {slotsLoading && Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} className="py-3 px-1 rounded-xl bg-surface-container animate-pulse h-11" />
+              ))}
+              {!slotsLoading && slots.map(s => {
                 const a = time === s
                 return (
-                  <motion.button key={s} type="button" disabled={busy} onClick={() => setTime(s)}
+                  <motion.button key={s} type="button" onClick={() => setTime(s)}
                     variants={{ hidden: { opacity: 0, scale: 0.8 }, show: { opacity: 1, scale: 1 } }}
-                    whileTap={!busy ? { scale: 0.9 } : undefined}
+                    whileTap={{ scale: 0.9 }}
                     className={`py-3 px-1 rounded-xl text-sm font-medium transition-colors ${
-                      busy ? "bg-surface-container-high text-outline-variant cursor-not-allowed line-through"
-                        : a ? "bg-primary text-on-primary font-bold shadow-lg shadow-black/5"
+                      a ? "bg-primary text-on-primary font-bold shadow-lg shadow-black/5"
                         : "bg-surface-lowest border border-outline-variant/10 text-on-surface hover:bg-primary-container"
                     }`}>{s}</motion.button>
                 )
               })}
             </motion.div>
-            {slots.length === 0 && <p className="text-sm text-on-surface-variant text-center py-6">Bu gün için müsait saat yok.</p>}
+            {!slotsLoading && slots.length === 0 && <p className="text-sm text-on-surface-variant text-center py-6">Bu gün için müsait saat yok.</p>}
           </motion.section>
         )}
         </AnimatePresence>
