@@ -15,13 +15,16 @@ interface TestUserContextType {
 const TestUserContext = createContext<TestUserContextType | null>(null)
 
 export function TestUserProvider({ children }: { children: ReactNode }) {
-  const [userInfo, setUserInfo] = useState<TestUserInfo>({ adSoyad: "", mudurluk: "" })
-
-  useEffect(() => {
-    // Geriye donuk temizlik: eski surumden kalan PII key'lerini sil
+  const [userInfo, setUserInfo] = useState<TestUserInfo>(() => {
+    // Eski surumden kalan sessionStorage degerlerini context'e tasi (tek seferlik migrasyon)
+    if (typeof window === "undefined") return { adSoyad: "", mudurluk: "" }
+    const legacyAd = sessionStorage.getItem("test_adSoyad") || ""
+    const legacyMud = sessionStorage.getItem("test_mudurluk") || ""
+    // Tasi ve sil
     sessionStorage.removeItem("test_adSoyad")
     sessionStorage.removeItem("test_mudurluk")
-  }, [])
+    return { adSoyad: legacyAd, mudurluk: legacyMud }
+  })
 
   return (
     <TestUserContext.Provider value={{ userInfo, setUserInfo }}>

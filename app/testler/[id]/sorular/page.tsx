@@ -26,13 +26,6 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
   const [briefingDone, setBriefingDone] = useState(false)
   const [briefingStep, setBriefingStep] = useState(0)
 
-  // Sayfa yenilendiginde PII context bos olur — bilgi girmesi icin geri yonlendir
-  useEffect(() => {
-    if (!userInfo.adSoyad) {
-      router.replace(`/testler/${id}`)
-    }
-  }, [userInfo.adSoyad, id, router])
-
   // Hydrate state from localStorage on mount
   useEffect(() => {
     const savedPos = localStorage.getItem(POS_KEY)
@@ -248,6 +241,12 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
         setCurrent(cq.index)
         return
       }
+    }
+
+    if (!userInfo.adSoyad || !userInfo.mudurluk) {
+      alert("Oturum bilgileriniz kayboldu. Bilgilerinizi tekrar girmeniz gerekiyor. Cevaplarınız korunacak.")
+      router.replace(`/testler/${id}`)
+      return
     }
 
     setSubmitting(true)
