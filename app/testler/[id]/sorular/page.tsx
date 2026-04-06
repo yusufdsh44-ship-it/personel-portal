@@ -219,10 +219,16 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
       }
     }
 
-    if (!userInfo.adSoyad || !userInfo.mudurluk) {
-      alert("Oturum bilgileriniz kayboldu. Bilgilerinizi tekrar girmeniz gerekiyor. Cevaplarınız korunacak.")
-      router.replace(`/testler/${id}`)
-      return
+    let adSoyad = userInfo.adSoyad
+    let mudurluk = userInfo.mudurluk
+
+    if (!adSoyad || !mudurluk) {
+      adSoyad = prompt("Sayfa yenilendiği için bilgileriniz kayboldu.\n\nAd Soyad:") || ""
+      if (!adSoyad.trim()) return
+      mudurluk = prompt("Bağlı olduğunuz müdürlük:") || ""
+      if (!mudurluk.trim()) return
+      adSoyad = adSoyad.trim()
+      mudurluk = mudurluk.trim()
     }
 
     setSubmitting(true)
@@ -239,8 +245,8 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          adSoyad: userInfo.adSoyad,
-          mudurluk: userInfo.mudurluk,
+          adSoyad,
+          mudurluk,
           testTuru: test.name,
           cevaplar,
           tarih: new Date().toISOString(),
