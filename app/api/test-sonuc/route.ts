@@ -43,7 +43,8 @@ export async function POST(request: NextRequest) {
   }
 
   // Cevap sayısı ve değer aralığı kontrolü
-  const expectedLength = testTuru === "KSE-53" ? 53 : testTuru === "BFI-2" ? 60 : 0
+  // KSE-53: 54 soru (53 madde + 1 kontrol sorusu)
+  const expectedLength = testTuru === "KSE-53" ? 54 : testTuru === "BFI-2" ? 60 : 0
   if (body.cevaplar.length !== expectedLength) {
     return NextResponse.json({ error: `${testTuru} için ${expectedLength} cevap bekleniyor.` }, { status: 400 })
   }

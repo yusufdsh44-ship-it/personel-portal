@@ -29,7 +29,10 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
   // Hydrate state from localStorage on mount
   useEffect(() => {
     const savedPos = localStorage.getItem(POS_KEY)
-    if (savedPos) setCurrent(parseInt(savedPos))
+    if (savedPos) {
+      const pos = parseInt(savedPos)
+      setCurrent(pos < total ? pos : Math.max(0, total - 1))
+    }
 
     try {
       const savedAnswers = localStorage.getItem(STORAGE_KEY)
