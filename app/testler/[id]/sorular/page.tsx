@@ -252,10 +252,13 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
         }),
       })
 
-      if (!res.ok) throw new Error("Kayıt hatası")
+      if (!res.ok) {
+        const data = await res.json().catch(() => null)
+        throw new Error(data?.error || `Hata kodu: ${res.status}`)
+      }
       setDone(true)
-    } catch {
-      alert("Bir hata oluştu. Lütfen tekrar deneyin.")
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Bir hata oluştu. Lütfen tekrar deneyin.")
     } finally {
       setSubmitting(false)
     }
