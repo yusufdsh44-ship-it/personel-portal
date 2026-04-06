@@ -18,6 +18,7 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
   const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
   const [controlWarning, setControlWarning] = useState(false)
+  const [skippedWarning, setSkippedWarning] = useState(false)
   const autoAdvanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const { userInfo } = useTestUser()
   const [briefingDone, setBriefingDone] = useState(false)
@@ -29,6 +30,7 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
     if (!test) return
     const value = test.scale.min + optIdx
     setAnswers(prev => ({ ...prev, [current]: value }))
+    if (skippedWarning) setSkippedWarning(false)
 
     if (current < total - 1) {
       if (autoAdvanceTimer.current) clearTimeout(autoAdvanceTimer.current)
@@ -231,7 +233,7 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
     if (unanswered.length > 0) {
       setDirection(1)
       setCurrent(unanswered[0])
-      alert(`${unanswered.length} soru cevaplanmamış. Lütfen tüm soruları cevaplayın.`)
+      setSkippedWarning(true)
       setSubmitting(false)
       return
     }
@@ -339,6 +341,14 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
           </div>
         )}
 
+        {/* Skipped question warning */}
+        {skippedWarning && answers[current] === undefined && (
+          <div className="w-full mb-4 p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-sm flex items-center gap-2">
+            <span className="material-symbols-outlined text-lg">warning</span>
+            Bu soruyu atlamışsınız. Lütfen cevaplayınız.
+          </div>
+        )}
+
         <AnimatePresence mode="wait" initial={false}>
           <motion.section
             key={current}
@@ -415,10 +425,12 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
           {current === total - 1 ? (
             <button
               onClick={handleFinish}
-              disabled={!allAnswered || submitting}
-              className="flex-1 py-4 px-6 rounded-2xl bg-primary text-on-primary font-headline font-bold text-sm shadow-lg shadow-black/5 transition-all hover:opacity-90 active:scale-95 disabled:opacity-40"
+              disabled={submitting}
+              className={`flex-1 py-4 px-6 rounded-2xl font-headline font-bold text-sm shadow-lg shadow-black/5 transition-all hover:opacity-90 active:scale-95 disabled:opacity-40 ${
+                allAnswered ? "bg-primary text-on-primary" : "bg-amber-500 text-white"
+              }`}
             >
-              {submitting ? "Kaydediliyor..." : allAnswered ? "Testi Bitir" : `${total - Object.keys(answers).length} soru kaldı`}
+              {submitting ? "Kaydediliyor..." : allAnswered ? "Testi Bitir" : `Eksik Sorulara Git (${total - Object.keys(answers).length})`}
             </button>
           ) : (
             <button
@@ -431,11 +443,6 @@ export default function TestSorularPage({ params }: { params: Promise<{ id: stri
           )}
         </div>
 
-        {current === total - 1 && !allAnswered && (
-          <p className="text-xs text-on-surface-variant mt-4 text-center">
-            Tüm soruları cevaplamanız gerekmektedir. Cevaplanmamış sorulara geri dönebilirsiniz.
-          </p>
-        )}
       </main>
     </>
   )
