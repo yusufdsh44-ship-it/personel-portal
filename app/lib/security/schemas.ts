@@ -12,7 +12,7 @@ export const chatRequestSchema = z.object({
   messages: z
     .array(chatMessageSchema)
     .min(1)
-    .max(MAX_MESSAGES),
+    .transform(msgs => msgs.slice(-MAX_MESSAGES)),
   turnstileToken: z.string().optional(),
 })
 

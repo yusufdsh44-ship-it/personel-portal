@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ""
+const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || "").trim()
 const hasTurnstile = !!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
 const turnstileDomain = "https://challenges.cloudflare.com"
 const isDev = process.env.NODE_ENV === "development"
