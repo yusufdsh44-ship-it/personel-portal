@@ -842,8 +842,8 @@ function CvSlide() {
       style={{ scrollSnapAlign: "start" }}
     >
       {/* Mobilde tek kolon scroll, desktop'ta 3 kolon centered */}
-      <div className="flex-1 flex flex-col justify-center px-4 sm:px-8 lg:px-16 pb-20 overflow-y-auto md:overflow-hidden">
-        <div className="max-w-4xl lg:max-w-6xl mx-auto w-full grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-6 lg:gap-12 py-4 md:py-0">
+      <div className="flex-1 overflow-y-auto md:overflow-hidden md:flex md:flex-col md:justify-center px-4 sm:px-8 lg:px-16">
+        <div className="max-w-4xl lg:max-w-6xl mx-auto w-full grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-6 lg:gap-12 pt-6 pb-24 md:py-0">
           {/* Kolon 1: Eğitim */}
           <CvSection icon="school" title="Eğitim">
             <CvItem logo="/logos/galatasaray.png" title="Galatasaray Üniversitesi" sub="Stratejik İletişim — Yüksek Lisans · Devam" />
