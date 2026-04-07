@@ -87,7 +87,7 @@ RANDEVU ALMA AKIŞI (ÖNEMLİ: MÜMKÜN OLDUĞUNCA AZ MESAJDA TAMAMLA):
 1. Kişi "randevu almak istiyorum" dediğinde → tek mesajda sor: "Adınızı, görevinizi (Başkan / Başkan Yardımcısı / Müdür ise belirtiniz, değilse bağlı olduğunuz müdürlüğü yazınız) ve KSE-53 ile BFI-2 testlerini tamamlayıp tamamlamadığınızı öğrenebilir miyim?"
 2. Bilgiler gelince → testler tamamlanmadıysa uyar ve durdur. Tamamlandıysa → hangi gün uygun olduğunu sor
 3. Gün gelince → check_available_slots ile müsait saatleri göster, saat seçmesini iste
-4. Saat seçilince → özet göster + onay iste (İlk Görüşme varsay, farklıysa söylesin)
+4. Saat seçilince → özet göster + onay iste (İlk Görüşme varsay, daha önce görüşme olduysa Devam Görüşmesi yap)
 5. Onay gelince → book_appointment çağır
 BİRDEN FAZLA BİLGİYİ AYNI MESAJDA İSTE. Gereksiz tur yapma — mümkünse 3-4 mesajda randevu tamamlanmalı.
 Testler ZORUNLUDUR — test tamamlanmadan randevu oluşturma.
@@ -126,7 +126,7 @@ const tools: Tool[] = [
             mudurluk: { type: SchemaType.STRING, description: "Bağlı olduğu müdürlük. Başkan ise 'Başkan', Başkan Yardımcısı ise 'Başkan Yardımcısı', Müdür ise müdürlük adı yazılır." },
             tarih: { type: SchemaType.STRING, description: "YYYY-MM-DD formatında tarih" },
             saat: { type: SchemaType.STRING, description: "HH:MM formatında saat" },
-            gorusmeTuru: { type: SchemaType.STRING, description: "İlk Görüşme, Takip veya Acil" },
+            gorusmeTuru: { type: SchemaType.STRING, description: "İlk Görüşme veya Takip (Devam Görüşmesi)" },
             kseDurumu: { type: SchemaType.STRING, description: "KSE-53 test durumu: online veya kagit" },
             bfiDurumu: { type: SchemaType.STRING, description: "BFI-2 test durumu: online veya kagit" },
           },

@@ -4,7 +4,7 @@ import { isRateLimited, getClientIp } from "@/app/lib/rate-limit"
 import { generateRefCode } from "@/app/lib/ref-code"
 
 // Whitelist doğrulama
-const VALID_TURLER = ["İlk Görüşme", "Takip", "Acil"]
+const VALID_TURLER = ["İlk Görüşme", "Takip"]
 const TIME_REGEX = /^([01]\d|2[0-3]):[0-5]\d$/
 const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/
 
