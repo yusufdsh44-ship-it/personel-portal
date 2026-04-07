@@ -74,18 +74,19 @@ export async function GET(request: NextRequest) {
     .from("kapali_tarih_slotlari").select("saat").eq("tarih", tarih)
   for (const k of kapaliRows ?? []) dolu.add(k.saat)
 
-  // Sadece musait slotlari don — dolu bilgisini ifsa etme
   const [sh, sm] = dayConfig.baslangic.split(":").map(Number)
   const [eh, em] = dayConfig.bitis.split(":").map(Number)
   let t = sh * 60 + sm
   const end = eh * 60 + em
   const musaitSlotlar: string[] = []
+  const doluSlotlar: string[] = []
 
   while (t + dayConfig.slotDk <= end) {
     const slot = `${String(Math.floor(t / 60)).padStart(2, "0")}:${String(t % 60).padStart(2, "0")}`
-    if (!dolu.has(slot)) musaitSlotlar.push(slot)
+    if (dolu.has(slot)) doluSlotlar.push(slot)
+    else musaitSlotlar.push(slot)
     t += dayConfig.slotDk
   }
 
-  return NextResponse.json({ musaitlik, musaitSlotlar }, { headers: NO_STORE })
+  return NextResponse.json({ musaitlik, musaitSlotlar, doluSlotlar }, { headers: NO_STORE })
 }

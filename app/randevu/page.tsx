@@ -37,6 +37,7 @@ export default function RandevuPage() {
   const [musaitlik, setMusaitlik] = useState<Musaitlik[]>([])
   const [loading, setLoading] = useState(true)
   const [availableSlots, setAvailableSlots] = useState<string[]>([])
+  const [bookedSlots, setBookedSlots] = useState<string[]>([])
   const [slotsLoading, setSlotsLoading] = useState(false)
 
   useEffect(() => {
@@ -47,12 +48,12 @@ export default function RandevuPage() {
 
   // Secilen tarih icin musait slotlari getir
   useEffect(() => {
-    if (!date) { setAvailableSlots([]); return }
+    if (!date) { setAvailableSlots([]); setBookedSlots([]); return }
     setSlotsLoading(true)
     fetch(`/api/musaitlik?tarih=${date}`)
       .then(r => r.json())
-      .then(d => setAvailableSlots(d.musaitSlotlar || []))
-      .catch(() => setAvailableSlots([]))
+      .then(d => { setAvailableSlots(d.musaitSlotlar || []); setBookedSlots(d.doluSlotlar || []) })
+      .catch(() => { setAvailableSlots([]); setBookedSlots([]) })
       .finally(() => setSlotsLoading(false))
   }, [date])
 
@@ -67,7 +68,8 @@ export default function RandevuPage() {
     return r
   }, [musaitlik])
 
-  const slots = availableSlots
+  const allSlots = [...availableSlots, ...bookedSlots].sort()
+  const bookedSet = new Set(bookedSlots)
 
   const turItem = TURLER.find(t => t.value === tur)
   const turLabel = turItem?.label ?? ""
@@ -333,20 +335,22 @@ export default function RandevuPage() {
               {slotsLoading && Array.from({ length: 8 }).map((_, i) => (
                 <div key={i} className="py-3 px-1 rounded-xl bg-surface-container animate-pulse h-11" />
               ))}
-              {!slotsLoading && slots.map(s => {
+              {!slotsLoading && allSlots.map(s => {
+                const booked = bookedSet.has(s)
                 const a = time === s
                 return (
-                  <motion.button key={s} type="button" onClick={() => setTime(s)}
+                  <motion.button key={s} type="button" onClick={() => !booked && setTime(s)} disabled={booked}
                     variants={{ hidden: { opacity: 0, scale: 0.8 }, show: { opacity: 1, scale: 1 } }}
-                    whileTap={{ scale: 0.9 }}
+                    whileTap={booked ? undefined : { scale: 0.9 }}
                     className={`py-3 px-1 rounded-xl text-sm font-medium transition-colors ${
-                      a ? "bg-primary text-on-primary font-bold shadow-lg shadow-black/5"
+                      booked ? "bg-surface-container text-on-surface-variant/30 line-through cursor-not-allowed"
+                      : a ? "bg-primary text-on-primary font-bold shadow-lg shadow-black/5"
                         : "bg-surface-lowest border border-outline-variant/10 text-on-surface hover:bg-primary-container"
                     }`}>{s}</motion.button>
                 )
               })}
             </motion.div>
-            {!slotsLoading && slots.length === 0 && <p className="text-sm text-on-surface-variant text-center py-6">Bu gün için müsait saat yok.</p>}
+            {!slotsLoading && allSlots.length === 0 && <p className="text-sm text-on-surface-variant text-center py-6">Bu gün için saat bilgisi bulunamadı.</p>}
           </motion.section>
         )}
         </AnimatePresence>
