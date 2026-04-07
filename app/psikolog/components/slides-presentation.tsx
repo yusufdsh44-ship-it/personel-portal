@@ -841,9 +841,9 @@ function CvSlide() {
       className="relative w-full h-[100dvh] overflow-hidden snap-start bg-gradient-to-br from-[#f5f0eb] to-[#ede5dd] flex flex-col"
       style={{ scrollSnapAlign: "start" }}
     >
-      {/* Grid — 3 kolon desktop, tek kolon mobil */}
-      <div className="flex-1 overflow-hidden px-5 sm:px-8 lg:px-16 pt-5 sm:pt-10 pb-20">
-        <div className="max-w-4xl lg:max-w-6xl mx-auto grid grid-cols-3 gap-2 md:gap-6 lg:gap-12 content-start">
+      {/* Grid — 3 kolon, tüm ekranı doldurur */}
+      <div className="flex-1 flex flex-col justify-end px-4 sm:px-8 lg:px-16 pb-20 pt-4 sm:pt-10">
+        <div className="max-w-4xl lg:max-w-6xl mx-auto w-full grid grid-cols-3 gap-2 md:gap-6 lg:gap-12">
           {/* Kolon 1: Eğitim */}
           <CvSection icon="school" title="Eğitim">
             <CvItem logo="/logos/galatasaray.png" title="Galatasaray Üniversitesi" sub="Stratejik İletişim — Yüksek Lisans · Devam" />
