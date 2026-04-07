@@ -124,8 +124,7 @@ export default function RandevuPage() {
             </FadeIn>
             <FadeIn delay={0.8}>
               <div className="glass-card rounded-3xl p-5 space-y-3">
-                <p className="text-sm text-on-surface-variant">Randevunuz onaylandığında bilgilendirileceksiniz.</p>
-                <div className="flex items-center justify-center gap-2">
+<div className="flex items-center justify-center gap-2">
                   <span className="text-[10px] uppercase font-bold text-outline-variant tracking-wider">Referans</span>
                   <span className="font-mono text-lg font-extrabold text-primary tracking-widest">
                     {refCode}
