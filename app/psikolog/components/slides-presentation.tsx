@@ -809,13 +809,13 @@ export function SlidesPresentation() {
 
 function CvItem({ logo, fallback, title, sub }: { logo?: string; fallback?: string; title: string; sub: string }) {
   return (
-    <div className="flex items-center gap-1.5 md:gap-2.5 lg:gap-4">
-      <div className="w-8 h-8 md:w-10 md:h-10 lg:w-14 lg:h-14 rounded-lg lg:rounded-xl bg-white flex items-center justify-center shrink-0 overflow-hidden shadow-sm border border-[#e8e0d8]/60">
-        {logo ? <img src={logo} alt="" className="w-5 h-5 md:w-7 md:h-7 lg:w-9 lg:h-9 object-contain" /> : <span className="text-[#b5694d]/40 text-[8px] md:text-[9px] lg:text-xs font-bold">{fallback}</span>}
+    <div className="flex items-center gap-2.5 lg:gap-4">
+      <div className="w-10 h-10 lg:w-14 lg:h-14 rounded-lg lg:rounded-xl bg-white flex items-center justify-center shrink-0 overflow-hidden shadow-sm border border-[#e8e0d8]/60">
+        {logo ? <img src={logo} alt="" className="w-7 h-7 lg:w-9 lg:h-9 object-contain" /> : <span className="text-[#b5694d]/40 text-[9px] lg:text-xs font-bold">{fallback}</span>}
       </div>
       <div className="min-w-0">
-        <p className="text-[#2a1810] font-semibold text-[11px] md:text-[13px] lg:text-base leading-tight truncate">{title}</p>
-        <p className="text-[#8a8580] text-[9px] md:text-[11px] lg:text-sm leading-snug">{sub}</p>
+        <p className="text-[#2a1810] font-semibold text-[13px] lg:text-base leading-tight truncate">{title}</p>
+        <p className="text-[#8a8580] text-[11px] lg:text-sm leading-snug">{sub}</p>
       </div>
     </div>
   )
@@ -824,10 +824,10 @@ function CvItem({ logo, fallback, title, sub }: { logo?: string; fallback?: stri
 function CvSection({ icon, title, children }: { icon: string; title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h3 className="text-[9px] md:text-[11px] lg:text-sm font-bold text-[#b5694d] flex items-center gap-1 md:gap-1.5 lg:gap-2 mb-1.5 md:mb-2 lg:mb-4 uppercase tracking-wider font-mono">
-        <span className="material-symbols-outlined text-sm md:text-base lg:text-xl">{icon}</span> {title}
+      <h3 className="text-[11px] lg:text-sm font-bold text-[#b5694d] flex items-center gap-1.5 lg:gap-2 mb-2 lg:mb-4 uppercase tracking-wider font-mono">
+        <span className="material-symbols-outlined text-base lg:text-xl">{icon}</span> {title}
       </h3>
-      <div className="space-y-1.5 md:space-y-2 lg:space-y-3.5">
+      <div className="space-y-2 lg:space-y-3.5">
         {children}
       </div>
     </div>
@@ -841,9 +841,9 @@ function CvSlide() {
       className="relative w-full h-[100dvh] overflow-hidden snap-start bg-gradient-to-br from-[#f5f0eb] to-[#ede5dd] flex flex-col"
       style={{ scrollSnapAlign: "start" }}
     >
-      {/* Grid — 3 kolon, tüm ekranı doldurur */}
-      <div className="flex-1 flex flex-col justify-center px-4 sm:px-8 lg:px-16 pb-20">
-        <div className="max-w-4xl lg:max-w-6xl mx-auto w-full grid grid-cols-3 gap-2 md:gap-6 lg:gap-12">
+      {/* Mobilde tek kolon scroll, desktop'ta 3 kolon centered */}
+      <div className="flex-1 flex flex-col justify-center px-4 sm:px-8 lg:px-16 pb-20 overflow-y-auto md:overflow-hidden">
+        <div className="max-w-4xl lg:max-w-6xl mx-auto w-full grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-6 lg:gap-12 py-4 md:py-0">
           {/* Kolon 1: Eğitim */}
           <CvSection icon="school" title="Eğitim">
             <CvItem logo="/logos/galatasaray.png" title="Galatasaray Üniversitesi" sub="Stratejik İletişim — Yüksek Lisans · Devam" />
@@ -854,16 +854,16 @@ function CvSlide() {
 
           {/* Kolon 2: Klinik Deneyim */}
           <CvSection icon="work" title="Klinik Deneyim">
-            <div className="flex items-center gap-1.5 md:gap-2.5 lg:gap-4">
-              <div className="w-8 h-8 md:w-10 md:h-10 lg:w-14 lg:h-14 rounded-lg lg:rounded-xl bg-white flex items-center justify-center shrink-0 overflow-hidden shadow-sm border border-[#e8e0d8]/60">
-                <img src="/logos/arnavutkoy.png" alt="" className="w-5 h-5 md:w-7 md:h-7 lg:w-9 lg:h-9 object-contain" />
+            <div className="flex items-center gap-2.5 lg:gap-4">
+              <div className="w-10 h-10 lg:w-14 lg:h-14 rounded-lg lg:rounded-xl bg-white flex items-center justify-center shrink-0 overflow-hidden shadow-sm border border-[#e8e0d8]/60">
+                <img src="/logos/arnavutkoy.png" alt="" className="w-7 h-7 lg:w-9 lg:h-9 object-contain" />
               </div>
               <div className="min-w-0">
-                <div className="flex items-center gap-1">
-                  <p className="text-[#2a1810] font-semibold text-[11px] md:text-[13px] lg:text-base leading-tight truncate">Arnavutköy Belediyesi</p>
-                  <span className="text-[7px] md:text-[8px] font-mono bg-[#b5694d]/10 text-[#b5694d] px-1 md:px-1.5 py-0.5 rounded shrink-0 font-bold">AKTİF</span>
+                <div className="flex items-center gap-1.5">
+                  <p className="text-[#2a1810] font-semibold text-[13px] lg:text-base leading-tight truncate">Arnavutköy Belediyesi</p>
+                  <span className="text-[8px] font-mono bg-[#b5694d]/10 text-[#b5694d] px-1.5 py-0.5 rounded shrink-0 font-bold">AKTİF</span>
                 </div>
-                <p className="text-[#8a8580] text-[9px] md:text-[11px] lg:text-sm leading-snug">Kurum Psikoloğu — Kurumsal Psikoloji Birimi</p>
+                <p className="text-[#8a8580] text-[11px] lg:text-sm leading-snug">Kurum Psikoloğu — Kurumsal Psikoloji Birimi</p>
               </div>
             </div>
             <CvItem logo="/logos/frenchlape.png" title="Fransız Lape Psikiyatri Hastanesi" sub="Klinik Psikolog" />
