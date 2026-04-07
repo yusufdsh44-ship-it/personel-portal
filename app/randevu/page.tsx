@@ -98,11 +98,11 @@ export default function RandevuPage() {
           bfiDurumu: bfiDurum,
         }),
       })
-      if (!r.ok) throw new Error()
-      const data = await r.json()
+      const data = await r.json().catch(() => ({}))
+      if (!r.ok) { setErr(data.error || "Bir hata oluştu. Tekrar deneyin."); return }
       setRefCode(data.referansKodu || "")
       setDone(true)
-    } catch { setErr("Bir hata oluştu. Tekrar deneyin.") }
+    } catch { setErr("Bağlantı hatası. Lütfen tekrar deneyin.") }
     finally { setSending(false) }
   }
 
