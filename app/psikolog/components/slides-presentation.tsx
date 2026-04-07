@@ -823,11 +823,11 @@ function CvItem({ logo, fallback, title, sub }: { logo?: string; fallback?: stri
 
 function CvSection({ icon, title, children }: { icon: string; title: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col h-full">
+    <div>
       <h3 className="text-[9px] md:text-[11px] lg:text-sm font-bold text-[#b5694d] flex items-center gap-1 md:gap-1.5 lg:gap-2 mb-1.5 md:mb-2 lg:mb-4 uppercase tracking-wider font-mono">
         <span className="material-symbols-outlined text-sm md:text-base lg:text-xl">{icon}</span> {title}
       </h3>
-      <div className="flex-1 flex flex-col justify-evenly">
+      <div className="space-y-1.5 md:space-y-2 lg:space-y-3.5">
         {children}
       </div>
     </div>
@@ -842,8 +842,8 @@ function CvSlide() {
       style={{ scrollSnapAlign: "start" }}
     >
       {/* Grid — 3 kolon, tüm ekranı doldurur */}
-      <div className="flex-1 flex flex-col px-4 sm:px-8 lg:px-16 pb-20 pt-4 sm:pt-10">
-        <div className="max-w-4xl lg:max-w-6xl mx-auto w-full flex-1 grid grid-cols-3 gap-2 md:gap-6 lg:gap-12">
+      <div className="flex-1 flex flex-col justify-center px-4 sm:px-8 lg:px-16 pb-20">
+        <div className="max-w-4xl lg:max-w-6xl mx-auto w-full grid grid-cols-3 gap-2 md:gap-6 lg:gap-12">
           {/* Kolon 1: Eğitim */}
           <CvSection icon="school" title="Eğitim">
             <CvItem logo="/logos/galatasaray.png" title="Galatasaray Üniversitesi" sub="Stratejik İletişim — Yüksek Lisans · Devam" />
