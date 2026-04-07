@@ -9,11 +9,10 @@ import { Header } from "../components/header"
 import { FadeIn, SuccessCheck, PulseGlow, motion, AnimatePresence } from "../components/motion"
 import { MudurlukSelect } from "../components/mudurluk-select"
 
-type Tur = "ilk" | "takip" | "acil"
+type Tur = "ilk" | "devam"
 const TURLER: { value: Tur; icon: string; label: string; apiLabel: string }[] = [
-  { value: "ilk", icon: "person_add", label: "İlk Görüşme", apiLabel: "İlk Görüşme" },
-  { value: "takip", icon: "event_repeat", label: "Takip", apiLabel: "Takip" },
-  { value: "acil", icon: "emergency", label: "Acil", apiLabel: "Acil" },
+  { value: "ilk", icon: "person_add", label: "İlk Görüşme (Tanışma)", apiLabel: "İlk Görüşme" },
+  { value: "devam", icon: "event_repeat", label: "Devam Görüşmesi", apiLabel: "Takip" },
 ]
 
 type TestDurum = "" | "online" | "kagit"
@@ -270,7 +269,7 @@ export default function RandevuPage() {
         <motion.section animate={{ opacity: s1 && s1b ? 1 : 0.3 }} transition={{ duration: 0.3 }}
           className={`space-y-4 ${!(s1 && s1b) ? "pointer-events-none" : ""}`}>
           <StepHead n={3} title="Başvuru Türü" done={s2} />
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 gap-3">
             {TURLER.map(t => (
               <motion.button key={t.value} type="button" onClick={() => setTur(t.value)}
                 whileTap={{ scale: 0.93 }}
