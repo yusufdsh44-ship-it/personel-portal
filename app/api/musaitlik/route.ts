@@ -13,7 +13,7 @@ function getWeekday(dateStr: string): number {
 
 export async function GET(request: NextRequest) {
   const ip = getClientIp(request)
-  if (isRateLimited(ip, 20, 60_000)) {
+  if (isRateLimited(`musaitlik:${ip}`, 60, 60_000)) {
     return NextResponse.json({ error: "Cok fazla istek." }, { status: 429, headers: NO_STORE })
   }
 

@@ -9,9 +9,10 @@ const TIME_REGEX = /^([01]\d|2[0-3]):[0-5]\d$/
 const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/
 
 export async function POST(request: NextRequest) {
-  // Rate limit
+  // Rate limit — NAT arkasindaki belediye personelinin tamami tek IP'den ciktigi icin
+  // endpoint'e ozgu scope kullaniyoruz ve limiti yeterince yumusak tutuyoruz
   const ip = getClientIp(request)
-  if (isRateLimited(ip, 5, 60_000)) {
+  if (isRateLimited(`randevu:${ip}`, 10, 60_000)) {
     return NextResponse.json({ error: "Çok fazla istek. Lütfen bir dakika bekleyin." }, { status: 429 })
   }
 

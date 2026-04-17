@@ -13,7 +13,7 @@ const VALID_TESTS = ["KSE-53", "BFI-2"]
 
 export async function POST(request: NextRequest) {
   const ip = getClientIp(request)
-  if (isRateLimited(ip, 3, 60_000)) {
+  if (isRateLimited(`test-sonuc:${ip}`, 5, 60_000)) {
     return NextResponse.json({ error: "Çok fazla istek. Lütfen bir dakika bekleyin." }, { status: 429 })
   }
 

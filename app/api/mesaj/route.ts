@@ -4,7 +4,7 @@ import { isRateLimited, getClientIp } from "@/app/lib/rate-limit"
 
 export async function POST(request: NextRequest) {
   const ip = getClientIp(request)
-  if (isRateLimited(ip, 3, 60_000)) {
+  if (isRateLimited(`mesaj:${ip}`, 5, 60_000)) {
     return NextResponse.json({ error: "Çok fazla istek. Lütfen bir dakika bekleyin." }, { status: 429 })
   }
 
